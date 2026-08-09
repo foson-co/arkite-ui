@@ -1,6 +1,14 @@
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
+import { createContext, forwardRef, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../../utils/cn'
 import { useLocale } from '../../locale'
+
+/**
+ * Marks the single-line toolbar row. Controls that can render taller than one
+ * line (a stacked field label) read this to warn that they will break the
+ * row's alignment — context rather than DOM inspection, so it survives
+ * wrappers and portals.
+ */
+export const FilterToolbarContext = createContext(false)
 
 /* ─── FilterBar (root) ─── */
 
@@ -112,6 +120,7 @@ export interface FilterBarFiltersProps extends HTMLAttributes<HTMLDivElement> {
  */
 export const FilterBarFilters = forwardRef<HTMLDivElement, FilterBarFiltersProps>(
   ({ className, children, ...props }, ref) => (
+    <FilterToolbarContext.Provider value={true}>
     <div
       ref={ref}
       className={cn(
@@ -124,6 +133,7 @@ export const FilterBarFilters = forwardRef<HTMLDivElement, FilterBarFiltersProps
     >
       {children}
     </div>
+    </FilterToolbarContext.Provider>
   )
 )
 

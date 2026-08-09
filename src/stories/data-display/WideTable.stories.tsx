@@ -99,9 +99,9 @@ export const SquashedWithoutMinWidth: Story = {
 
 /**
  * A titled wide table. `DataTable` already draws its own bordered surface, so
- * it is not wrapped in a Card — the Card here only exists to carry the header,
- * with `padding="none"` and the table's own frame removed to avoid a
- * double border.
+ * the Card here exists only to carry the header: `padding="none"`, a
+ * padding-free `CardContent`, and `bordered={false}` on the table so the two
+ * frames don't stack. Leaving the table bordered logs a dev-only warning.
  */
 export const InsideACard: Story = {
   name: 'With a card header',
@@ -117,7 +117,8 @@ export const InsideACard: Story = {
             minWidth={840}
             pagination={false}
             compact
-            className="rounded-none border-0 border-t"
+            bordered={false}
+            className="border-t"
           />
         </CardContent>
       </Card>

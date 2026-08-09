@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import type { Meta, StoryFn } from '@storybook/react-vite'
-import { DateRangePicker } from '../../components/date-picker/DateRangePicker'
+import { DateRangePicker, type DateRangeValue } from '../../components/date-picker/DateRangePicker'
+import { FilterBar, FilterBarFilters } from '../../components/filter-bar/FilterBar'
+import { FilterSelect } from '../../components/filter-bar/FilterSelect'
 
 const meta: Meta<typeof DateRangePicker> = {
   title: 'Form/DateRangePicker',
@@ -162,3 +164,63 @@ function CalendarRangePresetDemo() {
 }
 
 export const CalendarRangeWithDates: StoryFn = () => <CalendarRangePresetDemo />
+
+// ── In a filter bar: labels inside, so the row stays one line ──
+
+/**
+ * Stacked labels (`labelPlacement="top"`, the default) add a line above the
+ * inputs, which pushes them out of alignment with the single-line controls
+ * beside them in a toolbar. `"inside"` moves the label into the field as its
+ * placeholder — one line, still an accessible name, format hint on hover.
+ *
+ * The first example is the anti-pattern on purpose, so it logs the dev-only
+ * composition warning to the console. That is the story working, not breaking.
+ */
+function InFilterBarDemo() {
+  const [range, setRange] = useState<DateRangeValue>({ start: null, end: null })
+
+  return (
+    <div className="flex flex-col gap-8">
+      <div>
+        <p className="mb-2 text-sm font-medium">labelPlacement=&quot;top&quot; — inputs sit 10px lower than the select</p>
+        <FilterBar>
+          <FilterBarFilters>
+            <FilterSelect
+              label="Status"
+              options={[
+                { value: 'paid', label: 'Paid' },
+                { value: 'pending', label: 'Pending' },
+              ]}
+            />
+            <DateRangePicker size="sm" startLabel="From" endLabel="To" onChange={() => {}} />
+          </FilterBarFilters>
+        </FilterBar>
+      </div>
+
+      <div>
+        <p className="mb-2 text-sm font-medium">labelPlacement=&quot;inside&quot; — one aligned row</p>
+        <FilterBar>
+          <FilterBarFilters>
+            <FilterSelect
+              label="Status"
+              options={[
+                { value: 'paid', label: 'Paid' },
+                { value: 'pending', label: 'Pending' },
+              ]}
+            />
+            <DateRangePicker
+              size="sm"
+              startLabel="From"
+              endLabel="To"
+              labelPlacement="inside"
+              value={range}
+              onChange={(v) => setRange(v)}
+            />
+          </FilterBarFilters>
+        </FilterBar>
+      </div>
+    </div>
+  )
+}
+
+export const InFilterBar: StoryFn = () => <InFilterBarDemo />

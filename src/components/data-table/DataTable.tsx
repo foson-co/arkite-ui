@@ -1,4 +1,4 @@
-import { Fragment, useState, useMemo, useCallback, useRef, useEffect, type CSSProperties, type ReactNode } from 'react'
+import { Fragment, useState, useMemo, useCallback, useContext, useRef, useEffect, type CSSProperties, type ReactNode } from 'react'
 import { cn } from '../../utils/cn'
 import { warnDeprecated, warnUsage } from '../../utils/deprecate'
 import { useLocale } from '../../locale'
@@ -11,6 +11,7 @@ import {
   TableCell,
 } from '../table/Table'
 import { Button } from '../button/Button'
+import { CardSurfaceContext } from '../card/Card'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ChevronDown, ArrowUpDown, ArrowUp, ArrowDown, Check, Minus, Columns3, ListFilter } from 'lucide-react'
 
 export interface Column<T> {
@@ -155,6 +156,13 @@ export interface DataTableProps<T> {
    */
   scrollFade?: boolean
   /**
+   * Draw the table's own bordered, rounded surface. Pass `false` when the
+   * table sits inside a surface that already has a frame (a `Card` carrying a
+   * `CardHeader`), so the two borders don't stack into a double frame.
+   * @default true
+   */
+  bordered?: boolean
+  /**
    * Make the table scroll wrapper fill its parent's height (`h-full`).
    * Use when the DataTable is inside a fixed-height flex container so the
    * horizontal scrollbar pins to the bottom of the viewport even when there
@@ -268,6 +276,7 @@ export function DataTable<T>({
   maxHeight,
   minWidth,
   scrollFade,
+  bordered = true,
   fillHeight = false,
   sortState: controlledSortState,
   onSortChange,
@@ -280,6 +289,18 @@ export function DataTable<T>({
   className,
 }: DataTableProps<T>) {
   const locale = useLocale()
+
+  // Composition guard: DataTable already draws a bordered, rounded surface, so
+  // nesting it in a Card stacks two frames. Detected via context rather than
+  // DOM inspection — see CardSurfaceContext.
+  const insideCard = useContext(CardSurfaceContext)
+  if (insideCard && bordered) {
+    warnUsage(
+      'DataTable',
+      'nested-in-card',
+      'rendered inside a Card while drawing its own border — the two frames stack. Pass `bordered={false}` (and give the Card `padding="none"` with `CardContent className="p-0"`), or drop the Card: DataTable is already a complete surface.'
+    )
+  }
 
   // Deprecated `expandable={(row, index) => ...}` — treated as `renderExpandedRow`
   if (typeof expandable === 'function' && renderExpandedRow == null) {
@@ -628,7 +649,13 @@ export function DataTable<T>({
   }
 
   return (
-    <div className={cn('rounded-md border', fillHeight && 'flex h-full flex-col', className)}>
+    <div
+      className={cn(
+        bordered && 'rounded-md border',
+        fillHeight && 'flex h-full flex-col',
+        className
+      )}
+    >
       {columnToggle && (
         <div className="flex items-center justify-end border-b px-4 py-2">
           <div

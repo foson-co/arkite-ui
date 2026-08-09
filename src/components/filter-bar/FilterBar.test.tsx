@@ -8,6 +8,7 @@ import {
   FilterBarActions,
   FilterBarGroup,
 } from './FilterBar'
+import { DateRangePicker } from '../date-picker/DateRangePicker'
 
 describe('FilterBar', () => {
   it('renders children', () => {
@@ -152,5 +153,36 @@ describe('FilterBarGroup', () => {
       </FilterBarGroup>
     )
     expect(screen.getByRole('group', { name: 'Period' })).toHaveClass('mt-2')
+  })
+})
+
+describe('FilterBar composition guards', () => {
+  it('warns when a DateRangePicker keeps its stacked label in a toolbar', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <FilterBar>
+        <FilterBarFilters>
+          <DateRangePicker startLabel="From" endLabel="To" />
+        </FilterBarFilters>
+      </FilterBar>
+    )
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('out of alignment'))
+    warn.mockRestore()
+  })
+
+  it('stays quiet with the label inside, and outside a toolbar', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <>
+        <FilterBar>
+          <FilterBarFilters>
+            <DateRangePicker startLabel="From" endLabel="To" labelPlacement="inside" />
+          </FilterBarFilters>
+        </FilterBar>
+        <DateRangePicker startLabel="From" endLabel="To" />
+      </>
+    )
+    expect(warn).not.toHaveBeenCalled()
+    warn.mockRestore()
   })
 })

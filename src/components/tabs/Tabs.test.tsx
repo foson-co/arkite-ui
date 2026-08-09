@@ -116,3 +116,110 @@ describe('Tabs', () => {
     expect(handleChange).toHaveBeenCalledWith('tab2')
   })
 })
+
+describe('Tabs orientation', () => {
+  const renderUnderlineTabs = (orientation?: 'horizontal' | 'vertical') =>
+    render(
+      <Tabs defaultValue="a" variant="underline" orientation={orientation}>
+        <TabsList>
+          <TabsTrigger value="a">Alpha</TabsTrigger>
+          <TabsTrigger value="b">Beta</TabsTrigger>
+          <TabsTrigger value="c" disabled>Gamma</TabsTrigger>
+          <TabsTrigger value="d">Delta</TabsTrigger>
+        </TabsList>
+        <TabsContent value="a">Panel A</TabsContent>
+        <TabsContent value="b">Panel B</TabsContent>
+        <TabsContent value="d">Panel D</TabsContent>
+      </Tabs>
+    )
+
+  it('declares its axis on the tablist', () => {
+    renderUnderlineTabs('vertical')
+    expect(screen.getByRole('tablist')).toHaveAttribute('aria-orientation', 'vertical')
+  })
+
+  it('defaults to horizontal', () => {
+    renderUnderlineTabs()
+    expect(screen.getByRole('tablist')).toHaveAttribute('aria-orientation', 'horizontal')
+  })
+
+  it('moves the underline rule to the inline edge when vertical', () => {
+    renderUnderlineTabs('vertical')
+    // Regression guard for the reason this is a prop and not a className:
+    // a bottom rule points across the reading direction in a side strip.
+    expect(screen.getByRole('tab', { name: 'Alpha' }).className).toContain('border-e-2')
+    expect(screen.getByRole('tab', { name: 'Alpha' }).className).not.toContain('border-b-2')
+  })
+
+  it('keeps a single tab stop via roving tabindex', () => {
+    renderUnderlineTabs()
+    expect(screen.getByRole('tab', { name: 'Alpha' })).toHaveAttribute('tabindex', '0')
+    expect(screen.getByRole('tab', { name: 'Beta' })).toHaveAttribute('tabindex', '-1')
+  })
+})
+
+describe('Tabs keyboard navigation', () => {
+  const setup = (orientation?: 'horizontal' | 'vertical') => {
+    const onChange = vi.fn()
+    render(
+      <Tabs defaultValue="a" orientation={orientation} onChange={onChange}>
+        <TabsList>
+          <TabsTrigger value="a">Alpha</TabsTrigger>
+          <TabsTrigger value="b">Beta</TabsTrigger>
+          <TabsTrigger value="c" disabled>Gamma</TabsTrigger>
+          <TabsTrigger value="d">Delta</TabsTrigger>
+        </TabsList>
+        <TabsContent value="a">Panel A</TabsContent>
+        <TabsContent value="b">Panel B</TabsContent>
+        <TabsContent value="d">Panel D</TabsContent>
+      </Tabs>
+    )
+    return { onChange }
+  }
+
+  it('moves along the horizontal axis with left/right', async () => {
+    const user = userEvent.setup()
+    const { onChange } = setup()
+    screen.getByRole('tab', { name: 'Alpha' }).focus()
+    await user.keyboard('{ArrowRight}')
+    expect(onChange).toHaveBeenLastCalledWith('b')
+    expect(screen.getByRole('tab', { name: 'Beta' })).toHaveFocus()
+  })
+
+  it('ignores the cross-axis keys', async () => {
+    const user = userEvent.setup()
+    const { onChange } = setup()
+    screen.getByRole('tab', { name: 'Alpha' }).focus()
+    await user.keyboard('{ArrowDown}')
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
+  it('moves along the vertical axis with up/down', async () => {
+    const user = userEvent.setup()
+    const { onChange } = setup('vertical')
+    screen.getByRole('tab', { name: 'Alpha' }).focus()
+    await user.keyboard('{ArrowDown}')
+    expect(onChange).toHaveBeenLastCalledWith('b')
+  })
+
+  it('skips disabled tabs and wraps around', async () => {
+    const user = userEvent.setup()
+    const { onChange } = setup()
+    screen.getByRole('tab', { name: 'Beta' }).focus()
+    await user.keyboard('{ArrowRight}')
+    // Gamma is disabled → Delta
+    expect(onChange).toHaveBeenLastCalledWith('d')
+    await user.keyboard('{ArrowRight}')
+    expect(onChange).toHaveBeenLastCalledWith('a')
+  })
+
+  it('jumps to the ends with Home and End', async () => {
+    const user = userEvent.setup()
+    const { onChange } = setup()
+    screen.getByRole('tab', { name: 'Beta' }).focus()
+    await user.keyboard('{End}')
+    expect(onChange).toHaveBeenLastCalledWith('d')
+    await user.keyboard('{Home}')
+    expect(onChange).toHaveBeenLastCalledWith('a')
+  })
+})

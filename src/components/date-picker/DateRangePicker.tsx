@@ -4,10 +4,14 @@ import {
   useRef,
   useEffect,
   useCallback,
+  useContext,
+  useId,
   type HTMLAttributes,
 } from 'react'
 import { cn } from '../../utils/cn'
 import { useLocale } from '../../locale'
+import { warnUsage } from '../../utils/deprecate'
+import { FilterToolbarContext } from '../filter-bar/FilterBar'
 import {
   Calendar as CalendarIcon,
   ChevronLeft,
@@ -90,6 +94,19 @@ export interface DateRangePickerProps
   startLabel?: string
   /** Label for the end date input */
   endLabel?: string
+  /**
+   * Where the field labels go.
+   *
+   * - `'top'` (default) — stacked above each input. Adds a line above the
+   *   control, so in a `FilterBar` it pushes the inputs out of alignment with
+   *   the single-line controls beside them.
+   * - `'inside'` — the label becomes the input's placeholder, keeping the whole
+   *   control on one line. The expected format moves to the input's `title`.
+   * - `'none'` — no visible label; the placeholder stays the date format.
+   *
+   * All three keep the label as the input's accessible name.
+   */
+  labelPlacement?: 'top' | 'inside' | 'none'
   /** Date display format */
   format?: string
   /** Minimum selectable date */
@@ -161,6 +178,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       onOpenChange,
       startLabel,
       endLabel,
+      labelPlacement = 'top',
       format = 'yyyy-MM-dd',
       minDate,
       maxDate,
@@ -174,6 +192,19 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     ref
   ) => {
     const locale = useLocale()
+    const fieldId = useId()
+    // Composition guard: a stacked label makes this control two lines tall, so
+    // in a toolbar its inputs sit below the single-line controls beside them.
+    const inToolbar = useContext(FilterToolbarContext)
+    if (inToolbar && labelPlacement === 'top') {
+      warnUsage(
+        'DateRangePicker',
+        'stacked-label-in-toolbar',
+        'rendered inside a FilterBar with `labelPlacement="top"` — the stacked label adds a line, leaving the inputs out of alignment with the single-line controls next to them. Use `labelPlacement="inside"` (label becomes the placeholder) or `"none"`.'
+      )
+    }
+    const resolvedStartLabel = startLabel ?? locale.dateRangePicker.startLabel
+    const resolvedEndLabel = endLabel ?? locale.dateRangePicker.endLabel
     const [internalRange, setInternalRange] = useState<DateRangeValue>(
       () => defaultValue ?? { start: null, end: null }
     )
@@ -791,26 +822,40 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             ;(ref as React.MutableRefObject<HTMLDivElement | null>).current = node
           }
         }}
-        className={cn('relative inline-flex items-end gap-2', className)}
+        className={cn(
+          'relative inline-flex gap-2',
+          // items-end aligns the inputs when labels stack above them; without
+          // top labels every child is one row, so centre them instead.
+          labelPlacement === 'top' ? 'items-end' : 'items-center',
+          className
+        )}
         {...props}
       >
         {/* Start date field */}
         <div className="flex flex-col gap-1">
-          <label
-            className={cn(
-              'font-medium text-foreground',
-              labelSizeStyles[size]
-            )}
-          >
-            {startLabel ?? locale.dateRangePicker.startLabel}
-          </label>
+          {labelPlacement === 'top' && (
+            <label
+              htmlFor={`${fieldId}-start`}
+              className={cn(
+                'font-medium text-foreground',
+                labelSizeStyles[size]
+              )}
+            >
+              {resolvedStartLabel}
+            </label>
+          )}
           <div className="relative">
             <input
+              id={`${fieldId}-start`}
               type="text"
               value={startInputValue}
               onChange={handleStartInputChange}
               onFocus={() => setActiveField('start')}
-              placeholder={format.toLowerCase()}
+              placeholder={labelPlacement === 'inside' ? resolvedStartLabel : format.toLowerCase()}
+              title={labelPlacement === 'inside' ? format.toLowerCase() : undefined}
+              // The visible label only names the input in 'top' mode; the other
+              // placements must carry the name themselves.
+              aria-label={labelPlacement === 'top' ? undefined : resolvedStartLabel}
               disabled={disabled}
               className={cn(
                 'flex w-full rounded-md border border-input bg-background',
@@ -850,21 +895,27 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
         {/* End date field */}
         <div className="flex flex-col gap-1">
-          <label
-            className={cn(
-              'font-medium text-foreground',
-              labelSizeStyles[size]
-            )}
-          >
-            {endLabel ?? locale.dateRangePicker.endLabel}
-          </label>
+          {labelPlacement === 'top' && (
+            <label
+              htmlFor={`${fieldId}-end`}
+              className={cn(
+                'font-medium text-foreground',
+                labelSizeStyles[size]
+              )}
+            >
+              {resolvedEndLabel}
+            </label>
+          )}
           <div className="relative">
             <input
+              id={`${fieldId}-end`}
               type="text"
               value={endInputValue}
               onChange={handleEndInputChange}
               onFocus={() => setActiveField('end')}
-              placeholder={format.toLowerCase()}
+              placeholder={labelPlacement === 'inside' ? resolvedEndLabel : format.toLowerCase()}
+              title={labelPlacement === 'inside' ? format.toLowerCase() : undefined}
+              aria-label={labelPlacement === 'top' ? undefined : resolvedEndLabel}
               disabled={disabled}
               className={cn(
                 'flex w-full rounded-md border border-input bg-background',

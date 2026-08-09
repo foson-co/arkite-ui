@@ -437,6 +437,7 @@ type CreateThemeOptions {
 type DataAttributes = DataAttributes
 
 type DataTableProps {
+  bordered?: boolean | undefined
   className?: string | undefined
   columnToggle?: boolean | undefined
   columns: Column<NoInfer<T>>[]
@@ -502,6 +503,7 @@ type DateRangePickerProps {
   error?: boolean | undefined
   errorMessage?: string | undefined
   format?: string | undefined
+  labelPlacement?: "top" | "inside" | "none" | undefined
   maxDate?: Date | undefined
   minDate?: Date | undefined
   onChange?: ((range: DateRangeValue) => void) | undefined
@@ -1137,7 +1139,7 @@ type SimpleTooltipProps {
 }
 
 type SkeletonAvatarProps {
-  animation?: "pulse" | "wave" | "none" | undefined
+  animation?: "pulse" | "none" | "wave" | undefined
   height?: string | number | undefined
   size?: "sm" | "md" | "lg" | "xl" | undefined
   width?: string | number | undefined
@@ -1150,7 +1152,7 @@ type SkeletonCardProps {
 }
 
 type SkeletonProps {
-  animation?: "pulse" | "wave" | "none" | undefined
+  animation?: "pulse" | "none" | "wave" | undefined
   height?: string | number | undefined
   variant?: "default" | "text" | "rounded" | "circular" | undefined
   width?: string | number | undefined
@@ -1163,7 +1165,7 @@ type SkeletonTableProps {
 }
 
 type SkeletonTextProps {
-  animation?: "pulse" | "wave" | "none" | undefined
+  animation?: "pulse" | "none" | "wave" | undefined
   height?: string | number | undefined
   lines?: number | undefined
   spacing?: "sm" | "md" | "lg" | undefined
@@ -1334,10 +1336,13 @@ type TabsContentProps {
 
 type TabsListProps = TabsListProps
 
+type TabsOrientation = TabsOrientation
+
 type TabsProps {
   defaultValue?: string | undefined
   onChange?: ((value: string) => void) | undefined
   onValueChange?: ((value: string) => void) | undefined
+  orientation?: TabsOrientation | undefined
   size?: TabsSize | undefined
   value?: string | undefined
   variant?: TabsVariant | undefined
@@ -1660,6 +1665,8 @@ value CardGrid: React.ForwardRefExoticComponent<CardGridProps & React.RefAttribu
 
 value CardHeader: React.ForwardRefExoticComponent<CardHeaderProps & React.RefAttributes<HTMLDivElement>>
 
+value CardSurfaceContext: React.Context<boolean>
+
 value Checkbox: React.ForwardRefExoticComponent<CheckboxProps & React.RefAttributes<HTMLInputElement>>
 
 value CheckboxCard: React.ForwardRefExoticComponent<CheckboxCardProps & React.RefAttributes<HTMLInputElement>>
@@ -1698,7 +1705,7 @@ value CopyButton: React.ForwardRefExoticComponent<CopyButtonProps & React.RefAtt
 
 value CopyInput: React.ForwardRefExoticComponent<CopyInputProps & React.RefAttributes<HTMLInputElement>>
 
-value DataTable: <T>({ data, columns, pagination, compact, pageSizeOptions, defaultPageSize, getRowKey, loading, emptyContent, onRowClick, rowClassName, selectable, hoverable, onRowSelect, isRowSelectable, selectedRows, defaultSelectedRows, onSelectionChange, expandable, renderExpandedRow, columnToggle, stickyHeader, maxHeight, minWidth, scrollFade, fillHeight, sortState: controlledSortState, onSortChange, filters: controlledFilters, onFilterChange, page: controlledPage, onPageChange, onPageSizeChange, totalRows, className, }: DataTableProps<T>) => JSX.Element
+value DataTable: <T>({ data, columns, pagination, compact, pageSizeOptions, defaultPageSize, getRowKey, loading, emptyContent, onRowClick, rowClassName, selectable, hoverable, onRowSelect, isRowSelectable, selectedRows, defaultSelectedRows, onSelectionChange, expandable, renderExpandedRow, columnToggle, stickyHeader, maxHeight, minWidth, scrollFade, bordered, fillHeight, sortState: controlledSortState, onSortChange, filters: controlledFilters, onFilterChange, page: controlledPage, onPageChange, onPageSizeChange, totalRows, className, }: DataTableProps<T>) => JSX.Element
 
 value DatePicker: React.ForwardRefExoticComponent<DatePickerProps & React.RefAttributes<HTMLInputElement>>
 
@@ -1773,6 +1780,8 @@ value FilterBarGroup: React.ForwardRefExoticComponent<FilterBarGroupProps & Reac
 value FilterBarSearch: React.ForwardRefExoticComponent<FilterBarSearchProps & React.RefAttributes<HTMLDivElement>>
 
 value FilterSelect: React.ForwardRefExoticComponent<FilterSelectProps & React.RefAttributes<HTMLSelectElement>>
+
+value FilterToolbarContext: React.Context<boolean>
 
 value Form: React.ForwardRefExoticComponent<FormProps & React.RefAttributes<HTMLFormElement>>
 

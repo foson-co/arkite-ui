@@ -458,3 +458,42 @@ describe('DateRangePicker controlled open', () => {
     expect(onOpenChange).toHaveBeenLastCalledWith(false)
   })
 })
+
+describe('DateRangePicker labelPlacement', () => {
+  it('associates the visible label with its input by default', () => {
+    render(<DateRangePicker startLabel="From" endLabel="To" />)
+    // Regression: labels used to render with no htmlFor and inputs with no id,
+    // leaving both date fields without an accessible name.
+    expect(screen.getByLabelText('From')).toHaveAttribute('type', 'text')
+    expect(screen.getByLabelText('To')).toHaveAttribute('type', 'text')
+  })
+
+  it('keeps the label text as the accessible name when placed inside', () => {
+    render(<DateRangePicker startLabel="From" endLabel="To" labelPlacement="inside" />)
+    expect(screen.queryByText('From')).not.toBeInTheDocument()
+    const start = screen.getByLabelText('From')
+    expect(start).toHaveAttribute('placeholder', 'From')
+    expect(start).toHaveAttribute('title', 'yyyy-mm-dd')
+  })
+
+  it('drops the visible label but keeps the format placeholder when set to none', () => {
+    render(<DateRangePicker startLabel="From" endLabel="To" labelPlacement="none" />)
+    expect(screen.queryByText('From')).not.toBeInTheDocument()
+    expect(screen.getByLabelText('From')).toHaveAttribute('placeholder', 'yyyy-mm-dd')
+  })
+
+  it('centres the row when there is no stacked label', () => {
+    const { container, rerender } = render(
+      <DateRangePicker startLabel="From" endLabel="To" data-testid="drp" />
+    )
+    expect(container.firstElementChild).toHaveClass('items-end')
+    rerender(<DateRangePicker startLabel="From" endLabel="To" labelPlacement="inside" data-testid="drp" />)
+    expect(container.firstElementChild).toHaveClass('items-center')
+  })
+
+  it('falls back to the locale labels for the accessible name', () => {
+    render(<DateRangePicker labelPlacement="none" />)
+    expect(screen.getByLabelText('Start')).toBeInTheDocument()
+    expect(screen.getByLabelText('End')).toBeInTheDocument()
+  })
+})

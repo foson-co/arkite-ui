@@ -84,6 +84,7 @@ Naming rule: the "dangerous/negative" semantic is always **`destructive`** (neve
 | KPI numbers | `Stat` / `StatCard` / `StatGroup` + `Sparkline` | Custom stat blocks |
 | Filters above a table | `FilterBar` (+`FilterBarSearch/Filters/Actions`, `FilterSelect`) | Ad-hoc toolbars |
 | A **labelled** filter cluster ("Period: 1D 7D 30D") | `FilterBarGroup label="Period"` wrapping a `SegmentedControl` (2–5 mutually exclusive presets). `FilterSelect`'s `label` only prefixes its "all" option, so it cannot show a visible group label | A hand-rolled label `<span>` + flex row (ships without `flex-wrap`, so one group's width pushes the page sideways on mobile); hand-styled active/inactive pills with raw palette classes |
+| Date range **inside a filter bar** | `DateRangePicker labelPlacement="inside"` — a stacked label adds a line above the inputs, so the default `"top"` leaves them sitting ~10px below the single-line controls next to them | Leaving `labelPlacement` at `"top"` in a toolbar and nudging it back into line with margins |
 | Forms | `Form` family (`FormField label errorMessage`) + `Input`/`Select`/`Textarea`/`NumberInput`/`DatePicker`/`Combobox`/`TagInput`/`ColorPicker`/`FileUpload`/`ImageUpload` | Uncontrolled raw inputs |
 | OTP / verification code | `PinInput` (`length`, `type`, `onComplete`; SMS autofill built in) | Hand-styled single inputs with tracking CSS |
 | File pick from a custom trigger (thumbnail, icon, menu item) | `FileTrigger` (headless — makes any element open the picker) | Hand-rolled hidden `<input type="file">` |
@@ -102,6 +103,7 @@ Naming rule: the "dangerous/negative" semantic is always **`destructive`** (neve
 | Status chips | `Badge` (7 variants + `count`, `max`) / `StatusDot` | Colored spans |
 | App frame | `AdminLayout` (`sidebarVariant="classic|rail"`, `subNav`, `classNames`, mobile: `hideSidebar="mobile"` + `bottomNav`) + `Sidebar`/`Navbar`/`Breadcrumb`/`TenantSwitcher` | Custom shells; global CSS targeting AdminLayout internals |
 | Steps / history | `Steps`, `Timeline`, `Calendar`, `Tree`, `Pagination` | Custom widgets |
+| Tab strip down the side (landscape phones, scarce vertical space) | `Tabs orientation="vertical"` — also moves the `underline` active rule to the inline edge, sets `aria-orientation`, and switches arrow-key navigation to the up/down axis | `className="flex-col"` on `TabsList` alone: the layout flips but the indicator, ARIA axis, and keyboard axis do not |
 
 **Table vs DataTable — the decision rule (field-tested across a 47-file consumer migration):**
 
@@ -112,7 +114,7 @@ Naming rule: the "dangerous/negative" semantic is always **`destructive`** (neve
 
 Two composition rules that follow from the components owning their own frame:
 
-- **Don't wrap `DataTable` in a `Card`.** It already renders a bordered, rounded surface; a Card around it double-frames the table. When you need a title, use `<Card padding="none">` + `CardHeader` + `<CardContent className="p-0">` and strip the table's own frame with `className="rounded-none border-0 border-t"`.
+- **Don't wrap `DataTable` in a `Card`.** It already renders a bordered, rounded surface; a Card around it double-frames the table. When you need a title, use `<Card padding="none">` + `CardHeader` + `<CardContent className="p-0">` and pass the table `bordered={false}`. Getting this wrong logs a dev-only warning.
 - **`stickyHeader` sticks to whatever scrolls — so let the table own it.** Pass `maxHeight` (or `fillHeight` in a determinate-height flex chain) to `Table`/`DataTable`. Wrapping the table in your own `overflow-auto` box silently kills it: the header then sticks to an inner scrollport that never scrolls vertically, and rides out of view with the rows. A11y attributes for the scroll region go through `Table`'s `wrapperProps` (`tabIndex`, `role`, `aria-label`).
 
 Never hand-roll a raw `<table>`: hardcoded `text-slate-*`/manual `dark:` styling always follows.

@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
 import { DataTable, type Column } from './DataTable'
+import { Card, CardContent } from '../card/Card'
 
 interface TestRow {
   id: number
@@ -1349,5 +1350,52 @@ describe('DataTable', () => {
 
     // Should show page 1 info
     expect(screen.getByText(/1-10 of 12/)).toBeInTheDocument()
+  })
+})
+
+describe('DataTable composition guards', () => {
+  it('warns when nested in a Card while drawing its own border', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <Card>
+        <CardContent>
+          <DataTable columns={columns} data={data} getRowKey={(r) => r.id} pagination={false} />
+        </CardContent>
+      </Card>
+    )
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('two frames stack'))
+    warn.mockRestore()
+  })
+
+  it('stays quiet when the table drops its own frame', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <Card padding="none">
+        <CardContent className="p-0">
+          <DataTable
+            columns={columns}
+            data={data}
+            getRowKey={(r) => r.id}
+            pagination={false}
+            bordered={false}
+          />
+        </CardContent>
+      </Card>
+    )
+    expect(warn).not.toHaveBeenCalled()
+    warn.mockRestore()
+  })
+
+  it('drops the border box when bordered is false', () => {
+    const { container } = render(
+      <DataTable
+        columns={columns}
+        data={data}
+        getRowKey={(r) => r.id}
+        pagination={false}
+        bordered={false}
+      />
+    )
+    expect(container.firstElementChild?.className ?? '').not.toContain('rounded-md border')
   })
 })

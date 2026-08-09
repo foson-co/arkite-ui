@@ -55,6 +55,13 @@ export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
 
 const CardDensityContext = createContext<CardDensity>('default')
 
+/**
+ * Lets descendants know they are inside a Card's surface. `DataTable` uses it
+ * to warn about double-border nesting — reading React context rather than
+ * inspecting parent DOM nodes, which would be slower and wrong under portals.
+ */
+export const CardSurfaceContext = createContext(false)
+
 const paddingStyles = {
   none: '',
   sm: 'p-3',
@@ -90,6 +97,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     const isInteractive = interactive && onClick != null
     return (
       <CardDensityContext.Provider value={density}>
+        <CardSurfaceContext.Provider value={true}>
         <div
           ref={ref}
           role={isInteractive ? 'button' : undefined}
@@ -123,6 +131,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         >
           {children}
         </div>
+        </CardSurfaceContext.Provider>
       </CardDensityContext.Provider>
     )
   }

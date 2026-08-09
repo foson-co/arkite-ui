@@ -119,12 +119,15 @@ export function DashboardPage() {
               description="Latest changes across the workspace."
               headingLevel={2}
             />
+            {/* The Card already frames this section, so the table drops its
+                own border rather than stacking a second one inside it. */}
             <CardContent>
               <DataTable
                 data={RECENT_ACTIVITY}
                 columns={ACTIVITY_COLUMNS}
                 getRowKey={(a) => a.id}
                 pagination={false}
+                bordered={false}
               />
             </CardContent>
           </Card>
