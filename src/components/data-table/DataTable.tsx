@@ -249,7 +249,13 @@ function SelectionCheckbox({
 const responsiveHiddenClass = (hidden?: boolean | 'mobile' | 'desktop') =>
   hidden === 'mobile' ? 'max-md:hidden' : hidden === 'desktop' ? 'md:hidden' : undefined
 
-/** Feature-rich data table with sorting, pagination, and custom cell rendering. */
+/**
+ * Feature-rich data table with sorting, pagination, and custom cell rendering.
+ *
+ * **In context:** [CRUD List Page](https://ui.foson.co/storybook/?path=/docs/recipes-crud-list-page--docs)
+ * · [Server-Side Table](https://ui.foson.co/storybook/?path=/docs/recipes-server-side-table--docs)
+ * · [Dashboard](https://ui.foson.co/storybook/?path=/docs/recipes-dashboard--docs)
+ */
 export function DataTable<T>({
   data,
   columns,

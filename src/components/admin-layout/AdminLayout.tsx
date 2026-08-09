@@ -196,7 +196,12 @@ function NavItemContent({ item }: { item: AdminNavItem }) {
 
 // --- Main component ---
 
-/** Full admin page layout with a collapsible sidebar, top navbar, and permission-aware navigation. */
+/**
+ * Full admin page layout with a collapsible sidebar, top navbar, and
+ * permission-aware navigation.
+ *
+ * **In context:** [Tenant Admin Shell](https://ui.foson.co/storybook/?path=/docs/recipes-tenant-admin-shell--docs)
+ */
 export function AdminLayout({
   currentPath,
   navigation,

@@ -22,6 +22,8 @@ export interface FilterBarProps extends HTMLAttributes<HTMLDivElement> {
  * Provides a consistent Search | Filters | Actions pattern
  * that stacks on mobile and flows horizontally on desktop.
  *
+ * **In context:** [CRUD List Page](https://ui.foson.co/storybook/?path=/docs/recipes-crud-list-page--docs)
+ *
  * @example
  * ```tsx
  * <FilterBar>

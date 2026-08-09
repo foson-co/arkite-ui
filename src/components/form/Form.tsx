@@ -32,7 +32,12 @@ export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
   disabled?: boolean
 }
 
-/** Form wrapper that provides shared disabled state to all child fields. */
+/**
+ * Form wrapper that provides shared disabled state to all child fields.
+ *
+ * **In context:** [Form Page](https://ui.foson.co/storybook/?path=/docs/recipes-form-page--docs)
+ * · [Detail + Drawer Edit](https://ui.foson.co/storybook/?path=/docs/recipes-detail-drawer-edit--docs)
+ */
 export const Form = forwardRef<HTMLFormElement, FormProps>(
   ({ className, disabled, children, ...props }, ref) => (
     <FormContext.Provider value={{ disabled }}>

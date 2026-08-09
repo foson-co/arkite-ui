@@ -22,6 +22,8 @@ export interface BulkActionBarProps extends Omit<HTMLAttributes<HTMLDivElement>,
  *
  * Renders nothing when `selectedCount` is 0.
  *
+ * **In context:** [CRUD List Page](https://ui.foson.co/storybook/?path=/docs/recipes-crud-list-page--docs)
+ *
  * @example
  * ```tsx
  * <BulkActionBar

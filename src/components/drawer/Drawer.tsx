@@ -103,7 +103,11 @@ const translateStyles: Record<DrawerPosition, { open: string; closed: string }> 
   bottom: { open: 'translate-y-0', closed: 'translate-y-full' },
 }
 
-/** Sliding panel overlay that opens from any edge of the viewport. */
+/**
+ * Sliding panel overlay that opens from any edge of the viewport.
+ *
+ * **In context:** [Detail + Drawer Edit](https://ui.foson.co/storybook/?path=/docs/recipes-detail-drawer-edit--docs)
+ */
 export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
   (
     {
