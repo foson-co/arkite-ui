@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.19.2
+### Patch Changes
+
+- 648660c: fix(checkbox, radio): make the visual box/circle clickable
+  
+  `Checkbox` and `Radio` rendered their visible indicator as a bare `<div>` next to
+  an `sr-only` input, with no `htmlFor` association. Clicking the box or circle —
+  the part users actually aim at — did nothing; only the label text toggled the
+  control. `CheckboxCard` and `Toggle` already got this right.
+  
+  The indicator is now a `<label htmlFor>` sibling of the input (same approach as
+  `Toggle`), so clicking it toggles the control and it carries `cursor-pointer`.
+  The check icon is `aria-hidden`, so the accessible name still comes from the
+  label text only. No API change.
+- ba80635: Make the recipes findable from the components they use.
+  
+  Six whole-page recipes existed but only in their own Storybook section — nothing pointed at them from a component's page, so the composition guidance was invisible unless you already knew to look for it. Adds a **Recipes / Overview** index (what each recipe shows, plus a reverse component → recipe table covering all 19 components that appear in one), links it from Introduction, and puts an "In context" line on the six components a recipe is built around: `DataTable`, `FilterBar`, `BulkActionBar`, `Drawer`, `Form`, `AdminLayout`.
+  
+  Those links live in the components' JSDoc rather than story parameters: `docs.description.component` would override the docgen-extracted description, and the JSDoc renders on the Storybook page automatically while also showing up in IDE tooltips and the published types. They use absolute `ui.foson.co` URLs so they resolve outside Storybook too.
+  
+  Completes the documentation half of the composition work — the rules that fail silently warn at dev time (0.19.0/0.19.1), and the rules that just need showing now have a path from the component to a page that shows them.
+
 ## 0.19.1
 ### Patch Changes
 
