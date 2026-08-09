@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { __resetWarnings } from '../../utils/deprecate'
 import { DataTable, type Column } from './DataTable'
 import { Card, CardContent } from '../card/Card'
 
@@ -1354,6 +1355,7 @@ describe('DataTable', () => {
 })
 
 describe('DataTable composition guards', () => {
+  beforeEach(() => __resetWarnings())
   it('warns when nested in a Card while drawing its own border', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     render(
@@ -1397,5 +1399,73 @@ describe('DataTable composition guards', () => {
       />
     )
     expect(container.firstElementChild?.className ?? '').not.toContain('rounded-md border')
+  })
+})
+
+describe('DataTable pinned guard', () => {
+  beforeEach(() => __resetWarnings())
+  const pinnedColumns: Column<TestRow>[] = [
+    { key: 'name', header: 'Name', pinned: 'left' },
+    { key: 'age', header: 'Age' },
+  ]
+
+  it('warns when pinned columns have no minWidth to overflow against', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<DataTable columns={pinnedColumns} data={data} getRowKey={(r) => r.id} pagination={false} />)
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('frozen columns never engage'))
+    warn.mockRestore()
+  })
+
+  it('stays quiet once minWidth is set', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <DataTable columns={pinnedColumns} data={data} getRowKey={(r) => r.id} pagination={false} minWidth={900} />
+    )
+    expect(warn).not.toHaveBeenCalled()
+    warn.mockRestore()
+  })
+})
+
+describe('DataTable card guard — no false positives', () => {
+  beforeEach(() => __resetWarnings())
+
+  // Found by reviewing a consumer that had already fixed the double frame the
+  // pre-`bordered` way. Warning there would be crying wolf.
+  it('stays quiet when className already removes the frame', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <Card padding="none">
+        <CardContent className="p-0">
+          <DataTable
+            columns={columns}
+            data={data}
+            getRowKey={(r) => r.id}
+            pagination={false}
+            className="rounded-none border-0 border-t tabular-nums"
+          />
+        </CardContent>
+      </Card>
+    )
+    expect(warn).not.toHaveBeenCalled()
+    warn.mockRestore()
+  })
+
+  it('still warns when className only mentions an unrelated border utility', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <Card>
+        <CardContent>
+          <DataTable
+            columns={columns}
+            data={data}
+            getRowKey={(r) => r.id}
+            pagination={false}
+            className="border-t"
+          />
+        </CardContent>
+      </Card>
+    )
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('two frames stack'))
+    warn.mockRestore()
   })
 })

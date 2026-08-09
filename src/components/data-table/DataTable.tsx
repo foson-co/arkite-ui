@@ -294,11 +294,28 @@ export function DataTable<T>({
   // nesting it in a Card stacks two frames. Detected via context rather than
   // DOM inspection — see CardSurfaceContext.
   const insideCard = useContext(CardSurfaceContext)
-  if (insideCard && bordered) {
+  // `border-0` in className neutralises the frame just as well as the prop —
+  // the guard's condition is "two frames will stack", and they won't. Checking
+  // the class string is imprecise, but the alternative is warning at call sites
+  // that are already visually correct (5 of them in one consumer audit), and a
+  // guard that cries wolf gets ignored.
+  const frameDisabledByClass = typeof className === 'string' && /\bborder-0\b/.test(className)
+  if (insideCard && bordered && !frameDisabledByClass) {
     warnUsage(
       'DataTable',
       'nested-in-card',
       'rendered inside a Card while drawing its own border — the two frames stack. Pass `bordered={false}` (and give the Card `padding="none"` with `CardContent className="p-0"`), or drop the Card: DataTable is already a complete surface.'
+    )
+  }
+
+  // Composition guard: frozen columns only engage once the table is wider than
+  // its container, and without `minWidth` it never is — auto layout squeezes
+  // the columns to min-content instead. `pinned` then silently does nothing.
+  if (minWidth == null && columns.some((column) => column.pinned)) {
+    warnUsage(
+      'DataTable',
+      'pinned-without-min-width',
+      'has `pinned` columns but no `minWidth` — the table shrinks its columns to fit instead of overflowing, so it never scrolls horizontally and the frozen columns never engage. Set `minWidth` to the width the table needs to stay readable.'
     )
   }
 

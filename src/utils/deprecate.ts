@@ -17,6 +17,15 @@ export function warnDeprecated(component: string, oldName: string, newName: stri
   )
 }
 
+/**
+ * Clears the once-per-key ledger. Test-only — the dedupe is what keeps a
+ * warning from repeating on every render, so each test that asserts on a
+ * warning needs a clean slate. Not exported from the package entrypoint.
+ */
+export function __resetWarnings() {
+  warned.clear()
+}
+
 /** Dev-only, once-per-key warning for incorrect prop combinations. */
 export function warnUsage(component: string, key: string, message: string) {
   if (process.env.NODE_ENV === 'production') return

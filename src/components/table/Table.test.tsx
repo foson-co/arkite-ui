@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { __resetWarnings } from '../../utils/deprecate'
 import {
   Table, TableHeader, TableBody, TableFooter,
   TableRow, TableHead, TableCell, TableCaption,
@@ -309,5 +310,25 @@ describe('Table scroll container', () => {
 
     const { container: optOut } = render(<Table minWidth={960} scrollFade={false}>{body}</Table>)
     expect(optOut.firstElementChild).toHaveAttribute('data-scroll-container')
+  })
+})
+
+describe('Table composition guards', () => {
+  beforeEach(() => __resetWarnings())
+  const body = <tbody><tr><td>Cell</td></tr></tbody>
+
+  it('warns when stickyHeader has no height limit to stick within', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<Table stickyHeader>{body}</Table>)
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('does not stick'))
+    warn.mockRestore()
+  })
+
+  it('stays quiet with maxHeight or fillHeight', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<Table stickyHeader maxHeight="400px">{body}</Table>)
+    render(<Table stickyHeader fillHeight>{body}</Table>)
+    expect(warn).not.toHaveBeenCalled()
+    warn.mockRestore()
   })
 })

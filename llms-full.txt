@@ -203,14 +203,24 @@ Naming rule: the "dangerous/negative" semantic is always **`destructive`** (neve
 1. **Data list with header semantics → `DataTable`.** This includes **runtime-determined dynamic columns** — one column per data source / schema field / period is fine: build the `Column<T>[]` array from the data itself. `cell(row, index)` receives the row index, so cross-row computation (compare with the previous row) works too. Don't fall back to a raw `<table>` just because columns aren't static.
 2. **Headerless compact list / key-value display → `Table` family** — *less* code than a column config, still inherits tokens, dark mode, `compact`, `stickyHeader`, frozen columns. It also maps 1:1 onto markdown/HTML renderer overrides (`td`/`th` → `TableCell`/`TableHead`; `align` tolerates HTML's deprecated values).
 3. **Visual matrices** (cells are colored blocks, per-cell dynamic styling) → discrete/binary grades: `Column.cellClassName` (class string per row). **Continuous values** (heatmap alpha computed at runtime): `Column.cellStyle` — class strings can't express continuous values and Tailwind can't compile runtime-generated classes. Vertical headers: `Column.headerStyle` (`writingMode`).
-4. **Wide tables → `minWidth` is mandatory, and `pinned` is inert without it.** A table is `width: 100%` with auto layout, so when the columns don't fit the browser squeezes each one down to its **min-content** width *before* it ever overflows. For CJK text min-content is a single glyph, so a dense Chinese table doesn't scroll — it collapses to ~30px columns with headers stacked 3–4 lines tall (measured: header row 119px vs 34px), and `Column.pinned` never engages because the table technically "fits". Declare the width the table needs (`minWidth={960}`) and it scrolls instead; edge fades turn on automatically. **`Column.width` is a hint to the layout algorithm, not a floor** — it does not survive the squeeze, only `minWidth` does.
-
-Two composition rules that follow from the components owning their own frame:
-
-- **Don't wrap `DataTable` in a `Card`.** It already renders a bordered, rounded surface; a Card around it double-frames the table. When you need a title, use `<Card padding="none">` + `CardHeader` + `<CardContent className="p-0">` and pass the table `bordered={false}`. Getting this wrong logs a dev-only warning.
-- **`stickyHeader` sticks to whatever scrolls — so let the table own it.** Pass `maxHeight` (or `fillHeight` in a determinate-height flex chain) to `Table`/`DataTable`. Wrapping the table in your own `overflow-auto` box silently kills it: the header then sticks to an inner scrollport that never scrolls vertically, and rides out of view with the rows. A11y attributes for the scroll region go through `Table`'s `wrapperProps` (`tabIndex`, `role`, `aria-label`).
+4. **Wide tables → `minWidth`.** Declare the width the table needs (`minWidth={960}`) and it scrolls instead of squashing; edge fades turn on automatically. See Composition rules below for why, and why `pinned` is inert without it.
 
 Never hand-roll a raw `<table>`: hardcoded `text-slate-*`/manual `dark:` styling always follows.
+
+## Composition rules
+
+Picking the right component is the easy half. Every one of these was found in consumer code where each component was correct on its own and the *pair* was wrong — and all of them fail **silently**, which is why the library now says so at dev time.
+
+| Rule | Why | Dev warning |
+|---|---|---|
+| **Wide tables need `minWidth`, and `pinned` is inert without it** | `width: 100%` + auto layout squeezes columns to min-content *before* overflowing. With CJK headers (min-content = one glyph) a dense table collapses to ~30px columns and 4-line headers instead of scrolling, so frozen columns never engage. `Column.width` is a hint to the layout algorithm, not a floor | ✅ `pinned` without `minWidth` |
+| **`stickyHeader` sticks to whatever scrolls — let the table own it** | Sticky resolves against the nearest scrollport. Pass `maxHeight` (or `fillHeight` in a determinate-height flex chain) to `Table`/`DataTable`. Wrapping the table in your own `overflow-auto` box kills it: the header sticks to an inner box that never scrolls vertically and rides out of view. A11y attributes for the scroll region go through `wrapperProps` (`tabIndex`, `role`, `aria-label`) | ✅ `stickyHeader` without a height limit |
+| **Don't wrap `DataTable` in a `Card`** | It already renders a bordered, rounded surface, so a Card around it stacks two frames. For a title: `<Card padding="none">` + `CardHeader` + `<CardContent className="p-0">` + `bordered={false}` on the table | ✅ bordered table inside a Card |
+| **Date range in a toolbar needs `labelPlacement="inside"`** | A stacked label makes the control two lines tall, leaving its inputs ~10px below the single-line controls beside it | ✅ `labelPlacement="top"` inside a `FilterBar` |
+| **Labelled filter clusters go through `FilterBarGroup`** | Hand-rolled label + flex row ships without `flex-wrap`/`min-w-0`, so one group's width pushes the whole page sideways on mobile | — |
+| **Vertical tabs go through `orientation`, not `className`** | className flips the layout only; the `underline` indicator, `aria-orientation`, and the keyboard axis all stay horizontal | — |
+
+Warnings are dev-only (stripped in production), fire once per rule, and read React context rather than inspecting parent DOM — so they survive wrappers and portals. They are tuned to stay silent on code that is already correct by other means: the Card rule, for instance, accepts a `className` that neutralises the frame.
 
 ## API conventions (follow when composing or wrapping)
 

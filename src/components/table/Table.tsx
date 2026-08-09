@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { cn } from '../../utils/cn'
 import { useLocale } from '../../locale'
+import { warnUsage } from '../../utils/deprecate'
 import { ScrollFade, type DataAttributes } from '../scroll-fade/ScrollFade'
 
 // Includes HTML's deprecated `align` values so third-party renderers (e.g.
@@ -110,6 +111,17 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
     },
     ref
   ) => {
+    // Composition guard: sticky positioning resolves against the nearest
+    // scrollport. With no height limit the wrapper never scrolls vertically,
+    // so the header has nothing to stick to and rides away with the rows.
+    if (stickyHeader && maxHeight == null && !fillHeight) {
+      warnUsage(
+        'Table',
+        'sticky-without-height',
+        '`stickyHeader` is set but neither `maxHeight` nor `fillHeight` is — the scroll wrapper has no height limit, so nothing scrolls vertically and the header does not stick. Wrapping the table in your own `overflow-auto` box does not work either; pass `maxHeight` here instead.'
+      )
+    }
+
     const table = (
       <table
         ref={ref}
