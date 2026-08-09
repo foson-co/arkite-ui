@@ -66,9 +66,10 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
             className="peer sr-only"
             {...props}
           />
-          <div
+          <label
+            htmlFor={radioId}
             className={cn(
-              'flex shrink-0 items-center justify-center rounded-full border',
+              'flex shrink-0 cursor-pointer items-center justify-center rounded-full border',
               'peer-focus-visible:ring-1 peer-focus-visible:ring-ring/40 peer-focus-visible:ring-offset-0',
               'peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
               'transition-colors duration-200',
@@ -85,7 +86,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
                 styles.inner
               )}
             />
-          </div>
+          </label>
         </div>
         {(label || description || errorMessage) && (
           <div className="space-y-1">

@@ -67,6 +67,36 @@ describe('Checkbox', () => {
     expect(screen.getByRole('checkbox')).toBeChecked()
   })
 
+  it('toggles when clicking the visual box', async () => {
+    const { container } = render(<Checkbox id="cb" label="Accept terms" />)
+    const box = container.querySelector('input + label')!
+    await userEvent.click(box)
+    expect(screen.getByRole('checkbox')).toBeChecked()
+    await userEvent.click(box)
+    expect(screen.getByRole('checkbox')).not.toBeChecked()
+  })
+
+  it('toggles when clicking the visual box with no label text', async () => {
+    const { container } = render(<Checkbox id="cb" />)
+    await userEvent.click(container.querySelector('input + label')!)
+    expect(screen.getByRole('checkbox')).toBeChecked()
+  })
+
+  it('does not toggle when clicking the visual box while disabled', async () => {
+    const onChange = vi.fn()
+    const { container } = render(<Checkbox id="cb" disabled onChange={onChange} />)
+    await userEvent.click(container.querySelector('input + label')!)
+    expect(onChange).not.toHaveBeenCalled()
+    expect(screen.getByRole('checkbox')).not.toBeChecked()
+  })
+
+  it('keeps the label text as the accessible name', () => {
+    render(<Checkbox label="Accept terms" />)
+    expect(
+      screen.getByRole('checkbox', { name: 'Accept terms' })
+    ).toBeInTheDocument()
+  })
+
   it('renders a description', () => {
     render(<Checkbox label="Newsletter" description="Receive weekly updates" />)
     expect(screen.getByText('Receive weekly updates')).toBeInTheDocument()

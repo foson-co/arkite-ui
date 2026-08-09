@@ -35,6 +35,38 @@ describe('Radio', () => {
     expect(radio).toBeChecked()
   })
 
+  it('can be selected by clicking the visual circle', async () => {
+    const user = userEvent.setup()
+    const { container } = render(
+      <Radio id="r1" label="Option A" name="test" value="a" />
+    )
+    await user.click(container.querySelector('input + label')!)
+    expect(screen.getByRole('radio')).toBeChecked()
+  })
+
+  it('can be selected by clicking the visual circle with no label text', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<Radio id="r1" name="test" value="a" />)
+    await user.click(container.querySelector('input + label')!)
+    expect(screen.getByRole('radio')).toBeChecked()
+  })
+
+  it('does not select when clicking the visual circle while disabled', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    const { container } = render(
+      <Radio id="r1" label="Option A" disabled onChange={onChange} />
+    )
+    await user.click(container.querySelector('input + label')!)
+    expect(onChange).not.toHaveBeenCalled()
+    expect(screen.getByRole('radio')).not.toBeChecked()
+  })
+
+  it('keeps the label text as the accessible name', () => {
+    render(<Radio label="Option A" name="test" value="a" />)
+    expect(screen.getByRole('radio', { name: 'Option A' })).toBeInTheDocument()
+  })
+
   it('is disabled when disabled prop is true', () => {
     render(<Radio label="Option A" disabled />)
     expect(screen.getByRole('radio')).toBeDisabled()

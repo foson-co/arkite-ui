@@ -67,9 +67,10 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             className="peer sr-only"
             {...props}
           />
-          <div
+          <label
+            htmlFor={checkboxId}
             className={cn(
-              'flex shrink-0 items-center justify-center rounded border',
+              'flex shrink-0 cursor-pointer items-center justify-center rounded border',
               'peer-focus-visible:ring-1 peer-focus-visible:ring-ring/40 peer-focus-visible:ring-offset-0',
               'peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
               'peer-checked:[&>svg]:opacity-100',
@@ -81,12 +82,13 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             )}
           >
             <Check
+              aria-hidden="true"
               className={cn(
                 'text-primary-foreground opacity-0 transition-opacity',
                 styles.icon
               )}
             />
-          </div>
+          </label>
         </div>
         {(label || description || errorMessage) && (
           <div className="space-y-1">
