@@ -46,8 +46,16 @@ Most component libraries make coding agents guess. Arkite ships its documentatio
 | [`llms.txt`](https://ui.foson.co/llms.txt) | Setup, design rules, core patterns, full export inventory | Site root + inside the npm package |
 | [`llms-full.txt`](https://ui.foson.co/llms-full.txt) | The above + complete design spec + the typed public API of every export | Site root + inside the npm package |
 | `DESIGN.md` | Machine-readable design system spec (tokens, hard rules, component selection) | Inside the npm package |
+| `registry.json` | Index of whole-page recipes: what each is, when to reach for it, when not | Inside the npm package |
 
 Point your agent at `node_modules/@arkite-ui/core/llms-full.txt` (or the hosted URL) and it imports the right component with the right props on the first try. Both files are regenerated from the type-checked API snapshot on every build, so they can't drift from the code.
+
+Picking a component was never the hard part — knowing which ones go together is. For whole pages there is a stronger move than generating one: install a tested composition and edit it.
+
+```bash
+npx arkite-ui add                 # list the recipes, with when / when not
+npx arkite-ui add crud-list-page  # → src/pages/CrudListPage.tsx, yours to edit
+```
 
 ## Installation
 

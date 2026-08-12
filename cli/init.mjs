@@ -62,20 +62,28 @@ if (command === 'theme') {
   process.exit(0)
 }
 
+if (command === 'add') {
+  const { runAdd } = await import('./add.mjs')
+  await runAdd(args.slice(1), cwd)
+  process.exit(0)
+}
+
 if (command !== 'init') {
   const { themeHelp } = await import('./theme.mjs')
+  const { addHelp } = await import('./add.mjs')
   console.log(`
 \x1b[1m@arkite-ui/core CLI\x1b[0m
 
 Commands:
   init          Set up Arkite UI in your project
   init --pm     Specify package manager (npm|yarn|pnpm|bun)
+  add <recipe>  Copy a whole-page recipe into your project
   theme apply   Generate CSS variables from arkite.theme.json
 
 Usage:
   npx @arkite-ui/core init
   npx @arkite-ui/core init --pm bun
-${themeHelp()}`)
+${addHelp()}${themeHelp()}`)
   process.exit(0)
 }
 

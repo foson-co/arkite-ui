@@ -29,8 +29,10 @@ pnpm add @arkite-ui/core
 3. Components follow the controlled/uncontrolled React convention: `value`+`onChange` controls, `defaultValue` doesn't.
 4. Keep API calls, routes, and business models in the app layer.
 5. Building a whole page? Match it against the recipes below **before** assembling one
-   from scratch — each is a tested composition. Copy the recipe source, rewrite
-   `../../index` to `@arkite-ui/core`, then adapt.
+   from scratch, then **install it instead of writing it**: `npx arkite-ui add <recipe>`
+   writes the tested composition into the project (`--out`, `--name`, `--force`), leaving
+   you only the sample data and API calls to replace. Generating the wiring by hand is
+   the step that introduces bugs the recipe already solved.
 
 Full design rules (color/spacing/typography/layout recipes): DESIGN.md, shipped
 inside this package — also embedded in llms-full.txt.
@@ -93,6 +95,7 @@ unknown keys, which `createTheme` alone would pass through as `NaN` tokens.
 
 Whole pages assembled from the library, each one rendered and tested in CI.
 Machine-readable index: registry.json (ships in the package).
+Install one with `npx arkite-ui add <name>` — do not retype it.
 
 ### crud-list-page — CRUD List Page
 

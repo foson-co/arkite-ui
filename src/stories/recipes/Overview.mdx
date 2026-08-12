@@ -18,6 +18,21 @@ break. Read the one closest to the page you are building, then adapt.
 | [Form Page](?path=/docs/recipes-form-page--docs) | Sectioned form with validation, mixed control types, and submit handling |
 | [Tenant Admin Shell](?path=/docs/recipes-tenant-admin-shell--docs) | The app frame: `AdminLayout`, tenant switching, sub-navigation |
 
+## Installing one
+
+Reading a recipe here and copying it by hand is a transcription step, and the
+wiring is exactly what gets lost in it. Install it instead:
+
+```bash
+npx arkite-ui add                              # list them, with when / when not
+npx arkite-ui add crud-list-page               # → src/pages/CrudListPage.tsx
+npx arkite-ui add crud-list-page --name Orders # rename the component
+```
+
+The file lands with its imports rewritten to the package and a header naming
+the sample data to replace. It is yours from that moment — the package never
+updates it, which is the trade: no upgrade path, no constraints either.
+
 ## Machine-readable index
 
 Every recipe on this page is also an entry in **`registry.json`**, which ships

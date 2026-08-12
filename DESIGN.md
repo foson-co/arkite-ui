@@ -114,7 +114,7 @@ Naming rule: the "dangerous/negative" semantic is always **`destructive`** (neve
 
 Never hand-roll a raw `<table>`: hardcoded `text-slate-*`/manual `dark:` styling always follows.
 
-**Whole pages** — six tested compositions (CRUD list, server-side table, dashboard, detail + drawer edit, form page, tenant admin shell) ship with the package: machine-readable index in `registry.json`, source under `src/stories/recipes/`. Match the page you are building against each entry's `when` / `notWhen` **before** assembling one from scratch — the wiring in them is already reviewed, and the composition rules below are already satisfied.
+**Whole pages** — six tested compositions (CRUD list, server-side table, dashboard, detail + drawer edit, form page, tenant admin shell) ship with the package: machine-readable index in `registry.json`, source under `src/stories/recipes/`. Match the page you are building against each entry's `when` / `notWhen` **before** assembling one from scratch, then install it rather than retyping it — `npx arkite-ui add <recipe>` writes it into the project, already satisfying the composition rules below; what's left to change is the sample data and the API calls.
 
 ## Composition rules
 
