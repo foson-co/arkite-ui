@@ -114,6 +114,8 @@ Naming rule: the "dangerous/negative" semantic is always **`destructive`** (neve
 
 Never hand-roll a raw `<table>`: hardcoded `text-slate-*`/manual `dark:` styling always follows.
 
+**Whole pages** — six tested compositions (CRUD list, server-side table, dashboard, detail + drawer edit, form page, tenant admin shell) ship with the package: machine-readable index in `registry.json`, source under `src/stories/recipes/`. Match the page you are building against each entry's `when` / `notWhen` **before** assembling one from scratch — the wiring in them is already reviewed, and the composition rules below are already satisfied.
+
 ## Composition rules
 
 Picking the right component is the easy half. Every one of these was found in consumer code where each component was correct on its own and the *pair* was wrong — and all of them fail **silently**, which is why the library now says so at dev time.

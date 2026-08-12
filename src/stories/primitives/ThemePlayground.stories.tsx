@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import type { Meta, StoryFn } from '@storybook/react-vite'
 import {
   themePresets,
@@ -9,7 +9,9 @@ import {
   type ThemePresetName,
   type ThemePreset,
 } from '../../theme'
+import { contrastRatio, hslLuminance, WCAG_AA } from '../../theme/contrast'
 import { Button } from '../../components/button'
+import { CopyButton } from '../../components/copy-button'
 import { Badge } from '../../components/badge'
 import { Card, CardHeader, CardContent } from '../../components/card'
 import { Input } from '../../components/input'
@@ -36,7 +38,9 @@ export default meta
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{title}</h3>
+      <h3 className="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
+        {title}
+      </h3>
       {children}
     </div>
   )
@@ -52,8 +56,25 @@ function TokenSwatch({ name, cssVar }: { name: string; cssVar: string }) {
       />
       <div className="min-w-0">
         <p className="truncate text-xs font-medium">{name}</p>
-        <p className="truncate text-xs text-muted-foreground">--{cssVar}</p>
+        <p className="text-muted-foreground truncate text-xs">--{cssVar}</p>
       </div>
+    </div>
+  )
+}
+
+/* ─── WCAG readout for one token pair ─── */
+function ContrastRow({ label, bg, fg }: { label: string; bg: string; fg: string }) {
+  const ratio = contrastRatio(hslLuminance(bg), hslLuminance(fg))
+  const passes = ratio >= WCAG_AA
+  return (
+    <div className="flex items-center justify-between gap-4 text-sm">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="flex items-center gap-2">
+        <span className="font-mono tabular-nums">{ratio.toFixed(2)}:1</span>
+        <Badge variant={passes ? 'success' : 'destructive'} size="sm">
+          {passes ? 'AA' : 'fails AA'}
+        </Badge>
+      </span>
     </div>
   )
 }
@@ -62,6 +83,7 @@ function TokenSwatch({ name, cssVar }: { name: string; cssVar: string }) {
 function Playground() {
   const [preset, setPreset] = useState<ThemePresetName>('default')
   const [isDark, setIsDark] = useState(false)
+  const [customName, setCustomName] = useState('my-brand')
   const [customPrimary, setCustomPrimary] = useState('#FF6B00')
   const [customAccent, setCustomAccent] = useState('#00B4D8')
   const [customRadius, setCustomRadius] = useState('0.5rem')
@@ -88,23 +110,30 @@ function Playground() {
     apply(activeTheme, dark)
   }
 
-  const handleCustomApply = () => {
-    const theme = createTheme({
-      name: 'custom',
+  /** The four values a consuming repo commits — everything else is derived from them. */
+  const themeSource = useMemo(
+    () => ({
+      name: customName,
       primary: customPrimary,
       accent: customAccent,
       radius: customRadius,
-    })
+    }),
+    [customName, customPrimary, customAccent, customRadius]
+  )
+  const customTheme = useMemo(() => createTheme(themeSource), [themeSource])
+  const themeJson = useMemo(() => `${JSON.stringify(themeSource, null, 2)}\n`, [themeSource])
+
+  const handleCustomApply = () => {
     setPreset('default') // deselect preset buttons
-    apply(theme, isDark)
+    apply(customTheme, isDark)
   }
 
   const cssOutput = themeToCSS(activeTheme)
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors">
+    <div className="bg-background text-foreground min-h-screen transition-colors">
       {/* ─── Toolbar ─── */}
-      <div className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur-sm">
+      <div className="bg-background/95 sticky top-0 z-30 border-b backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 px-6 py-3">
           <span className="text-sm font-semibold">Theme Playground</span>
           <Divider orientation="vertical" className="h-6" />
@@ -127,8 +156,12 @@ function Playground() {
 
           {/* Dark mode toggle */}
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">Dark</span>
-            <Switch checked={isDark} onChange={(e) => handleDark(e.target.checked)} aria-label="Dark mode" />
+            <span className="text-muted-foreground text-xs">Dark</span>
+            <Switch
+              checked={isDark}
+              onChange={(e) => handleDark(e.target.checked)}
+              aria-label="Dark mode"
+            />
           </div>
 
           <Divider orientation="vertical" className="h-6" />
@@ -149,7 +182,26 @@ function Playground() {
         <Section title="Create Custom Theme">
           <div className="flex flex-wrap items-end gap-4">
             <div>
-              <label htmlFor="theme-primary-color" className="mb-1 block text-xs font-medium text-foreground">Primary</label>
+              <label
+                htmlFor="theme-name"
+                className="text-foreground mb-1 block text-xs font-medium"
+              >
+                Name
+              </label>
+              <Input
+                id="theme-name"
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                className="w-36"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="theme-primary-color"
+                className="text-foreground mb-1 block text-xs font-medium"
+              >
+                Primary
+              </label>
               <div className="flex items-center gap-2">
                 <input
                   id="theme-primary-color"
@@ -168,7 +220,12 @@ function Playground() {
               </div>
             </div>
             <div>
-              <label htmlFor="theme-accent-color" className="mb-1 block text-xs font-medium text-foreground">Accent</label>
+              <label
+                htmlFor="theme-accent-color"
+                className="text-foreground mb-1 block text-xs font-medium"
+              >
+                Accent
+              </label>
               <div className="flex items-center gap-2">
                 <input
                   id="theme-accent-color"
@@ -187,12 +244,17 @@ function Playground() {
               </div>
             </div>
             <div>
-              <label htmlFor="theme-radius" className="mb-1 block text-xs font-medium text-foreground">Radius</label>
+              <label
+                htmlFor="theme-radius"
+                className="text-foreground mb-1 block text-xs font-medium"
+              >
+                Radius
+              </label>
               <select
                 id="theme-radius"
                 value={customRadius}
                 onChange={(e) => setCustomRadius(e.target.value)}
-                className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+                className="border-input bg-background h-9 rounded-md border px-2 text-sm"
                 aria-label="Border radius"
               >
                 <option value="0">0</option>
@@ -207,10 +269,66 @@ function Playground() {
           </div>
         </Section>
 
+        {/* ─── Theme artifact ─── */}
+        <Section title="Theme Artifact">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">
+                  <InlineCode>arkite.theme.json</InlineCode>
+                </p>
+                <CopyButton value={themeJson} size="sm" variant="outline" />
+              </div>
+              <pre className="bg-muted overflow-auto rounded-md border p-4 text-xs">
+                {themeJson}
+              </pre>
+              <p className="text-muted-foreground text-xs">
+                Commit this file in the consuming repo and feed it to{' '}
+                <InlineCode>createTheme()</InlineCode> at startup. Four values, reviewable in a diff
+                — a brand change stops being CSS copied between projects.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium">Contrast check (WCAG AA ≥ {WCAG_AA}:1)</p>
+              <div className="space-y-2 rounded-md border p-4">
+                <ContrastRow
+                  label="Light · primary / on-primary"
+                  bg={customTheme.light.primary}
+                  fg={customTheme.light['primary-foreground']}
+                />
+                <ContrastRow
+                  label="Light · accent / on-accent"
+                  bg={customTheme.light.accent}
+                  fg={customTheme.light['accent-foreground']}
+                />
+                <ContrastRow
+                  label="Dark · primary / on-primary"
+                  bg={customTheme.dark.primary}
+                  fg={customTheme.dark['primary-foreground']}
+                />
+                <ContrastRow
+                  label="Dark · accent / on-accent"
+                  bg={customTheme.dark.accent}
+                  fg={customTheme.dark['accent-foreground']}
+                />
+              </div>
+              <p className="text-muted-foreground text-xs">
+                Foregrounds are picked automatically, so a failing row means the brand hue itself
+                sits in the danger zone — adjust lightness until light and dark both pass, before
+                the theme ships.
+              </p>
+            </div>
+          </div>
+        </Section>
+
         {/* ─── CSS Output ─── */}
         {showCSS && (
           <Section title="Generated CSS">
-            <pre className="max-h-64 overflow-auto rounded-md border bg-muted p-4 text-xs">
+            <div className="flex justify-end">
+              <CopyButton value={cssOutput} size="sm" variant="outline" />
+            </div>
+            <pre className="bg-muted max-h-64 overflow-auto rounded-md border p-4 text-xs">
               {cssOutput}
             </pre>
           </Section>
@@ -273,7 +391,9 @@ function Playground() {
             <Input placeholder="Text input..." className="w-48" aria-label="Sample text input" />
             <div className="flex items-center gap-2">
               <Checkbox id="playground-cb" defaultChecked />
-              <label htmlFor="playground-cb" className="text-sm">Checkbox</label>
+              <label htmlFor="playground-cb" className="text-sm">
+                Checkbox
+              </label>
             </div>
             <div className="flex items-center gap-2">
               <Switch defaultChecked aria-label="Sample switch" />
@@ -335,13 +455,15 @@ function Playground() {
               <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
             <TabsContent value="overview">
-              <p className="text-sm text-muted-foreground">Overview tab content with theme-aware styling.</p>
+              <p className="text-muted-foreground text-sm">
+                Overview tab content with theme-aware styling.
+              </p>
             </TabsContent>
             <TabsContent value="analytics">
-              <p className="text-sm text-muted-foreground">Analytics content goes here.</p>
+              <p className="text-muted-foreground text-sm">Analytics content goes here.</p>
             </TabsContent>
             <TabsContent value="settings">
-              <p className="text-sm text-muted-foreground">Settings content goes here.</p>
+              <p className="text-muted-foreground text-sm">Settings content goes here.</p>
             </TabsContent>
           </Tabs>
         </Section>
@@ -354,7 +476,9 @@ function Playground() {
                 <h4 className="font-semibold">Default Card</h4>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">Card content with muted text and themed border.</p>
+                <p className="text-muted-foreground text-sm">
+                  Card content with muted text and themed border.
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -364,7 +488,7 @@ function Playground() {
               <CardContent>
                 <div className="flex items-center gap-2">
                   <Badge variant="success">Active</Badge>
-                  <span className="text-sm text-muted-foreground">Status indicator</span>
+                  <span className="text-muted-foreground text-sm">Status indicator</span>
                 </div>
               </CardContent>
             </Card>

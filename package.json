@@ -59,10 +59,13 @@
     "dist",
     "src/styles",
     "src/configs",
+    "src/stories/recipes/*.demo.tsx",
+    "src/stories/recipes/*.mdx",
     "cli",
     "DESIGN.md",
     "llms.txt",
-    "llms-full.txt"
+    "llms-full.txt",
+    "registry.json"
   ],
   "scripts": {
     "build": "pnpm run clean && pnpm run generate:llms && tsup",

@@ -21,6 +21,7 @@ const read = (f) => readFileSync(join(root, f), 'utf8')
 const apiReport = read('api-report.txt')
 const design = read('DESIGN.md')
 const pkg = JSON.parse(read('package.json'))
+const registry = JSON.parse(read('registry.json'))
 
 // ─── Export inventory from the API snapshot ───
 
@@ -30,6 +31,20 @@ const hooks = values.filter((n) => n.startsWith('use'))
 const utilities = values.filter((n) => /^[a-z]/.test(n) && !n.startsWith('use'))
 
 const list = (names) => names.sort().join(', ')
+
+// ─── Recipes from the registry (registry.json is the single source of truth) ───
+
+const recipes = registry.recipes
+  .map(
+    (r) => `### ${r.name} — ${r.title}
+
+${r.summary}
+- Use when: ${r.when}
+- Not when: ${r.notWhen}
+- Composes: ${r.uses.join(', ')}
+- Source (ships in the package, copy it): ${r.files.join(', ')} — docs: ${registry.docsBase}${r.docs}`
+  )
+  .join('\n\n')
 
 // ─── Curated header ───
 
@@ -63,6 +78,9 @@ pnpm add ${pkg.name}
 2. Use semantic token utilities only (\`bg-card\`, \`text-muted-foreground\`, \`border-border\`) — never raw palette classes (\`bg-red-50\`), never \`dark:\` color overrides (tokens handle dark mode), never arbitrary values (\`text-[13px]\`).
 3. Components follow the controlled/uncontrolled React convention: \`value\`+\`onChange\` controls, \`defaultValue\` doesn't.
 4. Keep API calls, routes, and business models in the app layer.
+5. Building a whole page? Match it against the recipes below **before** assembling one
+   from scratch — each is a tested composition. Copy the recipe source, rewrite
+   \`${registry.install.importRewrite.from}\` to \`${registry.install.importRewrite.to}\`, then adapt.
 
 Full design rules (color/spacing/typography/layout recipes): DESIGN.md, shipped
 inside this package — also embedded in llms-full.txt.
@@ -113,6 +131,13 @@ catch (err) { toast.fromError(err, { prefix: 'Failed to save' }) }
 import { createTheme, applyTheme } from '${pkg.name}'
 applyTheme(createTheme({ primary: '#7c3aed' })) // HSL tokens from one hex
 \`\`\`
+
+## Recipes — page-level compositions
+
+Whole pages assembled from the library, each one rendered and tested in CI.
+Machine-readable index: registry.json (ships in the package).
+
+${recipes}
 
 ## Export inventory
 

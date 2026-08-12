@@ -28,6 +28,9 @@ pnpm add @arkite-ui/core
 2. Use semantic token utilities only (`bg-card`, `text-muted-foreground`, `border-border`) — never raw palette classes (`bg-red-50`), never `dark:` color overrides (tokens handle dark mode), never arbitrary values (`text-[13px]`).
 3. Components follow the controlled/uncontrolled React convention: `value`+`onChange` controls, `defaultValue` doesn't.
 4. Keep API calls, routes, and business models in the app layer.
+5. Building a whole page? Match it against the recipes below **before** assembling one
+   from scratch — each is a tested composition. Copy the recipe source, rewrite
+   `../../index` to `@arkite-ui/core`, then adapt.
 
 Full design rules (color/spacing/typography/layout recipes): DESIGN.md, shipped
 inside this package — also embedded in llms-full.txt.
@@ -78,6 +81,59 @@ catch (err) { toast.fromError(err, { prefix: 'Failed to save' }) }
 import { createTheme, applyTheme } from '@arkite-ui/core'
 applyTheme(createTheme({ primary: '#7c3aed' })) // HSL tokens from one hex
 ```
+
+## Recipes — page-level compositions
+
+Whole pages assembled from the library, each one rendered and tested in CI.
+Machine-readable index: registry.json (ships in the package).
+
+### crud-list-page — CRUD List Page
+
+Search + filters over a sortable, selectable, paginated table, with bulk actions and a guarded destructive path.
+- Use when: A list page whose rows are already in memory and the page needs filtering, sorting, multi-select, bulk actions, or a delete confirmation.
+- Not when: The server does the filtering/sorting/slicing — use `server-side-table`. A read-only handful of rows with no interaction — use `Table` directly, no recipe needed.
+- Composes: Badge, BulkActionBar, Button, DataTable, DeleteConfirmDialog, FilterBar, FilterBarActions, FilterBarFilters, FilterBarSearch, FilterSelect, PageHeader, ToastContainer, toast
+- Source (ships in the package, copy it): src/stories/recipes/CrudListPage.demo.tsx — docs: https://ui.foson.co/?path=/docs/recipes-crud-list-page--docs
+
+### server-side-table — Server-Side Table
+
+A table whose sorting and pagination round-trip to the server: the page owns the query state, the API returns one slice plus a total.
+- Use when: The API returns one pre-sorted page plus a total count, so the table can never know the full ordering — sorting and pagination must be controlled.
+- Not when: All rows fit in memory — leave the table uncontrolled and use `crud-list-page`.
+- Composes: Badge, DataTable, PageHeader, useServerTable
+- Source (ships in the package, copy it): src/stories/recipes/ServerSideTable.demo.tsx — docs: https://ui.foson.co/?path=/docs/recipes-server-side-table--docs
+
+### dashboard-page — Dashboard
+
+A KPI row over compact widget cards — sparkline trends and a recent-activity table in one responsive grid.
+- Use when: An overview page that answers 'is everything okay?' at a glance and links out for detail.
+- Not when: The page IS the detail view, or the numbers need drill-down in place — build a list or detail page instead. Full charting belongs in a dedicated chart library, not `Sparkline`.
+- Composes: Badge, Card, CardContent, CardHeader, DataTable, PageHeader, Sparkline, StatCard, StatGroup
+- Source (ships in the package, copy it): src/stories/recipes/DashboardPage.demo.tsx — docs: https://ui.foson.co/?path=/docs/recipes-dashboard--docs
+
+### detail-drawer-page — Detail + Drawer Edit
+
+A record's read view with an edit drawer, a dirty-close guard, and a confirmed destructive action.
+- Use when: Editing a record while the user still needs the record on screen for reference.
+- Not when: The edit should interrupt and take over (short one-shot forms, confirmations) — use `Modal`. A full create/edit page with many sections — use `form-page`.
+- Composes: Badge, Button, Card, ConfirmDialog, DescriptionItem, DescriptionList, Drawer, Form, FormActions, FormControl, FormField, FormLabel, FormMessage, Input, PageHeader, Textarea, ToastContainer, toast
+- Source (ships in the package, copy it): src/stories/recipes/DetailDrawerPage.demo.tsx — docs: https://ui.foson.co/?path=/docs/recipes-detail-drawer-edit--docs
+
+### form-page — Form Page
+
+A sectioned create/edit page: grouped fields, mixed control types, submit-time validation, and a guarded submit.
+- Use when: A create or edit page big enough to need sections, help text, and inline validation messages.
+- Not when: The form is short enough to live in a drawer next to a read view — use `detail-drawer-page`.
+- Composes: Button, Form, FormActions, FormControl, FormDescription, FormField, FormLabel, FormMessage, FormSection, Input, PageHeader, Select, Switch, Textarea, ToastContainer, toast
+- Source (ships in the package, copy it): src/stories/recipes/FormPage.demo.tsx — docs: https://ui.foson.co/?path=/docs/recipes-form-page--docs
+
+### tenant-admin-shell — Tenant Admin Shell
+
+The app frame: localized AdminLayout with permission-aware navigation, the signed-in user, and a tenant switcher.
+- Use when: Starting a multi-tenant admin app — this is the outermost shell every page renders inside.
+- Not when: A single-tenant app with no tenant scope — use `AdminLayout` without `TenantSwitcher`.
+- Composes: AdminLayout, Card, CardContent, CardHeader, DescriptionItem, DescriptionList, LocaleProvider, SegmentedControl, TenantSwitcher, toast, zhTW
+- Source (ships in the package, copy it): src/stories/recipes/TenantAdminShell.demo.tsx — docs: https://ui.foson.co/?path=/docs/recipes-tenant-admin-shell--docs
 
 ## Export inventory
 

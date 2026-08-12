@@ -18,6 +18,20 @@ break. Read the one closest to the page you are building, then adapt.
 | [Form Page](?path=/docs/recipes-form-page--docs) | Sectioned form with validation, mixed control types, and submit handling |
 | [Tenant Admin Shell](?path=/docs/recipes-tenant-admin-shell--docs) | The app frame: `AdminLayout`, tenant switching, sub-navigation |
 
+## Machine-readable index
+
+Every recipe on this page is also an entry in **`registry.json`**, which ships
+inside the npm package. Each entry carries the fields a *selector* needs — not
+just what the recipe is, but `when` to reach for it and `notWhen` it is the
+wrong shape — plus the exports it composes and the path to its source.
+
+That index feeds `llms.txt`, so an AI agent asked for "a list page with
+server-side pagination" gets a tested composition to copy instead of inventing
+the wiring from prop signatures. `src/registry.test.ts` fails CI if a recipe's
+`uses` list drifts from what the demo actually imports, or if a demo exists
+with no entry — a stale index would teach the wrong pattern at scale, which is
+worse than having none.
+
 ## Which recipe uses what
 
 Reverse index — start from a component you already know and see it in context.

@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "package": "@arkite-ui/core",
+  "docsBase": "https://ui.foson.co",
+  "install": {
+    "importRewrite": { "from": "../../index", "to": "@arkite-ui/core" }
+  },
+  "recipes": [
+    {
+      "name": "crud-list-page",
+      "title": "CRUD List Page",
+      "summary": "Search + filters over a sortable, selectable, paginated table, with bulk actions and a guarded destructive path.",
+      "when": "A list page whose rows are already in memory and the page needs filtering, sorting, multi-select, bulk actions, or a delete confirmation.",
+      "notWhen": "The server does the filtering/sorting/slicing — use `server-side-table`. A read-only handful of rows with no interaction — use `Table` directly, no recipe needed.",
+      "uses": [
+        "Badge",
+        "BulkActionBar",
+        "Button",
+        "DataTable",
+        "DeleteConfirmDialog",
+        "FilterBar",
+        "FilterBarActions",
+        "FilterBarFilters",
+        "FilterBarSearch",
+        "FilterSelect",
+        "PageHeader",
+        "ToastContainer",
+        "toast"
+      ],
+      "files": ["src/stories/recipes/CrudListPage.demo.tsx"],
+      "docs": "/?path=/docs/recipes-crud-list-page--docs"
+    },
+    {
+      "name": "server-side-table",
+      "title": "Server-Side Table",
+      "summary": "A table whose sorting and pagination round-trip to the server: the page owns the query state, the API returns one slice plus a total.",
+      "when": "The API returns one pre-sorted page plus a total count, so the table can never know the full ordering — sorting and pagination must be controlled.",
+      "notWhen": "All rows fit in memory — leave the table uncontrolled and use `crud-list-page`.",
+      "uses": ["Badge", "DataTable", "PageHeader", "useServerTable"],
+      "files": ["src/stories/recipes/ServerSideTable.demo.tsx"],
+      "docs": "/?path=/docs/recipes-server-side-table--docs"
+    },
+    {
+      "name": "dashboard-page",
+      "title": "Dashboard",
+      "summary": "A KPI row over compact widget cards — sparkline trends and a recent-activity table in one responsive grid.",
+      "when": "An overview page that answers 'is everything okay?' at a glance and links out for detail.",
+      "notWhen": "The page IS the detail view, or the numbers need drill-down in place — build a list or detail page instead. Full charting belongs in a dedicated chart library, not `Sparkline`.",
+      "uses": [
+        "Badge",
+        "Card",
+        "CardContent",
+        "CardHeader",
+        "DataTable",
+        "PageHeader",
+        "Sparkline",
+        "StatCard",
+        "StatGroup"
+      ],
+      "files": ["src/stories/recipes/DashboardPage.demo.tsx"],
+      "docs": "/?path=/docs/recipes-dashboard--docs"
+    },
+    {
+      "name": "detail-drawer-page",
+      "title": "Detail + Drawer Edit",
+      "summary": "A record's read view with an edit drawer, a dirty-close guard, and a confirmed destructive action.",
+      "when": "Editing a record while the user still needs the record on screen for reference.",
+      "notWhen": "The edit should interrupt and take over (short one-shot forms, confirmations) — use `Modal`. A full create/edit page with many sections — use `form-page`.",
+      "uses": [
+        "Badge",
+        "Button",
+        "Card",
+        "ConfirmDialog",
+        "DescriptionItem",
+        "DescriptionList",
+        "Drawer",
+        "Form",
+        "FormActions",
+        "FormControl",
+        "FormField",
+        "FormLabel",
+        "FormMessage",
+        "Input",
+        "PageHeader",
+        "Textarea",
+        "ToastContainer",
+        "toast"
+      ],
+      "files": ["src/stories/recipes/DetailDrawerPage.demo.tsx"],
+      "docs": "/?path=/docs/recipes-detail-drawer-edit--docs"
+    },
+    {
+      "name": "form-page",
+      "title": "Form Page",
+      "summary": "A sectioned create/edit page: grouped fields, mixed control types, submit-time validation, and a guarded submit.",
+      "when": "A create or edit page big enough to need sections, help text, and inline validation messages.",
+      "notWhen": "The form is short enough to live in a drawer next to a read view — use `detail-drawer-page`.",
+      "uses": [
+        "Button",
+        "Form",
+        "FormActions",
+        "FormControl",
+        "FormDescription",
+        "FormField",
+        "FormLabel",
+        "FormMessage",
+        "FormSection",
+        "Input",
+        "PageHeader",
+        "Select",
+        "Switch",
+        "Textarea",
+        "ToastContainer",
+        "toast"
+      ],
+      "files": ["src/stories/recipes/FormPage.demo.tsx"],
+      "docs": "/?path=/docs/recipes-form-page--docs"
+    },
+    {
+      "name": "tenant-admin-shell",
+      "title": "Tenant Admin Shell",
+      "summary": "The app frame: localized AdminLayout with permission-aware navigation, the signed-in user, and a tenant switcher.",
+      "when": "Starting a multi-tenant admin app — this is the outermost shell every page renders inside.",
+      "notWhen": "A single-tenant app with no tenant scope — use `AdminLayout` without `TenantSwitcher`.",
+      "uses": [
+        "AdminLayout",
+        "Card",
+        "CardContent",
+        "CardHeader",
+        "DescriptionItem",
+        "DescriptionList",
+        "LocaleProvider",
+        "SegmentedControl",
+        "TenantSwitcher",
+        "toast",
+        "zhTW"
+      ],
+      "files": ["src/stories/recipes/TenantAdminShell.demo.tsx"],
+      "docs": "/?path=/docs/recipes-tenant-admin-shell--docs"
+    }
+  ]
+}
