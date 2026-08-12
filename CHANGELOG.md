@@ -1,5 +1,53 @@
 # Changelog
 
+## 0.20.0
+### Minor Changes
+
+- fdfadcc: Ship the recipes as a machine-readable registry, and make the Theme Playground produce a committable artifact.
+  
+  **`registry.json`** — the six whole-page recipes now have an index that ships in the package. Each entry carries what a *selector* needs: `when` to reach for it, `notWhen` it is the wrong shape, the exports it composes, and the path to its source (the demo files now ship too). The recipes were already tested compositions, but they were only visible to someone browsing Storybook — nothing could enumerate them.
+  
+  That index feeds `llms.txt`, which gains a **Recipes** section and a rule telling agents to match a page against it before assembling one from scratch. The failure mode this targets isn't "the model doesn't know `DataTable`'s props" — types already cover that — it's the model reinventing the *wiring* (filters + selection + bulk bar + confirm + toast) and reaching for the pattern it saw most in training instead of ours. A page-level exemplar is the only thing that competes with that. It also lays the groundwork for `arkite-ui add <recipe>`, where the model installs known-good source rather than generating any of it: `install.importRewrite` records the one transform that needs.
+  
+  `src/registry.test.ts` fails CI when a recipe's `uses` list drifts from what its demo actually imports, when a referenced file is missing, or when a demo exists with no entry. A stale registry is worse than none — it teaches a wrong pattern to every consumer at once, and with authority.
+  
+  **Theme Playground** gains the export half it was missing. It could already create a theme from two hex values and preview it, but the only way out was hand-copying generated CSS, so each consuming project's brand ended up as CSS pasted between repos with no source of truth. It now emits `arkite.theme.json` — the four values everything else derives from — with a copy button, alongside the CSS. Commit that file, feed it to `createTheme()` at startup, and a brand change becomes a reviewable four-line diff. A live WCAG readout scores primary/accent against their auto-picked foregrounds in both light and dark, so a brand hue that can't pass AA is caught while choosing it rather than after it ships.
+  
+  `DESIGN.md` gains a pointer to the registry from the component-inventory section, so the "check for a whole-page recipe first" step is in the file agents read before writing UI.
+- 95d7058: `arkite-ui add <recipe>` — install a whole-page composition instead of retyping it.
+  
+  The six recipes were already tested compositions, but the only way to use one was to read it in Storybook and copy it by hand, and the wiring is exactly what gets lost in a transcription step. The registry shipped the index; this makes it actionable:
+  
+  ```bash
+  npx arkite-ui add                                  # list them, with when / when not
+  npx arkite-ui add crud-list-page                   # → src/pages/CrudListPage.tsx
+  npx arkite-ui add crud-list-page --name OrdersPage # rename the component throughout
+  ```
+  
+  `--out` picks the destination, `--force` overwrites; without it an existing file is refused rather than clobbered. The written file has its repo-relative import rewritten to the package and a header naming the sample constants to replace, so it runs before it is edited — a starting point that already works is one people actually adapt.
+  
+  The sample data stays rather than being stripped: a recipe with its mock arrays removed doesn't render, and a page that doesn't render teaches nothing.
+  
+  The bigger reason is agents. `llms.txt` now says to install a recipe rather than generate one, which is the difference between competing with everything the model saw in training and sidestepping it: when the wiring arrives as known-good source, there is no wiring left to hallucinate — only sample data and API calls to swap. `DESIGN.md`, the recipes overview, and the README carry the same instruction.
+  
+  Tests cover the transform end to end, including that every recipe still parses as TSX after rewriting and renaming. They need no build (registry.json and the recipe sources are plain files), so they run in the normal test job.
+- 0aeda9e: Close the theme-artifact loop: `arkite-ui theme apply`, plus a server-safe `/theme` entry point.
+  
+  The playground could already emit `arkite.theme.json`, but nothing consumed it — so a project's brand still ended up as CSS variables hand-copied between repos, drifting with no way to measure how far. The CLI reads the file and writes the CSS:
+  
+  ```bash
+  npx arkite-ui theme apply                                    # → src/styles/arkite-theme.css
+  npx arkite-ui theme apply brand.json --out src/brand.css
+  npx arkite-ui theme apply --print                            # stdout, for a build pipeline
+  npx arkite-ui theme apply --selector '[data-tenant="acme"]'  # scoped per tenant
+  ```
+  
+  Generation goes through the library's own `createTheme`, not a second implementation in the CLI — a copy would drift the first time a token is added. Reaching it from plain Node needed an entry point that loads no components, so **`@arkite-ui/core/theme`** now exports the theme system on its own (2.85 kB brotlied, no React on the resolution path). That entry is useful beyond the CLI: a build script or Server Component can emit theme CSS without pulling the component library.
+  
+  New public API on it (also on the main entry): **`parseThemeFile`** and **`themeFileToCSS`**. `parseThemeFile` is deliberately strict — `createTheme` turns a malformed hex into `NaN NaN% NaN%` and the failure only surfaces as an unstyled app, so a bad value is now rejected where it is written, with a message naming the key. Unknown keys are errors too: a typo'd `primaryColor` would otherwise be dropped silently and ship the default brand.
+  
+  The playground's contrast panel was also corrected. It claimed a failing row meant the brand hue was unusable, but those rows can't fail — foregrounds are picked as black or white, and `contrast(white, bg) × contrast(black, bg) ≡ 21` puts the winning side at ≥ 4.58:1 for any color. It now measures what genuinely can fail: the brand color used *as text* on a page background, which is how `Navbar`/`Sidebar` active items, link buttons, and `TenantSwitcher` render it. A pale hue passes as a button fill and fails as text, often in one color mode only.
+
 ## 0.19.2
 ### Patch Changes
 
