@@ -107,14 +107,13 @@ describe('add CLI — writing', () => {
     expect(existsSync(join(dir, 'app/routes/new.tsx'))).toBe(true)
   })
 
-  it.each(REGISTRY.recipes.map((r: { name: string }) => r.name))(
-    '%s still parses as TSX after the transform',
-    (name: string) => {
+  for (const { name } of REGISTRY.recipes as Array<{ name: string }>) {
+    it(`${name} still parses as TSX after the transform`, () => {
       run(['add', name, '--out', 'out.tsx'])
       const diagnostics = parseDiagnostics(readFileSync(join(dir, 'out.tsx'), 'utf-8'))
       expect(diagnostics ?? []).toEqual([])
-    }
-  )
+    })
+  }
 })
 
 describe('add CLI — guards', () => {
