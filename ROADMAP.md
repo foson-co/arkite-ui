@@ -7,19 +7,25 @@
 
 ---
 
-## 現況快照（2026-07-02）
+## 現況快照（2026-08-12）
 
 | 指標 | 數據 |
 |------|------|
-| 版本 | v0.5.0（2026-04-22 以 `@arkite-ui/core` 發布 npm，0.6.0 changeset 待發） |
-| 元件數 | 67 個目錄 |
-| 測試 | 74 檔、834 cases、100% 通過 |
-| Stories | 75 檔、100% 元件覆蓋 |
-| a11y | 零 violation（WCAG AA，2026-03-24 審查） |
-| Bundle | < 300 KB（size-limit 監控） |
-| 消費端 | 9 個專案安裝（ark-crm、ark-harvest、ark-rendoc-web、ark-shield、ark-crew、ark-connect、ark-finance、chronoark-one 等） |
+| 版本 | v0.19.2 已發布；3 個 changeset 待發（registry / theme apply / add） |
+| 元件數 | 71 個目錄、184 個元件匯出 |
+| 測試 | 97 檔、1381 cases、100% 通過 |
+| Stories | 88 檔 + 6 個 recipe（整頁組合） |
+| a11y | 零 violation（WCAG AA，CI 強制擋 merge） |
+| Bundle | index < 300 KB、motion < 10 KB、tailwind-preset < 10 KB、tokens < 5 KB、theme < 10 KB |
+| 對外 entry | 5 個（`.`、`/motion`、`/tailwind`、`/tokens`、`/theme`） |
+| CLI | `init`、`add <recipe>`、`theme apply` |
+| 消費端 | 8 個實際安裝（chronoark-one 已脫離，仍指改名前的 `@arkite/ui`） |
 
-> 完整採用數據見 [docs/ADOPTION_REPORT.md](docs/ADOPTION_REPORT.md)（2026-03-24 時點）
+> 採用數據現況見 [docs/DX_AUDIT.md §回測（2026-08-12）](docs/DX_AUDIT.md)，
+> 可用 `./scripts/audit-consumers.sh` 隨時重跑。
+>
+> （`docs/ADOPTION_REPORT.md` 是 2026-03-24 的舊快照，數字已被上面取代；
+> 該檔為本機 only —— `/docs/` 在 .gitignore，只有四份 md 被 force-add 進版控。）
 
 ---
 
@@ -85,7 +91,7 @@
 ### 必做
 
 - [x] Chromatic 視覺回歸常態化 — 每個 MR 跑 snapshot（⚠️ 目前 `--exit-zero-on-changes`，有差異不會擋 merge，要擋需移除該 flag）
-- [ ] Dark mode 全元件走查 — 確認所有元件在 dark mode 下正確顯示
+- [ ] Dark mode 全元件走查 — 確認所有元件在 dark mode 下正確顯示（工具已備：Theme Playground 有 dark 切換 + 對比度讀數；缺的是 light/dark 並排預覽）
 - [x] 元件 API 一致性審查 — 審查報告見 [docs/API_CONSISTENCY.md](docs/API_CONSISTENCY.md)（2026-07-02）；rename 執行歸入 Phase 3 breaking 清理
 - [ ] React 19 驗證 — peer deps 已支援 `^19.0.0`，需實際驗證
 - [x] 移除業務邏輯滲入 — 刪除 authStore/tenantStore/usePermission/useDataFetch/breadcrumb config（2026-07-02，0.6.0 changeset）
@@ -165,6 +171,35 @@
 - [ ] Range Slider — 證據仍只有 1 處,續押後
 - [x] 零使用元件盤點(結論見 docs/DX_AUDIT.md 附錄)— BulkActionBar/TagInput 是發現性問題該救;CommandPalette/VirtualList/Tree/ColorPicker 建議 1.0 標 experimental 不凍結 API,觀察至 1.0+6mo;VirtualList 缺測試,不補則候選下架
 
+### 對標 Fusion Design（2026-08-12）
+
+> 起因：評估 [fusion.design](https://fusion.design)（阿里 @alifd/next + 主題平台 + 物料市場）
+> 有哪些可以逐步靠近。
+
+**先講結論**：Fusion 不是「更大的元件庫」，是一條 DPL 生產線平台，解決的是
+「幾百個設計師 × 幾百條產品線 × 多品牌一致性」的組織問題。我們是 1 人 × 8 個消費專案 ×
+同一個品牌 —— 照抄整條平台會直接壓垮維護量。**可移植的只有三件：主題可產物化、物料可安裝、消費端可自助。**
+
+| 支柱 | Fusion | 我們 | 處置 |
+|---|---|---|---|
+| 元件庫 | `@alifd/next` ~60 個 + 「業務組件」 | 71 個目錄，admin 場景更聚焦 | 無差距（業務組件違反 Pure UI，不做） |
+| 主題 | 線上編輯器 → npm 主題包 | Theme Playground → `arkite.theme.json` → `theme apply` | ✅ 已補齊 |
+| 物料市場 | `/mc` block/template + Iceworks 一鍵注入 | `registry.json` + `arkite-ui add` | ✅ 已補齊 |
+| 站點（多品牌 fork） | `/sites/new` 線上平台 | 單一 Storybook | 🚫 我們沒有多品牌，建了就是純維護債 |
+| 設計工具鏈 | FusionCool、Figma/Sketch 外掛 | `llms.txt` + `registry.json` | 🚫 方向相反：他們 design→code，我們 code-first、上游是 AI agent |
+| 治理 | 幫助中心、版本切換 | DESIGN.md + dev guards + a11y CI + Chromatic | 我們反而領先 |
+
+**我們已經贏的地方**（別因為對方是阿里就自我矮化）：a11y WCAG AA 進 CI 強制、零 runtime CSS
+（Tailwind v4 vs 他們 SASS 變數覆蓋）、size-limit 預算、視覺回歸、RSC/Next smoke、AI-ready 文件。
+
+**明確不追**：線上平台與帳號系統、Figma/Sketch 外掛、物料「市場」的市集機制（投稿/審核/評分）、
+業務組件分類、版本化文件站（1.0 前沒意義）。
+
+**還沒做的**：
+- [ ] ark-museum 接上 `arkite.theme.json`（它已手刻一套 brand config → runtime 注入，是唯一真有需求的對象）
+- [ ] ark-harvest / ark-rendoc-web 刪掉各自複製的 40 行預設 token（兩份位元組相同，且 dark primary 已 drift 到舊值）
+- [ ] 三個落後專案（0.10 / 0.12）升版 —— 剩下 11 個手刻 `<table>` 全在那裡，是版本落後不是能力缺口
+
 ### v1.0.0 什麼時候發？
 
 **3 個專案已穩定使用 ✅，等 API 半年沒有 breaking change 即可。**
@@ -199,6 +234,8 @@
 | **v0.5.0** ✅ | 2026-04-22 | 改名 `@arkite-ui/core` 發布 npm、rail sidebar、subNav slot |
 | **v0.6.1** ✅ | 2026-07-03 | 移除業務邏輯（breadcrumb config、stores、hooks）— breaking（0.6.0 tag 因 CI 故障未發成，由 0.6.1 補發） |
 | **v0.7.0** ✅ | 2026-07-03 | prop naming 統一（依 docs/API_CONSISTENCY.md）— 舊名保留為 deprecated 別名，v1.0 移除 |
+| **v0.8.0 – v0.19.2** ✅ | 2026-07 ~ 08 | DX 稽核驅動的一連串補洞：`useServerTable`、`stickyLead`、`toast.fromError`、`FileTrigger`、`PinInput`、Tier A 組合守衛、llms.txt |
+| **待發（3 changeset）** | — | `registry.json` + llms.txt Recipes、`theme apply` + `/theme` entry、`add <recipe>` |
 | **v0.x.x** | 內部專案需求驅動 | 持續迭代，不設時間表 |
 | **v1.0.0** | API 穩定半年 + 消費端驗證 | API 凍結、semver 承諾（最快 2026 Q4） |
 
@@ -208,9 +245,12 @@
 
 基於 3 個消費端的實際採用審查（2026-03-24），以下確認不需要：
 
-- **不需要加新元件** — 78 個匯出全被使用，覆蓋所有 SaaS admin 場景
+> ⚠️ 2026-08-12 註：前兩條已被 2026-08 的九專案深掃推翻，第三條已實作。
+> 三個消費端看不到的東西，九個看得到 —— 這欄的教訓是**「不需要」的結論有樣本數上限**。
+
+- ~~**不需要加新元件**~~ — 已推翻：深掃後 `PinInput`、`FileTrigger` 已入庫，`Backdrop`/`Lightbox` 證據升級為「該做」（19 處手刻、4 專案）
+- ~~**不需要 i18n 方案**~~ — 已實作：`LocaleProvider` + `zhTW`，所有內建字串與 aria-label 走 locale
 - **不需要加新 Badge variant** — 7 種 variant 足夠覆蓋所有狀態
-- **不需要 i18n 方案** — 文字由消費端 props/children 傳入
 - **不需要 form state 管理** — layout-only 設計已驗證正確
 - **不需要 page-level template** — ListPageTemplate/FormPageTemplate 屬於專案層
 - **不需要 formatDate/formatCurrency** — locale 格式是專案層設定

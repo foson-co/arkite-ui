@@ -51,6 +51,26 @@ pnpm storybook       # Preview components at http://localhost:6006
 - [ ] Has unit tests
 - [ ] Has Storybook story with controls
 
+## Adding a Recipe
+
+Recipes are whole-page compositions under `src/stories/recipes/`. Unlike a component, one is **shipped as source you install** (`npx arkite-ui add <name>`), so it carries an extra obligation: an entry in `registry.json`.
+
+1. `MyPage.demo.tsx` — the page itself, importing from `'../../index'` (the `add` CLI rewrites that to the package name; `registry.json → install.importRewrite` is the only transform, so don't invent other repo-relative imports)
+2. `MyPage.stories.tsx` + `MyPage.mdx` — same as any story, plus the "Key decisions" prose that explains *why* the pieces fit
+3. Add it to `src/stories/recipes/Overview.mdx` (both tables)
+4. **Add an entry to `registry.json`** — `name`, `title`, `summary`, `when`, `notWhen`, `uses`, `files`, `docs`
+
+`when` / `notWhen` are the fields that matter most: they are what an agent selects on, and `notWhen` should name the recipe or component to use instead. `uses` must list exactly what the demo imports from the library.
+
+`src/registry.test.ts` enforces all of it — a drifted `uses` list, a missing file, or a demo with no registry entry fails CI. That is deliberate: the registry feeds `llms.txt`, so a stale entry teaches a wrong pattern to every consumer at once, with authority.
+
+## CLI
+
+`cli/init.mjs` is the bin entry and dispatches subcommands (`init`, `add`, `theme`), each in its own module. Two rules:
+
+- **Never re-implement library logic in the CLI.** `theme apply` imports `dist/theme.js` rather than deriving colors itself; a second implementation drifts the first time a token changes.
+- **Anything reading `dist/` needs a build**, and CI's `test` job runs before `build`. `src/cli/theme.test.ts` therefore skips loudly (`describe.skipIf`) rather than silently passing, with the real logic covered build-free in `src/theme/theme-file.test.ts`. `src/cli/add.test.ts` needs no build (plain files), so it always runs.
+
 ## Code Style
 
 - TypeScript strict mode

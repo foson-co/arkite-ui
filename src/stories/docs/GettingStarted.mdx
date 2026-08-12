@@ -14,6 +14,15 @@ Installs the package and its required peer dependencies, then writes the Tailwin
 npx @arkite-ui/core init
 ```
 
+Two more commands complete a new project. Run them when you reach the matching step — the brand, then the first page:
+
+```bash
+npx arkite-ui theme apply    # arkite.theme.json → CSS variables (see Theme System)
+npx arkite-ui add            # list whole-page recipes; `add <name>` copies one in
+```
+
+`add` matters more than it looks. Picking a component is the easy half; knowing which ones go together, who owns which piece of state, and which pairings break is the half that costs time. Each recipe is a tested answer to one page shape — install it and edit, rather than assembling from scratch.
+
 ### Manual install
 
 ```bash

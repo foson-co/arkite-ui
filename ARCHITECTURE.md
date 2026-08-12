@@ -140,8 +140,19 @@ Components are controlled or uncontrolled — they never manage global state. Th
 ## Build & Bundle
 
 - **Bundler:** tsup (ESM + CJS + DTS)
-- **Entry Points:** `index.ts` (main), `motion.ts` (animated overlays), `tailwind-preset.ts`
-- **Bundle Budget:** < 300 KB for `index.js`, < 10 KB for `motion.js`, < 10 KB for `tailwind-preset.js`
+- **Entry Points:** five, split into two tsup configs by whether they carry the `"use client"` banner.
+
+  | Entry | Import | Contents | Banner |
+  |---|---|---|---|
+  | `src/index.ts` | `@arkite-ui/core` | Every component, hook, and the theme system | `"use client"` |
+  | `src/motion.ts` | `@arkite-ui/core/motion` | Animated overlay variants (needs `framer-motion`) | `"use client"` |
+  | `src/tailwind-preset.ts` | `@arkite-ui/core/tailwind` | Tailwind v4 preset | — |
+  | `src/tokens/index.ts` | `@arkite-ui/core/tokens` | Raw token values, framework-agnostic | — |
+  | `src/theme/index.ts` | `@arkite-ui/core/theme` | `createTheme`/`themeToCSS`/`parseThemeFile`, no React | — |
+
+  The banner split is load-bearing: a `"use client"` banner on the pure-data entries would turn token values into client references and break Server Component imports. `theme` exists separately from `index` so the `theme apply` CLI and build scripts can generate CSS in plain Node, where resolving the React entry would require `react` on the path.
+
+- **Bundle Budget:** < 300 KB `index.js`, < 10 KB `motion.js`, < 10 KB `tailwind-preset.js`, < 5 KB `tokens.js`, < 10 KB `theme.js` (enforced by `pnpm size`)
 - **Tree-shakeable:** Each component is independently importable via barrel exports
 - **Side effects:** Only CSS files are marked as side effects
 

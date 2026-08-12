@@ -57,6 +57,25 @@ npx arkite-ui add                 # list the recipes, with when / when not
 npx arkite-ui add crud-list-page  # → src/pages/CrudListPage.tsx, yours to edit
 ```
 
+## CLI
+
+```bash
+npx arkite-ui init                    # install deps, write theme CSS + setup helper
+npx arkite-ui add                     # list whole-page recipes (with when / when not)
+npx arkite-ui add crud-list-page      # copy one into src/pages/ — yours to edit
+npx arkite-ui theme apply             # arkite.theme.json → CSS variables
+```
+
+A new project usually runs all three in order: `init` to wire the package up, `theme apply` once the brand is decided, `add` per page.
+
+**`arkite.theme.json`** is how a project's brand stays reviewable — four values (`name`, `primary`, `accent`, `radius`) committed to the repo, everything else derived:
+
+```json
+{ "name": "acme", "primary": "#6a4dff", "accent": "#00b4d8", "radius": "0.5rem" }
+```
+
+Author it interactively in **Foundation → Theme Playground** (live preview, WCAG readouts), then `theme apply` to generate the CSS. Hand-copied CSS variables drift between projects; four values in a file diff.
+
 ## Installation
 
 ```bash
