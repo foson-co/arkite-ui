@@ -1,14 +1,14 @@
 type ActionButtonsProps {
   actions: ActionItem[]
   className?: string | undefined
-  mode?: "inline" | "dropdown" | undefined
-  size?: "sm" | "md" | undefined
+  mode?: "dropdown" | "inline" | undefined
+  size?: "md" | "sm" | undefined
   triggerIcon?: ReactNode
   triggerLabel?: string | undefined
 }
 
 type ActionItem {
-  confirm?: boolean | { title?: string; description?: string; confirmLabel?: string; } | undefined
+  confirm?: { title?: string; description?: string; confirmLabel?: string; } | boolean | undefined
   disabled?: boolean | undefined
   hidden?: boolean | undefined
   icon?: ReactNode
@@ -40,8 +40,8 @@ type AdminLayoutProps {
   classNames?: { root?: string; sidebar?: string; navbar?: string; subNav?: string; main?: string; bottomNav?: string; } | undefined
   currentPath: string
   hasPermission?: ((permissions: string[]) => boolean) | undefined
-  hideNavbar?: boolean | "mobile" | undefined
-  hideSidebar?: boolean | "mobile" | undefined
+  hideNavbar?: "mobile" | boolean | undefined
+  hideSidebar?: "mobile" | boolean | undefined
   hideToast?: boolean | undefined
   navbarLeft?: ReactNode
   navbarRight?: ReactNode
@@ -52,7 +52,7 @@ type AdminLayoutProps {
   sidebarFooter?: ReactNode
   sidebarVariant?: "classic" | "rail" | undefined
   subNav?: ReactNode
-  toastPosition?: "top-right" | "top-left" | "top-center" | "bottom-right" | "bottom-left" | "bottom-center" | undefined
+  toastPosition?: "bottom-center" | "bottom-left" | "bottom-right" | "top-center" | "top-left" | "top-right" | undefined
   user?: AdminUserConfig | undefined
 }
 
@@ -141,7 +141,7 @@ type AvatarGroupProps {
   className?: string | undefined
   max?: number | undefined
   size?: AvatarSize | undefined
-  spacing?: "tight" | "normal" | "loose" | undefined
+  spacing?: "loose" | "normal" | "tight" | undefined
 }
 
 type AvatarProps {
@@ -249,7 +249,7 @@ type CardFooterProps {
 }
 
 type CardGridProps {
-  columns?: 3 | 4 | 2 | 1 | undefined
+  columns?: 1 | 2 | 3 | 4 | undefined
 }
 
 type CardHeaderProps {
@@ -257,7 +257,7 @@ type CardHeaderProps {
   actions?: ReactNode
   density?: CardDensity | undefined
   description?: ReactNode
-  headingLevel?: 5 | 3 | 4 | 2 | 6 | undefined
+  headingLevel?: 2 | 3 | 4 | 5 | 6 | undefined
   title?: ReactNode
 }
 
@@ -266,11 +266,11 @@ type CardProps {
   density?: CardDensity | undefined
   hoverable?: boolean | undefined
   interactive?: boolean | undefined
-  padding?: "sm" | "md" | "lg" | "none" | undefined
-  shadow?: "sm" | "md" | "lg" | "none" | undefined
+  padding?: "lg" | "md" | "none" | "sm" | undefined
+  shadow?: "lg" | "md" | "none" | "sm" | undefined
 }
 
-type ChartColorKey = 5 | 3 | 4 | 2 | 1
+type ChartColorKey = 1 | 2 | 3 | 4 | 5
 
 type CheckboxCardProps {
   description?: string | undefined
@@ -327,21 +327,21 @@ type ColorPickerProps {
 type ColorPickerSize = ColorPickerSize
 
 type Column {
-  align?: "center" | "right" | "left" | undefined
+  align?: "center" | "left" | "right" | undefined
   cell?: ((row: T, index: number) => ReactNode) | undefined
-  cellClassName?: string | ((row: T, index: number) => string) | undefined
-  cellStyle?: CSSProperties | ((row: T, index: number) => CSSProperties) | undefined
+  cellClassName?: ((row: T, index: number) => string) | string | undefined
+  cellStyle?: ((row: T, index: number) => CSSProperties) | CSSProperties | undefined
   filterFn?: ((row: T, filterValue: string) => boolean) | undefined
   filterOptions?: string[] | undefined
   filterable?: boolean | undefined
   header: ReactNode
   headerClassName?: string | undefined
   headerStyle?: CSSProperties | undefined
-  hidden?: boolean | "mobile" | "desktop" | undefined
+  hidden?: "desktop" | "mobile" | boolean | undefined
   key: string
-  pinned?: "right" | "left" | undefined
+  pinned?: "left" | "right" | undefined
   sortable?: boolean | undefined
-  width?: string | number | undefined
+  width?: number | string | undefined
 }
 
 type ComboboxOption {
@@ -446,15 +446,15 @@ type DataTableProps {
   defaultPageSize?: number | undefined
   defaultSelectedRows?: Set<string | number> | undefined
   emptyContent?: ReactNode
-  expandable?: boolean | ((row: T, index: number) => ReactNode) | undefined
+  expandable?: ((row: T, index: number) => ReactNode) | boolean | undefined
   fillHeight?: boolean | undefined
   filters?: Record<string, string[]> | undefined
   getRowKey?: ((row: T, index: number) => string | number) | undefined
   hoverable?: boolean | undefined
   isRowSelectable?: ((row: T, index: number) => boolean) | undefined
   loading?: boolean | undefined
-  maxHeight?: string | number | undefined
-  minWidth?: string | number | undefined
+  maxHeight?: number | string | undefined
+  minWidth?: number | string | undefined
   onFilterChange?: ((filters: Record<string, string[]>) => void) | undefined
   onPageChange?: ((page: number) => void) | undefined
   onPageSizeChange?: ((pageSize: number) => void) | undefined
@@ -466,7 +466,7 @@ type DataTableProps {
   pageSizeOptions?: number[] | undefined
   pagination?: boolean | undefined
   renderExpandedRow?: ((row: T, index: number) => ReactNode) | undefined
-  rowClassName?: string | ((row: T, index: number) => string) | undefined
+  rowClassName?: ((row: T, index: number) => string) | string | undefined
   scrollFade?: boolean | undefined
   selectable?: boolean | undefined
   selectedRows?: Set<string | number> | undefined
@@ -503,7 +503,7 @@ type DateRangePickerProps {
   error?: boolean | undefined
   errorMessage?: string | undefined
   format?: string | undefined
-  labelPlacement?: "top" | "inside" | "none" | undefined
+  labelPlacement?: "inside" | "none" | "top" | undefined
   maxDate?: Date | undefined
   minDate?: Date | undefined
   onChange?: ((range: DateRangeValue) => void) | undefined
@@ -559,7 +559,7 @@ type DividerOrientation = DividerOrientation
 
 type DividerProps {
   label?: string | undefined
-  labelPosition?: "center" | "right" | "left" | undefined
+  labelPosition?: "center" | "left" | "right" | undefined
   orientation?: DividerOrientation | undefined
 }
 
@@ -589,7 +589,7 @@ type DrawerSize = DrawerSize
 type EmptyStatePresetProps {
   action?: ReactNode
   description?: ReactNode
-  size?: "sm" | "md" | "lg" | undefined
+  size?: "lg" | "md" | "sm" | undefined
   title?: ReactNode
 }
 
@@ -597,7 +597,7 @@ type EmptyStateProps {
   action?: ReactNode
   description?: ReactNode
   icon?: ReactNode
-  size?: "sm" | "md" | "lg" | undefined
+  size?: "lg" | "md" | "sm" | undefined
   title?: ReactNode
   variant?: EmptyStateVariant | undefined
 }
@@ -607,7 +607,7 @@ type EmptyStateVariant = EmptyStateVariant
 type ErrorBoundaryProps {
   children: ReactNode
   className?: string | undefined
-  fallback?: ReactNode | ((props: { error: Error; reset: () => void; }) => ReactNode)
+  fallback?: ((props: { error: Error; reset: () => void; }) => ReactNode) | ReactNode
   onError?: ((error: Error, errorInfo: ErrorInfo) => void) | undefined
 }
 
@@ -616,7 +616,7 @@ type ErrorStateProps {
   description?: ReactNode
   onRetry?: (() => void) | undefined
   retryLabel?: string | undefined
-  size?: "sm" | "md" | "lg" | undefined
+  size?: "lg" | "md" | "sm" | undefined
   title?: ReactNode
 }
 
@@ -673,7 +673,7 @@ type FilterBarSearchProps {
 }
 
 type FilterSelectProps {
-  allLabel?: string | false | undefined
+  allLabel?: false | string | undefined
   label?: string | undefined
   onChange?: ((value: string) => void) | undefined
   options?: readonly SelectOption[] | undefined
@@ -681,7 +681,7 @@ type FilterSelectProps {
 }
 
 type FormActionsProps {
-  align?: "center" | "right" | "left" | "between" | undefined
+  align?: "between" | "center" | "left" | "right" | undefined
 }
 
 type FormControlProps = FormControlProps
@@ -720,7 +720,7 @@ type ImageUploadProps {
   accept?: string | undefined
   className?: string | undefined
   disabled?: boolean | undefined
-  error?: string | boolean | undefined
+  error?: boolean | string | undefined
   errorMessage?: string | undefined
   loadingUrls?: string[] | undefined
   max?: number | undefined
@@ -745,7 +745,7 @@ type InfiniteScrollProps {
   gap?: number | undefined
   getItemKey?: ((item: T, index: number) => string | number) | undefined
   hasMore: boolean
-  height?: string | number | undefined
+  height?: number | string | undefined
   innerClassName?: string | undefined
   items: T[]
   loading?: boolean | undefined
@@ -773,7 +773,7 @@ type InputProps {
 type InputSize = InputSize
 
 type KbdProps {
-  size?: "sm" | "md" | undefined
+  size?: "md" | "sm" | undefined
 }
 
 type LabelProps {
@@ -788,7 +788,7 @@ type LoadingOverlayProps {
   fullscreen?: boolean | undefined
   label?: string | undefined
   open?: boolean | undefined
-  size?: "sm" | "md" | "lg" | undefined
+  size?: "lg" | "md" | "sm" | undefined
   visible?: boolean | undefined
 }
 
@@ -826,7 +826,7 @@ type NavbarBrandProps {
 }
 
 type NavbarContentProps {
-  align?: "center" | "right" | "left" | undefined
+  align?: "center" | "left" | "right" | undefined
 }
 
 type NavbarDividerProps = NavbarDividerProps
@@ -964,7 +964,7 @@ type PinInputProps {
   onChange?: ((value: string) => void) | undefined
   onComplete?: ((value: string) => void) | undefined
   size?: PinInputSize | undefined
-  type?: "numeric" | "alphanumeric" | undefined
+  type?: "alphanumeric" | "numeric" | undefined
   value?: string | undefined
 }
 
@@ -1003,7 +1003,7 @@ type RadioGroupProps {
   name: string
   onChange?: ((value: string) => void) | undefined
   options: { value: string; label: string; description?: string; disabled?: boolean; }[]
-  orientation?: "vertical" | "horizontal" | undefined
+  orientation?: "horizontal" | "vertical" | undefined
   size?: RadioSize | undefined
   value?: string | undefined
 }
@@ -1030,7 +1030,7 @@ type SearchInputProps {
   loading?: boolean | undefined
   onClear?: (() => void) | undefined
   onDebouncedChange?: ((value: string) => void) | undefined
-  size?: "sm" | "md" | "lg" | undefined
+  size?: "lg" | "md" | "sm" | undefined
 }
 
 type SegmentedControlOption {
@@ -1135,14 +1135,14 @@ type SimpleTooltipProps {
   className?: string | undefined
   content: ReactNode
   delayDuration?: number | undefined
-  side?: "top" | "right" | "bottom" | "left" | undefined
+  side?: "bottom" | "left" | "right" | "top" | undefined
 }
 
 type SkeletonAvatarProps {
-  animation?: "pulse" | "none" | "wave" | undefined
-  height?: string | number | undefined
-  size?: "sm" | "md" | "lg" | "xl" | undefined
-  width?: string | number | undefined
+  animation?: "none" | "pulse" | "wave" | undefined
+  height?: number | string | undefined
+  size?: "lg" | "md" | "sm" | "xl" | undefined
+  width?: number | string | undefined
 }
 
 type SkeletonCardProps {
@@ -1152,10 +1152,10 @@ type SkeletonCardProps {
 }
 
 type SkeletonProps {
-  animation?: "pulse" | "none" | "wave" | undefined
-  height?: string | number | undefined
-  variant?: "default" | "text" | "rounded" | "circular" | undefined
-  width?: string | number | undefined
+  animation?: "none" | "pulse" | "wave" | undefined
+  height?: number | string | undefined
+  variant?: "circular" | "default" | "rounded" | "text" | undefined
+  width?: number | string | undefined
 }
 
 type SkeletonTableProps {
@@ -1165,11 +1165,11 @@ type SkeletonTableProps {
 }
 
 type SkeletonTextProps {
-  animation?: "pulse" | "none" | "wave" | undefined
-  height?: string | number | undefined
+  animation?: "none" | "pulse" | "wave" | undefined
+  height?: number | string | undefined
   lines?: number | undefined
-  spacing?: "sm" | "md" | "lg" | undefined
-  width?: string | number | undefined
+  spacing?: "lg" | "md" | "sm" | undefined
+  width?: number | string | undefined
 }
 
 type SortDirection = SortDirection
@@ -1222,11 +1222,11 @@ type StatCardProps {
   loading?: boolean | undefined
   trend?: StatTrend | undefined
   value: ReactNode
-  variant?: "default" | "bordered" | "filled" | undefined
+  variant?: "bordered" | "default" | "filled" | undefined
 }
 
 type StatGroupProps {
-  columns?: 3 | 4 | 2 | undefined
+  columns?: 2 | 3 | 4 | undefined
 }
 
 type StatProps {
@@ -1259,8 +1259,8 @@ type StepItem {
 
 type StepsProps {
   currentStep: number
-  orientation?: "vertical" | "horizontal" | undefined
-  size?: "sm" | "md" | undefined
+  orientation?: "horizontal" | "vertical" | undefined
+  size?: "md" | "sm" | undefined
   steps: StepItem[]
 }
 
@@ -1297,7 +1297,7 @@ type TableFooterProps = TableFooterProps
 
 type TableHeadProps {
   align?: TableAlign | undefined
-  sortDirection?: "desc" | "asc" | null | undefined
+  sortDirection?: "asc" | "desc" | null | undefined
   sortable?: boolean | undefined
   stickyAction?: boolean | undefined
   stickyLead?: boolean | undefined
@@ -1316,8 +1316,8 @@ type TableProps {
   compact?: boolean | undefined
   fillHeight?: boolean | undefined
   hoverable?: boolean | undefined
-  maxHeight?: string | number | undefined
-  minWidth?: string | number | undefined
+  maxHeight?: number | string | undefined
+  minWidth?: number | string | undefined
   scrollFade?: boolean | undefined
   stickyHeader?: boolean | undefined
   variant?: "default" | "striped" | undefined
@@ -1428,7 +1428,7 @@ type ThemePreset {
   name: string
 }
 
-type ThemePresetName = "default" | "neutral" | "ocean" | "forest"
+type ThemePresetName = "default" | "forest" | "neutral" | "ocean"
 
 type ThemeTokens {
   accent-foreground: string
@@ -1479,7 +1479,7 @@ type TimelineItem {
 
 type TimelineProps {
   items: TimelineItem[]
-  size?: "sm" | "md" | undefined
+  size?: "md" | "sm" | undefined
 }
 
 type TimelineVariant = TimelineVariant
@@ -1609,7 +1609,7 @@ type ViewToggleProps {
   className?: string | undefined
   defaultValue?: ViewMode | undefined
   onChange?: ((mode: ViewMode) => void) | undefined
-  size?: "sm" | "md" | undefined
+  size?: "md" | "sm" | undefined
   value?: ViewMode | undefined
 }
 
@@ -1621,7 +1621,7 @@ type VirtualListProps {
   estimateSize?: number | undefined
   gap?: number | undefined
   getItemKey?: ((item: T, index: number) => string | number) | undefined
-  height?: string | number | undefined
+  height?: number | string | undefined
   innerClassName?: string | undefined
   items: T[]
   loading?: boolean | undefined
