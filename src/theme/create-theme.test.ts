@@ -66,8 +66,18 @@ describe('createTheme', () => {
     // Sweep light/mid/dark hues across every channel mix, including the
     // mid-luminance colors where the old heuristic failed.
     const brands = [
-      '#0080ff', '#16a34a', '#ef4444', '#f59e0b', '#a855f7', '#14b8a6',
-      '#808080', '#FF6B00', '#1a1a2e', '#e2e8f0', '#635BFF', '#00B4D8',
+      '#0080ff',
+      '#16a34a',
+      '#ef4444',
+      '#f59e0b',
+      '#a855f7',
+      '#14b8a6',
+      '#808080',
+      '#FF6B00',
+      '#1a1a2e',
+      '#e2e8f0',
+      '#635BFF',
+      '#00B4D8',
     ]
     for (const hex of brands) {
       const theme = createTheme({ primary: hex })
@@ -76,16 +86,35 @@ describe('createTheme', () => {
           ['primary', 'primary-foreground'],
           ['accent', 'accent-foreground'],
         ] as const) {
-          const ratio = contrastRatio(
-            hslLuminance(theme[mode][fg]),
-            hslLuminance(theme[mode][bg]),
-          )
+          const ratio = contrastRatio(hslLuminance(theme[mode][fg]), hslLuminance(theme[mode][bg]))
           expect(
             ratio,
-            `createTheme(${hex}) ${mode}.${fg} (${theme[mode][fg]}) on ${mode}.${bg} (${theme[mode][bg]}) = ${ratio.toFixed(2)}:1`,
+            `createTheme(${hex}) ${mode}.${fg} (${theme[mode][fg]}) on ${mode}.${bg} (${theme[mode][bg]}) = ${ratio.toFixed(2)}:1`
           ).toBeGreaterThanOrEqual(WCAG_AA)
         }
       }
+    }
+  })
+
+  it('computes saturation for dark colors instead of forcing 100%', () => {
+    // d / (max - min) is d / d === 1, so every color with L <= 50% used to
+    // come back fully saturated. #1a1a2e is a muted navy: 28%, not 100%.
+    const theme = createTheme({ primary: '#1a1a2e' })
+    expect(theme.light.primary).toBe('240 28% 14%')
+  })
+
+  it('round-trips known hex colors to HSL', () => {
+    // Anchors both branches of the saturation formula: L <= 50% (dark, muted),
+    // L > 50% (light, muted), and the L === 50% boundary that falls to `else`.
+    const cases: Array<[string, string]> = [
+      ['#1a1a2e', '240 28% 14%'], // dark + muted  -> else branch
+      ['#0080ff', '210 100% 50%'], // exactly L 50% -> else branch
+      ['#3B82F6', '217 91% 60%'], // light + saturated -> if branch
+      ['#e2e8f0', '214 32% 91%'], // light + muted     -> if branch
+      ['#808080', '0 0% 50%'], // achromatic
+    ]
+    for (const [hex, expected] of cases) {
+      expect(createTheme({ primary: hex }).light.primary, hex).toBe(expected)
     }
   })
 

@@ -25,7 +25,7 @@ function hexToHsl(hex: string): string {
   }
 
   const d = max - min
-  const s = l > 0.5 ? d / (2 - max - min) : d / (max - min)
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
 
   let h: number
   switch (max) {
