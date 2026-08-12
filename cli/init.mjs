@@ -56,18 +56,26 @@ function installCmd(pm, deps) {
 const args = process.argv.slice(2)
 const command = args[0]
 
+if (command === 'theme') {
+  const { runTheme } = await import('./theme.mjs')
+  await runTheme(args.slice(1), cwd)
+  process.exit(0)
+}
+
 if (command !== 'init') {
+  const { themeHelp } = await import('./theme.mjs')
   console.log(`
 \x1b[1m@arkite-ui/core CLI\x1b[0m
 
 Commands:
   init          Set up Arkite UI in your project
   init --pm     Specify package manager (npm|yarn|pnpm|bun)
+  theme apply   Generate CSS variables from arkite.theme.json
 
 Usage:
   npx @arkite-ui/core init
   npx @arkite-ui/core init --pm bun
-`)
+${themeHelp()}`)
   process.exit(0)
 }
 

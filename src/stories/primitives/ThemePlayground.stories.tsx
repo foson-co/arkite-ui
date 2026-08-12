@@ -283,9 +283,10 @@ function Playground() {
                 {themeJson}
               </pre>
               <p className="text-muted-foreground text-xs">
-                Commit this file in the consuming repo and feed it to{' '}
-                <InlineCode>createTheme()</InlineCode> at startup. Four values, reviewable in a diff
-                — a brand change stops being CSS copied between projects.
+                Save it as <InlineCode>arkite.theme.json</InlineCode> in the consuming repo, then{' '}
+                <InlineCode>npx arkite-ui theme apply</InlineCode> to generate the CSS (or feed it
+                to <InlineCode>createTheme()</InlineCode> at startup). Four values, reviewable in a
+                diff — a brand change stops being CSS copied between projects.
               </p>
             </div>
 
@@ -293,30 +294,32 @@ function Playground() {
               <p className="text-sm font-medium">Contrast check (WCAG AA ≥ {WCAG_AA}:1)</p>
               <div className="space-y-2 rounded-md border p-4">
                 <ContrastRow
-                  label="Light · primary / on-primary"
+                  label="Light · on-primary text on primary"
                   bg={customTheme.light.primary}
                   fg={customTheme.light['primary-foreground']}
                 />
                 <ContrastRow
-                  label="Light · accent / on-accent"
-                  bg={customTheme.light.accent}
-                  fg={customTheme.light['accent-foreground']}
+                  label="Light · primary text on background"
+                  bg={customTheme.light.background}
+                  fg={customTheme.light.primary}
                 />
                 <ContrastRow
-                  label="Dark · primary / on-primary"
+                  label="Dark · on-primary text on primary"
                   bg={customTheme.dark.primary}
                   fg={customTheme.dark['primary-foreground']}
                 />
                 <ContrastRow
-                  label="Dark · accent / on-accent"
-                  bg={customTheme.dark.accent}
-                  fg={customTheme.dark['accent-foreground']}
+                  label="Dark · primary text on background"
+                  bg={customTheme.dark.background}
+                  fg={customTheme.dark.primary}
                 />
               </div>
               <p className="text-muted-foreground text-xs">
-                Foregrounds are picked automatically, so a failing row means the brand hue itself
-                sits in the danger zone — adjust lightness until light and dark both pass, before
-                the theme ships.
+                The <em>on-primary</em> rows can never fail — foregrounds are picked as black or
+                white, and one side always clears 4.58:1. The rows that can fail are your brand
+                color used <em>as text</em>: active nav items, link buttons, and the tenant switcher
+                all render <InlineCode>text-primary</InlineCode> on a page background. A pale hue
+                passes as a button fill and fails as text, often in one mode only.
               </p>
             </div>
           </div>

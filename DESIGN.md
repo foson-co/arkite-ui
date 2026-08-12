@@ -148,7 +148,9 @@ Warnings are dev-only (stripped in production), fire once per rule, and read Rea
 
 ## Theming
 
-Brand retheme = override CSS variables (or `createTheme()` from a hex, `applyTheme()` at runtime). Four built-in presets: Default, Neutral, Ocean, Forest. Because components consume only tokens, a future `[data-style="…"]` preset can restyle the entire library (radius, shadows, palette, density) with zero component changes.
+Brand retheme = override CSS variables (or `createTheme()` from a hex, `applyTheme()` at runtime). Four built-in presets: Default, Neutral, Ocean, Forest.
+
+Prefer committing the brand as **`arkite.theme.json`** (`name`, `primary`, `accent`, `radius`) and generating from it — `npx arkite-ui theme apply`, or `themeFileToCSS(parseThemeFile(json))` from `@arkite-ui/core/theme` (server-safe, no components). Hand-copied CSS variables drift silently across projects; four values in a file diff. Because components consume only tokens, a future `[data-style="…"]` preset can restyle the entire library (radius, shadows, palette, density) with zero component changes.
 
 ## Localization
 

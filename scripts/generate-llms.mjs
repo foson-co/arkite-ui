@@ -132,6 +132,13 @@ import { createTheme, applyTheme } from '${pkg.name}'
 applyTheme(createTheme({ primary: '#7c3aed' })) // HSL tokens from one hex
 \`\`\`
 
+A project's brand belongs in a committed \`arkite.theme.json\`
+(\`{ name, primary, accent, radius }\`) rather than hand-copied CSS variables.
+Generate the CSS from it with \`npx arkite-ui theme apply\`, or in-process via
+\`themeFileToCSS(parseThemeFile(json))\` from \`${pkg.name}/theme\` — a server-safe
+entry that loads no components. \`parseThemeFile\` rejects malformed hex and
+unknown keys, which \`createTheme\` alone would pass through as \`NaN\` tokens.
+
 ## Recipes — page-level compositions
 
 Whole pages assembled from the library, each one rendered and tested in CI.

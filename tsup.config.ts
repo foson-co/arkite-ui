@@ -39,6 +39,10 @@ export default defineConfig([
     entry: {
       'tailwind-preset': 'src/tailwind-preset.ts',
       tokens: 'src/tokens/index.ts',
+      // Theme generation without the component library: the `theme apply`
+      // CLI and any build script need createTheme/themeToCSS in plain Node,
+      // where importing the React entry would need react resolvable.
+      theme: 'src/theme/index.ts',
     },
   },
 ])

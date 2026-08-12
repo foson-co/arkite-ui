@@ -53,6 +53,35 @@ applyTheme(myTheme)
 
 Foregrounds are computed from the actual WCAG contrast ratio — black or white, whichever reads better on your brand color, in both light and dark mode. Every generated pair is guaranteed to meet AA (4.5:1), so any hex value is safe. If you override CSS variables by hand instead, validate the palette with the **Foundation / Design Tokens → Contrast Audit** page.
 
+## Theme File (`arkite.theme.json`)
+
+A brand copied as CSS variables into nine repos drifts, and nothing can tell you *how much*. Commit the four inputs instead and generate the rest:
+
+```json
+{ "name": "acme", "primary": "#6a4dff", "accent": "#00b4d8", "radius": "0.5rem" }
+```
+
+```bash
+npx arkite-ui theme apply                      # → src/styles/arkite-theme.css
+npx arkite-ui theme apply --print               # stdout, for a build pipeline
+npx arkite-ui theme apply brand.json --out src/brand.css
+npx arkite-ui theme apply --selector '[data-tenant="acme"]'   # scoped, per tenant
+```
+
+Import the generated file **after** the library stylesheet. The file is marked generated — edit the JSON and re-run instead, so the artifact stays the source of truth.
+
+The **Foundation / Theme Playground** page produces this JSON interactively: pick colors, watch the components repaint, copy the file out.
+
+Same generation is available in-process — server-safe, no components loaded:
+
+```ts
+import { parseThemeFile, themeFileToCSS } from '@arkite-ui/core/theme'
+
+const css = themeFileToCSS(parseThemeFile(JSON.parse(json)))
+```
+
+`parseThemeFile` is strict on purpose: `createTheme` turns a malformed hex into `NaN NaN% NaN%` and the failure only shows up as an unstyled app, so a bad value is rejected where it is written. Unknown keys are errors too — a typo'd `primaryColor` would otherwise silently ship the default brand.
+
 ## SSR / Style Tag
 
 Generate a CSS string for server-side rendering:

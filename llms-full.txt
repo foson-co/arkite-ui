@@ -82,6 +82,13 @@ import { createTheme, applyTheme } from '@arkite-ui/core'
 applyTheme(createTheme({ primary: '#7c3aed' })) // HSL tokens from one hex
 ```
 
+A project's brand belongs in a committed `arkite.theme.json`
+(`{ name, primary, accent, radius }`) rather than hand-copied CSS variables.
+Generate the CSS from it with `npx arkite-ui theme apply`, or in-process via
+`themeFileToCSS(parseThemeFile(json))` from `@arkite-ui/core/theme` — a server-safe
+entry that loads no components. `parseThemeFile` rejects malformed hex and
+unknown keys, which `createTheme` alone would pass through as `NaN` tokens.
+
 ## Recipes — page-level compositions
 
 Whole pages assembled from the library, each one rendered and tested in CI.
@@ -137,11 +144,11 @@ The app frame: localized AdminLayout with permission-aware navigation, the signe
 
 ## Export inventory
 
-Components: ActionButtons, AdminLayout, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbItemComponent, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbRoot, BreadcrumbSeparator, BulkActionBar, Button, Calendar, Card, CardContent, CardField, CardFooter, CardGrid, CardHeader, CardSurfaceContext, Checkbox, CheckboxCard, CircularProgress, CollapsibleSection, ColorPicker, Combobox, Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut, ConfirmDialog, Container, CopyButton, CopyInput, DataTable, DatePicker, DateRangePicker, DeleteConfirmDialog, DescriptionItem, DescriptionList, Divider, Drawer, DrawerBody, DrawerFooter, DrawerHeader, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, EmptyState, ErrorBoundary, ErrorState, FileTrigger, FileUpload, FileUploadButton, FilterBar, FilterBarActions, FilterBarFilters, FilterBarGroup, FilterBarSearch, FilterSelect, FilterToolbarContext, Form, FormActions, FormControl, FormDescription, FormField, FormLabel, FormMessage, FormSection, HStack, ImageUpload, ImperativeToastContainer, InfiniteScroll, InlineCode, Input, Kbd, Label, LoadingOverlay, LocaleProvider, Modal, ModalBody, ModalFooter, ModalHeader, Navbar, NavbarBrand, NavbarContent, NavbarDivider, NavbarItem, NavbarLink, NavbarSpacer, NoData, NoResults, NumberInput, PageHeader, Pagination, PasswordInput, PinInput, Popover, PopoverAnchor, PopoverClose, PopoverContent, PopoverTrigger, Progress, Radio, RadioGroup, ScrollFade, SearchInput, SegmentedControl, Select, SheetSelect, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarItem, SidebarToggle, SimpleTooltip, Skeleton, SkeletonAvatar, SkeletonCard, SkeletonTable, SkeletonText, Sparkline, Spinner, Stack, Stat, StatCard, StatGroup, StatusDot, Steps, Switch, Table, TableBody, TableCaption, TableCell, TableEmpty, TableFooter, TableHead, TableHeader, TableLoading, TableRow, Tabs, TabsContent, TabsList, TabsTrigger, TagInput, TenantSwitcher, Textarea, Timeline, Toast, ToastContainer, Toggle, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, Tree, VStack, ViewToggle, VirtualList
+Components: ActionButtons, AdminLayout, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbItemComponent, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbRoot, BreadcrumbSeparator, BulkActionBar, Button, Calendar, Card, CardContent, CardField, CardFooter, CardGrid, CardHeader, CardSurfaceContext, Checkbox, CheckboxCard, CircularProgress, CollapsibleSection, ColorPicker, Combobox, Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut, ConfirmDialog, Container, CopyButton, CopyInput, DataTable, DatePicker, DateRangePicker, DeleteConfirmDialog, DescriptionItem, DescriptionList, Divider, Drawer, DrawerBody, DrawerFooter, DrawerHeader, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, EmptyState, ErrorBoundary, ErrorState, FileTrigger, FileUpload, FileUploadButton, FilterBar, FilterBarActions, FilterBarFilters, FilterBarGroup, FilterBarSearch, FilterSelect, FilterToolbarContext, Form, FormActions, FormControl, FormDescription, FormField, FormLabel, FormMessage, FormSection, HStack, ImageUpload, ImperativeToastContainer, InfiniteScroll, InlineCode, Input, Kbd, Label, LoadingOverlay, LocaleProvider, Modal, ModalBody, ModalFooter, ModalHeader, Navbar, NavbarBrand, NavbarContent, NavbarDivider, NavbarItem, NavbarLink, NavbarSpacer, NoData, NoResults, NumberInput, PageHeader, Pagination, PasswordInput, PinInput, Popover, PopoverAnchor, PopoverClose, PopoverContent, PopoverTrigger, Progress, Radio, RadioGroup, ScrollFade, SearchInput, SegmentedControl, Select, SheetSelect, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarItem, SidebarToggle, SimpleTooltip, Skeleton, SkeletonAvatar, SkeletonCard, SkeletonTable, SkeletonText, Sparkline, Spinner, Stack, Stat, StatCard, StatGroup, StatusDot, Steps, Switch, Table, TableBody, TableCaption, TableCell, TableEmpty, TableFooter, TableHead, TableHeader, TableLoading, TableRow, Tabs, TabsContent, TabsList, TabsTrigger, TagInput, TenantSwitcher, Textarea, ThemeFileError, Timeline, Toast, ToastContainer, Toggle, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, Tree, VStack, ViewToggle, VirtualList
 
 Hooks: useCommandPalette, useFormContext, useFormFieldContext, useLocale, useServerTable, useSidebar, useToast, useToastStore
 
-Utilities: applyDarkTheme, applyTheme, chartColorList, chartColors, cn, createTheme, defaultTheme, enUS, forestTheme, neutralTheme, oceanTheme, themePresets, themeToCSS, toast, zhTW
+Utilities: applyDarkTheme, applyTheme, chartColorList, chartColors, cn, createTheme, defaultTheme, enUS, forestTheme, neutralTheme, oceanTheme, parseThemeFile, themeFileToCSS, themePresets, themeToCSS, toast, zhTW
 
 Full typed signatures for every export: llms-full.txt (or api-report.txt in the repo).
 
@@ -297,7 +304,9 @@ Warnings are dev-only (stripped in production), fire once per rule, and read Rea
 
 ## Theming
 
-Brand retheme = override CSS variables (or `createTheme()` from a hex, `applyTheme()` at runtime). Four built-in presets: Default, Neutral, Ocean, Forest. Because components consume only tokens, a future `[data-style="…"]` preset can restyle the entire library (radius, shadows, palette, density) with zero component changes.
+Brand retheme = override CSS variables (or `createTheme()` from a hex, `applyTheme()` at runtime). Four built-in presets: Default, Neutral, Ocean, Forest.
+
+Prefer committing the brand as **`arkite.theme.json`** (`name`, `primary`, `accent`, `radius`) and generating from it — `npx arkite-ui theme apply`, or `themeFileToCSS(parseThemeFile(json))` from `@arkite-ui/core/theme` (server-safe, no components). Hand-copied CSS variables drift silently across projects; four values in a file diff. Because components consume only tokens, a future `[data-style="…"]` preset can restyle the entire library (radius, shadows, palette, density) with zero component changes.
 
 ## Localization
 
@@ -1724,6 +1733,18 @@ type TextareaProps {
 
 type TextareaSize = TextareaSize
 
+type ThemeFile {
+  accent?: string | undefined
+  name?: string | undefined
+  primary: string
+  radius?: string | undefined
+}
+
+type ThemeFileToCSSOptions {
+  selector?: string | undefined
+  source?: string | undefined
+}
+
 type ThemePreset {
   dark: ThemeTokens
   light: ThemeTokens
@@ -2273,6 +2294,8 @@ value TenantSwitcher: React.ForwardRefExoticComponent<TenantSwitcherProps & Reac
 
 value Textarea: React.ForwardRefExoticComponent<TextareaProps & React.RefAttributes<HTMLTextAreaElement>>
 
+value ThemeFileError: typeof ThemeFileError
+
 value Timeline: React.ForwardRefExoticComponent<TimelineProps & React.RefAttributes<HTMLDivElement>>
 
 value Toast: ({ id: _id, title, description, variant, duration, action, isLoading, onClose, className, }: ToastProps) => JSX.Element
@@ -2318,6 +2341,10 @@ value forestTheme: ThemePreset
 value neutralTheme: ThemePreset
 
 value oceanTheme: ThemePreset
+
+value parseThemeFile: (input: unknown) => ThemeFile
+
+value themeFileToCSS: (file: ThemeFile, options?: ThemeFileToCSSOptions) => string
 
 value themePresets: { readonly default: ThemePreset; readonly neutral: ThemePreset; readonly ocean: ThemePreset; readonly forest: ThemePreset; }
 

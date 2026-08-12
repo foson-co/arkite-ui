@@ -41,6 +41,16 @@
         "default": "./dist/tailwind-preset.cjs"
       }
     },
+    "./theme": {
+      "import": {
+        "types": "./dist/theme.d.ts",
+        "default": "./dist/theme.js"
+      },
+      "require": {
+        "types": "./dist/theme.d.cts",
+        "default": "./dist/theme.cjs"
+      }
+    },
     "./tokens": {
       "import": {
         "types": "./dist/tokens.d.ts",
@@ -111,6 +121,10 @@
     {
       "path": "dist/tokens.js",
       "limit": "5 kB"
+    },
+    {
+      "path": "dist/theme.js",
+      "limit": "10 kB"
     }
   ],
   "peerDependencies": {

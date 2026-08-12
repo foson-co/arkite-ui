@@ -1410,6 +1410,18 @@ type TextareaProps {
 
 type TextareaSize = TextareaSize
 
+type ThemeFile {
+  accent?: string | undefined
+  name?: string | undefined
+  primary: string
+  radius?: string | undefined
+}
+
+type ThemeFileToCSSOptions {
+  selector?: string | undefined
+  source?: string | undefined
+}
+
 type ThemePreset {
   dark: ThemeTokens
   light: ThemeTokens
@@ -1959,6 +1971,8 @@ value TenantSwitcher: React.ForwardRefExoticComponent<TenantSwitcherProps & Reac
 
 value Textarea: React.ForwardRefExoticComponent<TextareaProps & React.RefAttributes<HTMLTextAreaElement>>
 
+value ThemeFileError: typeof ThemeFileError
+
 value Timeline: React.ForwardRefExoticComponent<TimelineProps & React.RefAttributes<HTMLDivElement>>
 
 value Toast: ({ id: _id, title, description, variant, duration, action, isLoading, onClose, className, }: ToastProps) => JSX.Element
@@ -2004,6 +2018,10 @@ value forestTheme: ThemePreset
 value neutralTheme: ThemePreset
 
 value oceanTheme: ThemePreset
+
+value parseThemeFile: (input: unknown) => ThemeFile
+
+value themeFileToCSS: (file: ThemeFile, options?: ThemeFileToCSSOptions) => string
 
 value themePresets: { readonly default: ThemePreset; readonly neutral: ThemePreset; readonly ocean: ThemePreset; readonly forest: ThemePreset; }
 
