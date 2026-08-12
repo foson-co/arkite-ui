@@ -109,3 +109,36 @@
 **翻案項 — Backdrop/overlay**:初次稽核估 4 處,深掃實際 **19 處、4 個專案**(ark-finance 11、chronoark-one 5、ark-museum 2、ark-rendoc-web 1),含兩處註解明文「arkite-ui 沒 generic Dialog / 無對應元件」。三種形態:自製對話框遮罩、dropdown 的透明點外關閉層、全螢幕看圖 lightbox。**證據強度已超過當初做 PinInput 的門檻,建議升級為「該做」**;同時要查為什麼 Modal/Drawer 沒接住前兩類需求(ark-finance 完全沒 import Modal——可能又是發現性)。
 
 **附帶發現**:cmdk 與 @tanstack/react-virtual 這兩個 optional peer 被 4 個消費端「為滿足 peer 警告而裝、實際零 import」——是 peer deps 瘦身(1.0 清單 ①)的直接證據:元件沒人用,依賴卻在 4 個 lockfile 裡。
+
+---
+
+## 回測(2026-08-12,`./scripts/audit-consumers.sh`)
+
+初次稽核的數字是手工蒐集的,沒有人能重跑、也就沒有人能誠實宣告「修好了」。
+本次把方法固定成腳本(同樣九個消費端、同樣 pattern、同樣輸出格式),兩次執行才可比。
+
+| 專案 | 版本 | raw `<table>` | Δ | DataTable | Table | useServerTable | AdminLayout |
+|---|---|---|---|---|---|---|---|
+| ark-connect/web | 0.12.0 | 5 | 0 | 6 | 0 | 0 | 1 |
+| ark-crew/web | 0.12.0 | 0 | — | 2 | 0 | 0 | 1 |
+| **ark-finance/frontend** | **0.19.1** | **0** | **−51** | **50** | 4 | 0 | 4 |
+| ark-harvest/web | 0.12.0 | 1 | 0 | 12 | 0 | 0 | 2 |
+| **ark-museum/apps/web** | **0.19.2** | 0 | — | 9 | 7 | **8** | 1 |
+| ark-museum/apps/field | 0.19.2 | 0 | — | 0 | 0 | 0 | 0 |
+| ark-rendoc-web/web | 0.10.0 | 5 | 0 | 0 | 0 | 0 | 0 |
+| ark-shield/web | 0.12.0 | 0 | — | 0 | 1 | 0 | 2 |
+| chronoark-one/frontend | *(舊名 `@arkite/ui`,file: 連結)* | 0 | — | 1 | 0 | 0 | 0 |
+
+**手刻 `<table>` 檔案數:62 → 11。**
+
+### 結論
+
+1. **ark-finance 51 → 0,遷移是真的。** 證據不是推論:`git log -S'<table'` 顯示 2026-08-08(稽核隔天)起一連串 `refactor(ui): … 改用 DataTable`,終於 `83c8ec5 升級 0.16.0,四張熱力圖全部遷移 —— 手刻 table 歸零`。修的是上游(`stickyLead`、`cellClassName`、DESIGN.md 的 Table/DataTable 選型規則),不是在下游寫 workaround。
+2. **`useServerTable` 0 → 8 個檔案**(ark-museum/apps/web,直接 import 自 `@arkite-ui/core`)。這是初次稽核裡「0/9 使用 vs 26 處手刻」那一條最刺眼的缺口,現在有真實使用者。
+3. **剩下的 11 個手刻 table 全部集中在沒升版的專案**:ark-connect 5(0.12.0)、ark-rendoc-web 5(0.10.0)、ark-harvest 1(0.12.0)。**這不是能力缺口,是版本落後** —— 解法是推升版,不是再加 API。
+4. **chronoark-one 已不是本套件的消費端**:package.json 仍指向改名前的 `@arkite/ui` 以 `file:` 連結。之後的稽核樣本數應為 8,不是 9。
+
+### 這次回測「沒有」測到什麼
+
+registry.json 與 `theme apply` 是 2026-08-12 才進 main 的,**尚未發版**,不可能影響上表任何數字。
+上面看到的是 2026-08-07 稽核 → 上游修正 → 消費端遷移這個迴圈確實閉合;registry 的效果要等發版且消費端升版後,再跑一次同一支腳本才能宣告。
