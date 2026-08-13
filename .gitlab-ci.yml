@@ -148,7 +148,17 @@ size:
 changeset:check:
   stage: check
   <<: *node-setup
+  # node:22-alpine ships without git, and this job's first command is a
+  # `git fetch` — so it died on `git: not found` (exit 127) the first time
+  # it ever ran. It only triggers on MR pipelines, and this repo had no MRs
+  # until !1, so the job sat unexercised since the day it was written.
+  before_script:
+    - apk add --no-cache git
+    - corepack enable && corepack prepare --activate
+    - pnpm install --frozen-lockfile --ignore-scripts
   script:
+    # The runner clones shallow (GIT_DEPTH 20); fetch main so --since can
+    # resolve it.
     - git fetch origin main:refs/remotes/origin/main
     - pnpm changeset status --since=origin/main
   rules:
