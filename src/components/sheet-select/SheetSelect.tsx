@@ -46,6 +46,17 @@ export interface SheetSelectProps extends Omit<
   size?: SheetSelectSize
   /** Custom option renderer */
   renderOption?: (option: SheetSelectOption, selected: boolean) => ReactNode
+  /**
+   * Class overrides for the parts SheetSelect renders itself. `className`
+   * stays on the trigger button; `classNames.sheet` reaches the bottom-sheet
+   * panel, which is otherwise unreachable from outside the component — use it
+   * instead of higher-specificity global CSS, which breaks silently on any
+   * markup change.
+   */
+  classNames?: {
+    trigger?: string
+    sheet?: string
+  }
 }
 
 const sizeStyles: Record<SheetSelectSize, string> = {
@@ -82,6 +93,7 @@ export const SheetSelect = forwardRef<HTMLButtonElement, SheetSelectProps>(
       errorMessage,
       size = 'md',
       renderOption,
+      classNames,
       ...props
     },
     ref
@@ -122,7 +134,8 @@ export const SheetSelect = forwardRef<HTMLButtonElement, SheetSelectProps>(
             'transition-colors duration-200',
             sizeStyles[size],
             error ? 'border-destructive focus-visible:ring-destructive' : 'border-input',
-            className
+            className,
+            classNames?.trigger
           )}
           {...props}
         >
@@ -138,7 +151,7 @@ export const SheetSelect = forwardRef<HTMLButtonElement, SheetSelectProps>(
           onClose={() => setOpenState(false)}
           position="bottom"
           showCloseButton={false}
-          className="h-auto max-h-[85dvh] rounded-t-2xl pb-[env(safe-area-inset-bottom)]"
+          className={cn('h-auto max-h-[85dvh] rounded-t-2xl', classNames?.sheet)}
         >
           {/* Grab handle */}
           <div

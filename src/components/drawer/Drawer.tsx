@@ -11,6 +11,7 @@ import { createPortal } from 'react-dom'
 import { cn } from '../../utils/cn'
 import { useLocale } from '../../locale'
 import { X } from 'lucide-react'
+import { drawerPositionStyles } from './position-styles'
 
 export type DrawerPosition = 'left' | 'right' | 'top' | 'bottom'
 export type DrawerSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | 'full'
@@ -36,13 +37,6 @@ export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title
   closeOnEscape?: boolean
   /** Footer content */
   footer?: ReactNode
-}
-
-const positionStyles: Record<DrawerPosition, string> = {
-  left: 'inset-y-0 left-0',
-  right: 'inset-y-0 right-0',
-  top: 'inset-x-0 top-0',
-  bottom: 'inset-x-0 bottom-0',
 }
 
 const sizeStyles: Record<DrawerPosition, Record<DrawerSize, string>> = {
@@ -138,7 +132,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
     useEffect(() => {
       if (open) {
         // Mount first, then animate in
-        setIsVisible(true) // eslint-disable-line react-hooks/set-state-in-effect -- coordinating mount/animation with DOM
+        setIsVisible(true)
         // Use requestAnimationFrame to ensure DOM is ready before animating
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
@@ -252,7 +246,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
           }}
           className={cn(
             'bg-card fixed flex flex-col shadow-xl transition-transform duration-300 ease-out',
-            positionStyles[position],
+            drawerPositionStyles[position],
             sizeStyles[position][size],
             isAnimating ? translateStyles[position].open : translateStyles[position].closed,
             className

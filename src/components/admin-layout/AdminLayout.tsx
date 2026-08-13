@@ -147,7 +147,8 @@ export interface AdminLayoutProps {
   hideNavbar?: boolean | 'mobile'
   /**
    * Mobile bottom navigation slot — rendered as a fixed bar below the `md`
-   * breakpoint with safe-area (home indicator) padding built in; the main
+   * breakpoint with safe-area padding built in on all three exposed edges
+   * (home indicator plus the side notch in landscape); the main
    * area gets matching bottom padding so content is never hidden behind it.
    * Pair with `hideSidebar="mobile"` for the sidebar-on-desktop /
    * bottom-tabs-on-mobile pattern.
@@ -522,7 +523,8 @@ export function AdminLayout({
         <nav
           aria-label={locale.adminLayout.bottomNavigation}
           className={cn(
-            'bg-card fixed inset-x-0 bottom-0 z-40 border-t pb-[env(safe-area-inset-bottom)] md:hidden',
+            'bg-card fixed inset-x-0 bottom-0 z-40 border-t md:hidden',
+            'pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]',
             classNames?.bottomNav
           )}
         >

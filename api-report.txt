@@ -1084,6 +1084,7 @@ type SheetSelectOption {
 }
 
 type SheetSelectProps {
+  classNames?: { trigger?: string; sheet?: string; } | undefined
   defaultOpen?: boolean | undefined
   defaultValue?: string | undefined
   disabled?: boolean | undefined

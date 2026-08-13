@@ -105,6 +105,21 @@ describe('AnimatedDrawer', () => {
     )
     expect(screen.queryByText('Hidden drawer')).not.toBeInTheDocument()
   })
+
+  // Shares Drawer's position/safe-area table — this guards against the two
+  // copies drifting apart again.
+  it('carries the same safe-area insets as Drawer', async () => {
+    render(
+      <AnimatedDrawer open onClose={() => {}} position="bottom" className="panel-under-test">
+        <p>Inset drawer</p>
+      </AnimatedDrawer>
+    )
+    await screen.findByText('Inset drawer')
+    const panel = document.querySelector('.panel-under-test')!
+    expect(panel.className).toContain('pl-[env(safe-area-inset-left)]')
+    expect(panel.className).toContain('pr-[env(safe-area-inset-right)]')
+    expect(panel.className).toContain('pb-[env(safe-area-inset-bottom)]')
+  })
 })
 
 describe('useReducedMotion', () => {

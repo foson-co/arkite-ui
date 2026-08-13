@@ -6,6 +6,7 @@ import { useLocale } from '../../locale'
 import { X } from 'lucide-react'
 import { useReducedMotion } from './use-reduced-motion'
 import type { DrawerPosition, DrawerSize } from '../drawer/Drawer'
+import { drawerPositionStyles } from '../drawer/position-styles'
 
 // framer-motion redefines these handlers with its own signatures on motion.div,
 // so they are excluded from the passthrough props
@@ -25,13 +26,6 @@ export interface AnimatedDrawerProps extends Omit<
   closeOnBackdropClick?: boolean
   closeOnEscape?: boolean
   footer?: ReactNode
-}
-
-const positionStyles: Record<DrawerPosition, string> = {
-  left: 'inset-y-0 left-0',
-  right: 'inset-y-0 right-0',
-  top: 'inset-x-0 top-0',
-  bottom: 'inset-x-0 bottom-0',
 }
 
 const sizeStyles: Record<DrawerPosition, Record<DrawerSize, string>> = {
@@ -224,7 +218,7 @@ export const AnimatedDrawer = forwardRef<HTMLDivElement, AnimatedDrawerProps>(
               transition={{ duration, ease: [0.32, 0.72, 0, 1] }}
               className={cn(
                 'bg-card fixed flex flex-col shadow-xl',
-                positionStyles[position],
+                drawerPositionStyles[position],
                 sizeStyles[position][size],
                 className
               )}

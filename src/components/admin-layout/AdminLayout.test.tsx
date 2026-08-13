@@ -398,7 +398,10 @@ describe('AdminLayout', () => {
       })
       const nav = screen.getByRole('navigation', { name: 'Bottom navigation' })
       expect(nav).toHaveClass('fixed', 'md:hidden', 'test-bottomnav')
+      // Landscape phones put the notch beside the bar, not only under it
       expect(nav.className).toContain('safe-area-inset-bottom')
+      expect(nav.className).toContain('safe-area-inset-left')
+      expect(nav.className).toContain('safe-area-inset-right')
       expect(container.querySelector('main')).toHaveClass('max-md:pb-24')
     })
 

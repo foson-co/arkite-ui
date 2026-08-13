@@ -119,3 +119,35 @@ function RenderOptionDemo() {
 }
 
 export const CustomOptionRendering: StoryFn = () => <RenderOptionDemo />
+
+// ── classNames (restyling the sheet itself) ──
+
+/**
+ * `className` lands on the trigger button. The sheet panel it opens is a
+ * different element, so restyling it needs `classNames.sheet` — the supported
+ * alternative to out-specifying the component from global CSS, which breaks
+ * silently whenever the markup changes.
+ */
+function ClassNamesDemo() {
+  const [value, setValue] = useState('banana')
+
+  return (
+    <div className="max-w-sm">
+      <SheetSelect
+        options={fruits}
+        value={value}
+        onChange={setValue}
+        title="Fruit"
+        classNames={{
+          trigger: 'border-primary',
+          sheet: 'max-h-[60dvh] rounded-t-3xl',
+        }}
+      />
+      <p className="text-muted-foreground mt-2 text-xs">
+        Trigger keeps a primary border; the sheet is capped shorter with a rounder top edge.
+      </p>
+    </div>
+  )
+}
+
+export const ClassNameOverrides: StoryFn = () => <ClassNamesDemo />
