@@ -128,6 +128,7 @@ Picking the right component is the easy half. Every one of these was found in co
 | **Date range in a toolbar needs `labelPlacement="inside"`** | A stacked label makes the control two lines tall, leaving its inputs ~10px below the single-line controls beside it | ✅ `labelPlacement="top"` inside a `FilterBar` |
 | **Labelled filter clusters go through `FilterBarGroup`** | Hand-rolled label + flex row ships without `flex-wrap`/`min-w-0`, so one group's width pushes the whole page sideways on mobile | — |
 | **Vertical tabs go through `orientation`, not `className`** | className flips the layout only; the `underline` indicator, `aria-orientation`, and the keyboard axis all stay horizontal | — |
+| **Don't hand-add safe-area padding to overlays** | `Drawer`, `AnimatedDrawer`, `SheetSelect` and `AdminLayout`'s `bottomNav` already pad every edge a cutout can reach — including left/right, which is what a *landscape* phone's notch clips. Hand-rolled `pb-[env(safe-area-inset-bottom)]` both breaks hard rule 4 and covers one edge out of three, so it reads as fixed while still clipping on rotation. Insets are padding, so the panel keeps its `size` footprint; `env()` is 0 without `viewport-fit=cover`, making it inert on desktop. Your own `className` still wins if you need to opt out | — |
 
 Warnings are dev-only (stripped in production), fire once per rule, and read React context rather than inspecting parent DOM — so they survive wrappers and portals. They are tuned to stay silent on code that is already correct by other means: the Card rule, for instance, accepts a `className` that neutralises the frame.
 
@@ -144,7 +145,7 @@ Warnings are dev-only (stripped in production), fire once per rule, and read Rea
 - Selection callbacks: **`onSelect(value, object?)`** — first arg is the selected value/key, optional second is the full object. Multi-select checkbox trees/tables use **`onSelectionChange`**
 - Navigation: data-layer props are **`path`** (router semantics), render-layer receives **`href`** (DOM semantics); custom link rendering is **`renderLink({ href, children, className, active })`** across all nav components
 - Definition objects (table columns, nav items) may use short render-prop names (`cell`, `icon`) — the `renderX` rule applies to component props, not def-object fields
-- Escape hatches: `className` everywhere (merged via `cn`), `renderX` props for custom item rendering
+- Escape hatches: `className` everywhere (merged via `cn`), `renderX` props for custom item rendering. When a component renders more than one region, the extra regions are reachable through **`classNames`** (`AdminLayout.classNames.bottomNav`, `SheetSelect.classNames.sheet` — `className` stays on the primary/trigger element). Reach for `classNames` rather than out-specifying the component from global CSS: those selectors target internals and break silently on any markup change
 
 ## Theming
 

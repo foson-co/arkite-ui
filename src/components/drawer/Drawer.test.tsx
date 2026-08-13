@@ -158,14 +158,70 @@ describe('Drawer', () => {
     )
   })
 
-  describe('size variants', () => {
-    it.each(['sm', 'md', 'lg', 'xl', 'full'] as const)(
-      'renders with size="%s"',
-      (size) => {
-        renderOpenDrawer({ size, children: <p>Sized content</p> })
-        expect(screen.getByText('Sized content')).toBeInTheDocument()
+  // jsdom does not evaluate env(), so these assert the utility classes rather
+  // than computed padding. Landscape phones put the notch on the side, so every
+  // position needs the insets perpendicular to its own edge, not just bottom.
+  describe('safe-area insets', () => {
+    const panelOf = (container: HTMLElement) =>
+      container.ownerDocument.querySelector('.panel-under-test')!
+
+    it.each([
+      [
+        'left',
+        [
+          'pl-[env(safe-area-inset-left)]',
+          'pt-[env(safe-area-inset-top)]',
+          'pb-[env(safe-area-inset-bottom)]',
+        ],
+      ],
+      [
+        'right',
+        [
+          'pr-[env(safe-area-inset-right)]',
+          'pt-[env(safe-area-inset-top)]',
+          'pb-[env(safe-area-inset-bottom)]',
+        ],
+      ],
+      [
+        'top',
+        [
+          'pt-[env(safe-area-inset-top)]',
+          'pl-[env(safe-area-inset-left)]',
+          'pr-[env(safe-area-inset-right)]',
+        ],
+      ],
+      [
+        'bottom',
+        [
+          'pb-[env(safe-area-inset-bottom)]',
+          'pl-[env(safe-area-inset-left)]',
+          'pr-[env(safe-area-inset-right)]',
+        ],
+      ],
+    ] as const)('position="%s" pads the edges the notch can reach', (position, expected) => {
+      const { container } = renderOpenDrawer({ position, className: 'panel-under-test' })
+      const panel = panelOf(container as HTMLElement)
+      for (const utility of expected) {
+        expect(panel.className).toContain(utility)
       }
-    )
+    })
+
+    it('lets a consumer className win over the built-in inset', () => {
+      const { container } = renderOpenDrawer({
+        position: 'bottom',
+        className: 'panel-under-test pb-8',
+      })
+      const panel = panelOf(container as HTMLElement)
+      expect(panel.className).toContain('pb-8')
+      expect(panel.className).not.toContain('pb-[env(safe-area-inset-bottom)]')
+    })
+  })
+
+  describe('size variants', () => {
+    it.each(['sm', 'md', 'lg', 'xl', 'full'] as const)('renders with size="%s"', (size) => {
+      renderOpenDrawer({ size, children: <p>Sized content</p> })
+      expect(screen.getByText('Sized content')).toBeInTheDocument()
+    })
   })
 })
 
@@ -176,9 +232,7 @@ describe('DrawerHeader', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(
-      <DrawerHeader className="custom-class">Header</DrawerHeader>
-    )
+    const { container } = render(<DrawerHeader className="custom-class">Header</DrawerHeader>)
     expect(container.firstChild).toHaveClass('custom-class')
   })
 })
@@ -190,9 +244,7 @@ describe('DrawerBody', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(
-      <DrawerBody className="custom-class">Body</DrawerBody>
-    )
+    const { container } = render(<DrawerBody className="custom-class">Body</DrawerBody>)
     expect(container.firstChild).toHaveClass('custom-class')
   })
 })
@@ -204,9 +256,7 @@ describe('DrawerFooter', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(
-      <DrawerFooter className="custom-class">Footer</DrawerFooter>
-    )
+    const { container } = render(<DrawerFooter className="custom-class">Footer</DrawerFooter>)
     expect(container.firstChild).toHaveClass('custom-class')
   })
 })

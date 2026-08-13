@@ -11,6 +11,7 @@ import { createPortal } from 'react-dom'
 import { cn } from '../../utils/cn'
 import { useLocale } from '../../locale'
 import { X } from 'lucide-react'
+import { drawerPositionStyles } from './position-styles'
 
 export type DrawerPosition = 'left' | 'right' | 'top' | 'bottom'
 export type DrawerSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | 'full'
@@ -36,13 +37,6 @@ export interface DrawerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title
   closeOnEscape?: boolean
   /** Footer content */
   footer?: ReactNode
-}
-
-const positionStyles: Record<DrawerPosition, string> = {
-  left: 'inset-y-0 left-0',
-  right: 'inset-y-0 right-0',
-  top: 'inset-x-0 top-0',
-  bottom: 'inset-x-0 bottom-0',
 }
 
 const sizeStyles: Record<DrawerPosition, Record<DrawerSize, string>> = {
@@ -138,7 +132,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
     useEffect(() => {
       if (open) {
         // Mount first, then animate in
-        setIsVisible(true) // eslint-disable-line react-hooks/set-state-in-effect -- coordinating mount/animation with DOM
+        setIsVisible(true)
         // Use requestAnimationFrame to ensure DOM is ready before animating
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
@@ -246,13 +240,13 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
         {/* Drawer */}
         <div
           ref={(node) => {
-            (drawerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+            ;(drawerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
             if (typeof ref === 'function') ref(node)
             else if (ref) ref.current = node
           }}
           className={cn(
-            'fixed flex flex-col bg-card shadow-xl transition-transform duration-300 ease-out',
-            positionStyles[position],
+            'bg-card fixed flex flex-col shadow-xl transition-transform duration-300 ease-out',
+            drawerPositionStyles[position],
             sizeStyles[position][size],
             isAnimating ? translateStyles[position].open : translateStyles[position].closed,
             className
@@ -265,16 +259,20 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
             <div className="flex items-start justify-between gap-4 border-b p-4">
               <div className="space-y-1">
                 {title && (
-                  <h2 id={titleId} className="text-lg font-semibold leading-none">{title}</h2>
+                  <h2 id={titleId} className="text-lg leading-none font-semibold">
+                    {title}
+                  </h2>
                 )}
                 {description && (
-                  <p id={descriptionId} className="text-sm text-muted-foreground">{description}</p>
+                  <p id={descriptionId} className="text-muted-foreground text-sm">
+                    {description}
+                  </p>
                 )}
               </div>
               {showCloseButton && (
                 <button
                   onClick={onClose}
-                  className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="text-muted-foreground hover:text-foreground focus:ring-ring shrink-0 rounded-md p-1 focus:ring-2 focus:outline-none"
                 >
                   <X className="h-5 w-5" />
                   <span className="sr-only">{locale.drawer.close}</span>
@@ -288,9 +286,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
 
           {/* Footer */}
           {footer && (
-            <div className="flex items-center justify-end gap-2 border-t p-4">
-              {footer}
-            </div>
+            <div className="flex items-center justify-end gap-2 border-t p-4">{footer}</div>
           )}
         </div>
       </div>
@@ -308,11 +304,7 @@ export type DrawerHeaderProps = HTMLAttributes<HTMLDivElement>
 /** Header section for a custom Drawer layout. */
 export const DrawerHeader = forwardRef<HTMLDivElement, DrawerHeaderProps>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('flex-shrink-0 border-b p-4', className)}
-      {...props}
-    />
+    <div ref={ref} className={cn('flex-shrink-0 border-b p-4', className)} {...props} />
   )
 )
 
@@ -323,11 +315,7 @@ export type DrawerBodyProps = HTMLAttributes<HTMLDivElement>
 /** Scrollable body section for a custom Drawer layout. */
 export const DrawerBody = forwardRef<HTMLDivElement, DrawerBodyProps>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('flex-1 overflow-y-auto p-4', className)}
-      {...props}
-    />
+    <div ref={ref} className={cn('flex-1 overflow-y-auto p-4', className)} {...props} />
   )
 )
 
@@ -340,7 +328,7 @@ export const DrawerFooter = forwardRef<HTMLDivElement, DrawerFooterProps>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('flex-shrink-0 flex items-center justify-end gap-2 border-t p-4', className)}
+      className={cn('flex flex-shrink-0 items-center justify-end gap-2 border-t p-4', className)}
       {...props}
     />
   )
