@@ -1,4 +1,4 @@
-# @arkite-ui/core v0.20.1
+# @arkite-ui/core v0.21.0
 
 > React components for multi-tenant SaaS admin panels. Tailwind CSS v4 +
 > Radix UI + TypeScript. Pure UI only: no business logic, auth, stores, or
