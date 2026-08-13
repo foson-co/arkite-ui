@@ -45,13 +45,8 @@ describe('SheetSelect', () => {
     const user = userEvent.setup()
     render(<SheetSelect options={options} value="apple" />)
     await user.click(screen.getByRole('button', { name: 'Apple' }))
-    expect(screen.getByRole('option', { name: 'Apple' })).toHaveAttribute(
-      'aria-selected',
-      'true'
-    )
-    expect(
-      screen.getByRole('option', { name: /Banana/ })
-    ).toHaveAttribute('aria-selected', 'false')
+    expect(screen.getByRole('option', { name: 'Apple' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('option', { name: /Banana/ })).toHaveAttribute('aria-selected', 'false')
   })
 
   it('calls onChange and closes the sheet on select', async () => {
@@ -87,13 +82,9 @@ describe('SheetSelect', () => {
   })
 
   it('renders error message and error styles', () => {
-    render(
-      <SheetSelect options={options} error errorMessage="Required field" />
-    )
+    render(<SheetSelect options={options} error errorMessage="Required field" />)
     expect(screen.getByText('Required field')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Select…' })).toHaveClass(
-      'border-destructive'
-    )
+    expect(screen.getByRole('button', { name: 'Select…' })).toHaveClass('border-destructive')
   })
 
   it('supports renderOption for custom option content', async () => {
@@ -129,9 +120,7 @@ describe('SheetSelect', () => {
 
   it('applies custom className to the trigger', () => {
     render(<SheetSelect options={options} className="custom-class" />)
-    expect(screen.getByRole('button', { name: 'Select…' })).toHaveClass(
-      'custom-class'
-    )
+    expect(screen.getByRole('button', { name: 'Select…' })).toHaveClass('custom-class')
   })
 })
 
@@ -151,9 +140,7 @@ describe('SheetSelect uncontrolled value', () => {
 
     expect(onChange).toHaveBeenCalledWith('banana')
     fireEvent.transitionEnd(screen.getByRole('listbox'))
-    expect(
-      screen.getByRole('button', { name: /Banana/ })
-    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Banana/ })).toBeInTheDocument()
   })
 })
 
@@ -171,9 +158,7 @@ describe('SheetSelect controlled open', () => {
   it('stays closed when open is false even after clicking the trigger', async () => {
     const user = userEvent.setup()
     const onOpenChange = vi.fn()
-    render(
-      <SheetSelect options={options} open={false} onOpenChange={onOpenChange} />
-    )
+    render(<SheetSelect options={options} open={false} onOpenChange={onOpenChange} />)
 
     await user.click(screen.getByRole('button', { name: 'Select…' }))
 

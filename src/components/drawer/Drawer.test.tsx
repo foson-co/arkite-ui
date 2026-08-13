@@ -159,13 +159,10 @@ describe('Drawer', () => {
   })
 
   describe('size variants', () => {
-    it.each(['sm', 'md', 'lg', 'xl', 'full'] as const)(
-      'renders with size="%s"',
-      (size) => {
-        renderOpenDrawer({ size, children: <p>Sized content</p> })
-        expect(screen.getByText('Sized content')).toBeInTheDocument()
-      }
-    )
+    it.each(['sm', 'md', 'lg', 'xl', 'full'] as const)('renders with size="%s"', (size) => {
+      renderOpenDrawer({ size, children: <p>Sized content</p> })
+      expect(screen.getByText('Sized content')).toBeInTheDocument()
+    })
   })
 })
 
@@ -176,9 +173,7 @@ describe('DrawerHeader', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(
-      <DrawerHeader className="custom-class">Header</DrawerHeader>
-    )
+    const { container } = render(<DrawerHeader className="custom-class">Header</DrawerHeader>)
     expect(container.firstChild).toHaveClass('custom-class')
   })
 })
@@ -190,9 +185,7 @@ describe('DrawerBody', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(
-      <DrawerBody className="custom-class">Body</DrawerBody>
-    )
+    const { container } = render(<DrawerBody className="custom-class">Body</DrawerBody>)
     expect(container.firstChild).toHaveClass('custom-class')
   })
 })
@@ -204,9 +197,7 @@ describe('DrawerFooter', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(
-      <DrawerFooter className="custom-class">Footer</DrawerFooter>
-    )
+    const { container } = render(<DrawerFooter className="custom-class">Footer</DrawerFooter>)
     expect(container.firstChild).toHaveClass('custom-class')
   })
 })

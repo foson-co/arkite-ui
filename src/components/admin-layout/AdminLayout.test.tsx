@@ -189,9 +189,7 @@ describe('AdminLayout', () => {
       },
       {
         label: 'Research',
-        items: [
-          { path: '/research/reports', label: 'Reports' },
-        ],
+        items: [{ path: '/research/reports', label: 'Reports' }],
       },
     ]
 
@@ -240,7 +238,10 @@ describe('AdminLayout', () => {
         navigation: railNavigation,
         currentPath: '/research/reports',
       })
-      expect(screen.getByRole('button', { name: 'Research' })).toHaveAttribute('aria-current', 'page')
+      expect(screen.getByRole('button', { name: 'Research' })).toHaveAttribute(
+        'aria-current',
+        'page'
+      )
     })
 
     it('navigates to group.path on rail click when provided', async () => {
@@ -323,7 +324,9 @@ describe('AdminLayout', () => {
         currentPath: '/app/market',
         basePath: '/app',
         renderLink: ({ href, children }) => (
-          <a href={href} data-testid={`rail-link-${href}`}>{children}</a>
+          <a href={href} data-testid={`rail-link-${href}`}>
+            {children}
+          </a>
         ),
       })
       expect(screen.getByTestId('rail-link-/app/market')).toHaveAttribute('href', '/app/market')

@@ -1,9 +1,4 @@
-import {
-  forwardRef,
-  useState,
-  type ButtonHTMLAttributes,
-  type ReactNode,
-} from 'react'
+import { forwardRef, useState, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../../utils/cn'
 import { Check, ChevronDown } from 'lucide-react'
 import { Drawer } from '../drawer'
@@ -19,11 +14,10 @@ export interface SheetSelectOption {
   disabled?: boolean
 }
 
-export interface SheetSelectProps
-  extends Omit<
-    ButtonHTMLAttributes<HTMLButtonElement>,
-    'onChange' | 'value' | 'defaultValue' | 'title'
-  > {
+export interface SheetSelectProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'onChange' | 'value' | 'defaultValue' | 'title'
+> {
   /** Options list */
   options: readonly SheetSelectOption[]
   /** Selected value */
@@ -122,28 +116,22 @@ export const SheetSelect = forwardRef<HTMLButtonElement, SheetSelectProps>(
           aria-haspopup="listbox"
           aria-expanded={open}
           className={cn(
-            'flex w-full items-center justify-between gap-2 rounded-md border bg-background text-left',
-            'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+            'bg-background flex w-full items-center justify-between gap-2 rounded-md border text-left',
+            'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
             'disabled:cursor-not-allowed disabled:opacity-50',
             'transition-colors duration-200',
             sizeStyles[size],
-            error
-              ? 'border-destructive focus-visible:ring-destructive'
-              : 'border-input',
+            error ? 'border-destructive focus-visible:ring-destructive' : 'border-input',
             className
           )}
           {...props}
         >
           <span className={cn('truncate', !selected && 'text-muted-foreground')}>
-            {selected ? selected.label : placeholder ?? locale.sheetSelect.placeholder}
+            {selected ? selected.label : (placeholder ?? locale.sheetSelect.placeholder)}
           </span>
-          <ChevronDown
-            className={cn('shrink-0 text-muted-foreground', iconSizeStyles[size])}
-          />
+          <ChevronDown className={cn('text-muted-foreground shrink-0', iconSizeStyles[size])} />
         </button>
-        {errorMessage && (
-          <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>}
 
         <Drawer
           open={open}
@@ -154,15 +142,17 @@ export const SheetSelect = forwardRef<HTMLButtonElement, SheetSelectProps>(
         >
           {/* Grab handle */}
           <div
-            className="mx-auto mb-3 h-1.5 w-10 shrink-0 rounded-full bg-muted-foreground/30"
+            className="bg-muted-foreground/30 mx-auto mb-3 h-1.5 w-10 shrink-0 rounded-full"
             aria-hidden="true"
           />
           {title && (
-            <div className="mb-2 px-1 text-base font-semibold text-foreground">
-              {title}
-            </div>
+            <div className="text-foreground mb-2 px-1 text-base font-semibold">{title}</div>
           )}
-          <div role="listbox" aria-label={typeof title === 'string' ? title : undefined} className="space-y-1">
+          <div
+            role="listbox"
+            aria-label={typeof title === 'string' ? title : undefined}
+            className="space-y-1"
+          >
             {options.map((option) => {
               const isSelected = option.value === currentValue
               return (
@@ -175,9 +165,7 @@ export const SheetSelect = forwardRef<HTMLButtonElement, SheetSelectProps>(
                   onClick={() => handleSelect(option)}
                   className={cn(
                     'flex min-h-11 w-full items-center justify-between gap-3 rounded-md px-3 py-3 text-left text-sm',
-                    isSelected
-                      ? 'bg-muted font-medium text-foreground'
-                      : 'hover:bg-muted/50',
+                    isSelected ? 'bg-muted text-foreground font-medium' : 'hover:bg-muted/50',
                     option.disabled && 'cursor-not-allowed opacity-50 hover:bg-transparent'
                   )}
                 >
@@ -187,15 +175,13 @@ export const SheetSelect = forwardRef<HTMLButtonElement, SheetSelectProps>(
                     <span className="min-w-0">
                       <span className="block truncate">{option.label}</span>
                       {option.description && (
-                        <span className="block truncate text-xs text-muted-foreground">
+                        <span className="text-muted-foreground block truncate text-xs">
                           {option.description}
                         </span>
                       )}
                     </span>
                   )}
-                  {isSelected && (
-                    <Check className="h-4.5 w-4.5 shrink-0 text-primary" />
-                  )}
+                  {isSelected && <Check className="text-primary h-4.5 w-4.5 shrink-0" />}
                 </button>
               )
             })}

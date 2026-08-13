@@ -109,12 +109,8 @@ function RenderOptionDemo() {
         title="Currency"
         renderOption={(option, selected) => (
           <span className="flex items-baseline gap-2">
-            <span className={selected ? 'font-semibold' : 'font-medium'}>
-              {option.label}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {option.description}
-            </span>
+            <span className={selected ? 'font-semibold' : 'font-medium'}>{option.label}</span>
+            <span className="text-muted-foreground text-xs">{option.description}</span>
           </span>
         )}
       />

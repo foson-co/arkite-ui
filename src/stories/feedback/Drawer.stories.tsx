@@ -31,7 +31,7 @@ const RightDemo = () => {
         title="Drawer Title"
         description="This is a side panel"
       >
-        <p className="text-sm text-muted-foreground p-4">Drawer content goes here.</p>
+        <p className="text-muted-foreground p-4 text-sm">Drawer content goes here.</p>
       </Drawer>
     </>
   )
@@ -44,13 +44,8 @@ const LeftDemo = () => {
   return (
     <>
       <Button onClick={() => setOpen(true)}>Open Left Drawer</Button>
-      <Drawer
-        open={open}
-        onClose={() => setOpen(false)}
-        title="Navigation"
-        position="left"
-      >
-        <p className="text-sm text-muted-foreground p-4">Left side content.</p>
+      <Drawer open={open} onClose={() => setOpen(false)} title="Navigation" position="left">
+        <p className="text-muted-foreground p-4 text-sm">Left side content.</p>
       </Drawer>
     </>
   )
@@ -63,13 +58,8 @@ const BottomDemo = () => {
   return (
     <>
       <Button onClick={() => setOpen(true)}>Open Bottom Drawer</Button>
-      <Drawer
-        open={open}
-        onClose={() => setOpen(false)}
-        title="Details"
-        position="bottom"
-      >
-        <p className="text-sm text-muted-foreground p-4">Bottom panel content.</p>
+      <Drawer open={open} onClose={() => setOpen(false)} title="Details" position="bottom">
+        <p className="text-muted-foreground p-4 text-sm">Bottom panel content.</p>
       </Drawer>
     </>
   )
