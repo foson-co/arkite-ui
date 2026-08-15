@@ -104,7 +104,6 @@ The peer range permits `^18 || ^19`, and both are exercised in CI — not just p
 | `tsc --noEmit` | ✅ every MR | ✅ every MR |
 | Keyboard/APG specs (real Chromium) | ✅ every MR | ✅ on `main` |
 | Next 15 App Router — RSC boundary + hydration | — | ✅ every MR |
-| Storybook visual regression (Chromatic) | ✅ every MR | — |
 
 ## Quick Start
 
@@ -453,13 +452,12 @@ pnpm test:coverage       # Tests with coverage report
 pnpm lint                # Lint source code
 pnpm typecheck           # Type check
 pnpm size                # Check bundle size budget
-pnpm chromatic           # Visual regression testing
 pnpm clean               # Clean dist/
 ```
 
 ## CI/CD Pipeline
 
-Every push triggers **lint**, **typecheck**, **test**, and **size** checks. On merge requests, **changeset:check** verifies a changeset is present and **chromatic** runs visual regression tests.
+Every push triggers **lint**, **typecheck**, **test**, **keyboard:browser**, **smoke:next**, and **size** checks, plus the React 19 matrix (**typecheck:react19**, **test:react19**). On merge requests, **changeset:check** verifies a changeset is present. On `main`, **keyboard:browser:react19** re-runs the APG keyboard specs under React 19 in real Chromium.
 
 On git tags:
 

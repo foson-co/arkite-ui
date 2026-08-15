@@ -67,7 +67,13 @@
 
 - [x] 修正 `package.json` metadata（author、description 移除 shadcn/ui）
 - [x] 補 `MIGRATION.md` — motion import 路徑 + Radix peer deps 變更
-- [x] Chromatic token 設好，CI 視覺回歸跑通（`.gitlab-ci.yml` chromatic job，MR + main 觸發）
+- [ ] ~~Chromatic token 設好，CI 視覺回歸跑通~~ → **未採用，2026-08-15 移除接線**。這條當初勾錯了：
+  job、devDeps、addon 都接好了，但 `CHROMATIC_PROJECT_TOKEN` 從未設定，而 job 的 rules 帶著
+  `&& $CHROMATIC_PROJECT_TOKEN`，所以 job 從來沒有被建立過——CI 不會報錯，只是靜默不跑，
+  因此沒人發現。決定不補 token：416 個 story × 每次 build = 416 snapshots，免費額度 5,000/月
+  ≈ 每月 12 次 build，而 MR + main 各跑一次等於每個 MR 吃 2 次。視覺確認改由 ui.foson.co 的
+  Storybook 站與發版後的 starter 金絲雀承接；真要自動化，既有的 playwright image + vitest
+  browser project 已足夠做 `toHaveScreenshot()`，挑代表性 story 即可，不需外部服務。
 - [x] Changesets 首次發布驗證，確認 npm publish 流程正確
 - [x] bump v0.4.0 → 後續以 `@arkite-ui/core@0.5.0` 發布 npm public（2026-04-22）
 
