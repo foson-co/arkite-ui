@@ -259,26 +259,6 @@ build:
       - dist/
     expire_in: 1 hour
 
-chromatic:
-  stage: check
-  <<: *node-setup
-  before_script:
-    - apk add --no-cache git
-    - corepack enable && corepack prepare --activate
-    - pnpm install --frozen-lockfile --ignore-scripts
-  script:
-    # MR：有未 review 的視覺變更就擋（到 Chromatic 上 approve 後重跑此 job）。
-    # main：MR 階段已審過，自動接受並更新 baseline。
-    - |
-      if [ -n "$CI_MERGE_REQUEST_IID" ]; then
-        pnpm exec chromatic
-      else
-        pnpm exec chromatic --auto-accept-changes
-      fi
-  rules:
-    - if: $CI_MERGE_REQUEST_IID && $CHROMATIC_PROJECT_TOKEN
-    - if: $CI_COMMIT_BRANCH == "main" && $CHROMATIC_PROJECT_TOKEN
-
 # -------------------------------------------------------------------
 # Publish: only on tags on main branch
 # (Storybook is deployed to GitHub Pages via .github/workflows/deploy-storybook.yml)

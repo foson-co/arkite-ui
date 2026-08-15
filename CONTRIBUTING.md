@@ -28,7 +28,6 @@ pnpm storybook       # Preview components at http://localhost:6006
 | `pnpm lint` | Lint source code (ESLint 9) |
 | `pnpm typecheck` | TypeScript type check |
 | `pnpm size` | Check bundle size budget |
-| `pnpm chromatic` | Visual regression testing |
 | `pnpm changeset` | Add a changeset for your MR |
 
 ## Adding a New Component

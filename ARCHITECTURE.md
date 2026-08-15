@@ -166,7 +166,9 @@ Components are controlled or uncontrolled — they never manage global state. Th
 ## CI/CD Pipeline
 
 ```
-Push/MR → lint → typecheck → test → size → changeset:check → chromatic
+Push/MR → lint → typecheck → test → keyboard:browser → smoke:next → size → changeset:check
+          + React 19 matrix: typecheck:react19 → test:react19
+main    → the above, plus keyboard:browser:react19
 Tag     → build → build-storybook → pages (deploy) → publish:gitlab → publish:npm (manual)
 ```
 

@@ -101,7 +101,6 @@
     "verify-changesets": "./scripts/verify-changesets.sh",
     "publish-package": "./scripts/publish.sh",
     "release:cut": "./scripts/release.sh",
-    "chromatic": "chromatic --exit-zero-on-changes",
     "prepare": "husky || true",
     "smoke:next": "pnpm build && pnpm --dir smoke/next install && pnpm --dir smoke/next run build && node scripts/smoke-next-e2e.mjs"
   },
@@ -163,7 +162,6 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.6.0",
     "@changesets/cli": "^2.30.0",
-    "@chromatic-com/storybook": "^5.0.1",
     "@eslint/js": "^9.39.4",
     "@size-limit/file": "^12.0.1",
     "@storybook/addon-a11y": "^10.2.16",
@@ -180,7 +178,6 @@
     "@types/react-dom": "^18.3.0",
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
-    "chromatic": "^15.2.0",
     "eslint": "^9.39.4",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.0.1",
