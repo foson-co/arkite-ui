@@ -1,3 +1,5 @@
+import { createRef } from 'react'
+
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi } from 'vitest'
@@ -48,13 +50,15 @@ describe('Alert', () => {
     it('supports deprecated error variant as alias for destructive', () => {
       render(
         <>
-          <Alert data-testid="old" variant="error">Old</Alert>
-          <Alert data-testid="new" variant="destructive">New</Alert>
+          <Alert data-testid="old" variant="error">
+            Old
+          </Alert>
+          <Alert data-testid="new" variant="destructive">
+            New
+          </Alert>
         </>
       )
-      expect(screen.getByTestId('old').className).toBe(
-        screen.getByTestId('new').className
-      )
+      expect(screen.getByTestId('old').className).toBe(screen.getByTestId('new').className)
     })
   })
 
@@ -85,11 +89,7 @@ describe('Alert', () => {
     })
 
     it('renders custom icon when provided', () => {
-      render(
-        <Alert customIcon={<span data-testid="custom-icon">★</span>}>
-          Custom
-        </Alert>
-      )
+      render(<Alert customIcon={<span data-testid="custom-icon">★</span>}>Custom</Alert>)
       expect(screen.getByTestId('custom-icon')).toBeInTheDocument()
     })
   })
@@ -154,7 +154,10 @@ describe('Alert', () => {
   })
 
   it('forwards ref to the root element', () => {
-    const ref = { current: null } as React.RefObject<HTMLDivElement>
+    // createRef, not a hand-rolled `{ current: null } as RefObject<T>`:
+    // @types/react 19 narrowed RefObject<T>.current to T (no implicit null),
+    // so that cast stops compiling there while compiling fine on 18.
+    const ref = createRef<HTMLDivElement>()
     render(<Alert ref={ref}>Ref test</Alert>)
     expect(ref.current).toBeInstanceOf(HTMLDivElement)
   })

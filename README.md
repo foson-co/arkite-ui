@@ -94,6 +94,18 @@ pnpm add react react-dom tailwindcss zustand lucide-react
 pnpm add framer-motion    # For AnimatedModal, AnimatedDrawer, AnimatedToast
 ```
 
+### Tested React versions
+
+The peer range permits `^18 || ^19`, and both are exercised in CI — not just permitted:
+
+| | React 18 | React 19 |
+|---|---|---|
+| Unit suite (jsdom, ~1400 cases) | ✅ every MR | ✅ every MR |
+| `tsc --noEmit` | ✅ every MR | ✅ every MR |
+| Keyboard/APG specs (real Chromium) | ✅ every MR | ✅ on `main` |
+| Next 15 App Router — RSC boundary + hydration | — | ✅ every MR |
+| Storybook visual regression (Chromatic) | ✅ every MR | — |
+
 ## Quick Start
 
 ### 1. Import Styles
