@@ -90,6 +90,33 @@ export function normalizeUnion(text: string): string {
     .join(' | ')
 }
 
+/**
+ * Drop the `React.` qualifier the compiler may or may not print.
+ *
+ * @types/react 18 declares everything inside `declare namespace React`, so the
+ * checker prints `React.ReactNode`. In 19 the same types are module exports and
+ * print bare: `ReactNode`. Identical types, different printer output — without
+ * this, running the snapshot under the React 19 matrix job yields ~174 lines of
+ * diff that read exactly like a deliberate API change and are not one.
+ *
+ * Deliberately a blunt string replace. It would also rewrite a `React.` that
+ * appears inside a string-literal type (`"React.Fragment"`), but the report has
+ * never contained one, and a quote-aware pass here means a second parser whose
+ * bugs would silently weaken the guard — the same trade normalizeUnion makes.
+ */
+export function stripReactQualifier(text: string): string {
+  return text.replace(/\bReact\.(?=[A-Z])/g, '')
+}
+
+/**
+ * Strip before sorting, never after: `React.Dispatch | undefined` and
+ * `Dispatch | undefined` must reach normalizeUnion identically, or the two
+ * React versions order the same union differently.
+ */
+function normalizeType(text: string): string {
+  return normalizeUnion(stripReactQualifier(text))
+}
+
 function buildReport(): string {
   const configPath = ts.findConfigFile(__dirname, ts.sys.fileExists, 'tsconfig.json')
   const config = configPath
@@ -132,7 +159,7 @@ function buildReport(): string {
           .map((p) => {
             const optional = p.flags & ts.SymbolFlags.Optional ? '?' : ''
             const pDecl = p.declarations?.[0] ?? decl
-            const pType = normalizeUnion(
+            const pType = normalizeType(
               checker.typeToString(checker.getTypeOfSymbolAtLocation(p, pDecl), pDecl, TYPE_FORMAT)
             )
             return `  ${p.getName()}${optional}: ${pType}`
@@ -141,14 +168,14 @@ function buildReport(): string {
         lines.push(`type ${name} {\n${members.join('\n')}\n}`)
       } else {
         // Unions, primitives, and other member-less aliases
-        const text = normalizeUnion(checker.typeToString(type, decl, TYPE_FORMAT))
+        const text = normalizeType(checker.typeToString(type, decl, TYPE_FORMAT))
         lines.push(`type ${name} = ${text}`)
       }
     } else {
       const decl = resolved.declarations?.[0] ?? symbol.declarations?.[0]
       if (!decl) continue
       const type = checker.getTypeOfSymbolAtLocation(resolved, decl)
-      const text = normalizeUnion(checker.typeToString(type, decl, TYPE_FORMAT))
+      const text = normalizeType(checker.typeToString(type, decl, TYPE_FORMAT))
       lines.push(`value ${name}: ${text}`)
     }
   }
@@ -201,6 +228,31 @@ describe('union normalization', () => {
     const before = splitTopLevelUnion(input).map((p) => p.trim())
     const after = splitTopLevelUnion(normalizeUnion(input)).map((p) => p.trim())
     expect([...after].sort()).toEqual([...before].sort())
+  })
+})
+
+describe('React qualifier stripping', () => {
+  it('drops the namespace so 18 and 19 print the same line', () => {
+    expect(
+      stripReactQualifier('React.ForwardRefExoticComponent<React.RefAttributes<HTMLElement>>')
+    ).toBe('ForwardRefExoticComponent<RefAttributes<HTMLElement>>')
+  })
+
+  it('leaves an already-bare type untouched', () => {
+    expect(stripReactQualifier('Dispatch<SetStateAction<boolean>>')).toBe(
+      'Dispatch<SetStateAction<boolean>>'
+    )
+  })
+
+  it('normalizes a union identically whichever way the checker printed it', () => {
+    expect(normalizeType('React.ReactNode | undefined')).toBe(
+      normalizeType('ReactNode | undefined')
+    )
+  })
+
+  it('does not touch an identifier that merely starts with React', () => {
+    expect(stripReactQualifier('ReactNode')).toBe('ReactNode')
+    expect(stripReactQualifier('MyReact.Thing')).toBe('MyReact.Thing')
   })
 })
 

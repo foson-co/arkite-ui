@@ -131,6 +131,91 @@ smoke:next:
       when: never
     - when: on_success
 
+# -------------------------------------------------------------------
+# React 19 matrix
+#
+# peerDependencies permit ^18 || ^19, but every depth check above runs on
+# the single React 18 install pinned in devDependencies. `smoke:next`
+# exercises 19 (Next 15 fixture: RSC boundary, hydration, one interaction)
+# — that is breadth, not depth. These jobs re-run the three depth checks
+# against 19 so the peer range is backed by evidence rather than optimism.
+#
+# pnpm.overrides rather than `pnpm add react@19`: overrides rewrite the
+# whole resolution tree, so Radix/cmdk/framer-motion/react-virtual resolve
+# their react peer to 19 as well. Installing at the top level would leave
+# a transitive 18 sitting underneath.
+#
+# --no-frozen-lockfile is required (overrides change resolution) and the
+# lockfile edit stays inside the job — never commit it.
+#
+# ⚠️ The cache key MUST differ from the React 18 jobs. Same key means both
+# installs share node_modules/ and stomp on each other's react version,
+# which shows up as an unrelated-looking intermittent failure.
+# -------------------------------------------------------------------
+
+.react19-setup: &react19-setup
+  before_script:
+    - corepack enable && corepack prepare --activate
+    - >
+      node -e "const p=require('./package.json');
+      p.pnpm={...p.pnpm, overrides:{...(p.pnpm&&p.pnpm.overrides),
+      react:'19.x','react-dom':'19.x','@types/react':'19.x','@types/react-dom':'19.x'}};
+      require('fs').writeFileSync('package.json',JSON.stringify(p,null,2))"
+    - pnpm install --no-frozen-lockfile --ignore-scripts
+    - node -e "console.log('react', require('react/package.json').version, '| @types/react', require('@types/react/package.json').version)"
+
+typecheck:react19:
+  stage: check
+  image: node:22-alpine
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-react19
+    paths:
+      - node_modules/
+  <<: *react19-setup
+  script:
+    - pnpm run typecheck
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: on_success
+
+test:react19:
+  stage: check
+  image: node:22-alpine
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-react19
+    paths:
+      - node_modules/
+  <<: *react19-setup
+  script:
+    - pnpm run test
+  # No coverage report here — the React 18 `test` job owns that artifact,
+  # and two cobertura uploads on one pipeline overwrite each other.
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: on_success
+
+# main only. Shared runners are disabled and everything queues on Ark-Stage
+# at concurrency 2, so a second playwright-image job on every MR would cost
+# more wall-clock than it buys: jsdom already re-runs these same specs under
+# React 19 in `test:react19`, and what this adds is real-Chromium focus and
+# key semantics — worth catching on main, not worth doubling MR latency.
+keyboard:browser:react19:
+  stage: check
+  image: mcr.microsoft.com/playwright:v1.58.2-noble
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-react19-playwright
+    paths:
+      - node_modules/
+  <<: *react19-setup
+  script:
+    - pnpm vitest run --project keyboard-browser
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main"
+
 size:
   stage: check
   <<: *node-setup
