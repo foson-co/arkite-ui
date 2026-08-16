@@ -105,6 +105,22 @@ The peer range permits `^18 || ^19`, and both are exercised in CI — not just p
 | Keyboard/APG specs (real Chromium) | ✅ every MR | ✅ on `main` |
 | Next 15 App Router — RSC boundary + hydration | — | ✅ every MR |
 
+### How React's types are resolved
+
+Our `.d.ts` import React's types rather than inlining them (`import { ReactNode } from 'react'`), so **React types resolve against your install tree, not ours**. `@types/react` is declared as an *optional* peer dependency — optional so JS-only consumers aren't forced to install it — which lets pnpm link the version each consumer actually uses into core's own variant directory.
+
+The practical effect: in a monorepo, different workspaces may sit on different React majors and each still type-checks against core correctly. This is verified in CI, not assumed.
+
+> **On `@arkite-ui/core` ≤ 0.21.1 the optional peer was not declared.** Without it, pnpm left core's variant directory with no `@types/react`, so type resolution walked up to the single hoisted copy in `node_modules/.pnpm/node_modules/` — one version for the whole repo. Any workspace whose React major differed from that hoisted copy failed like this:
+>
+> ```
+> error TS2322: Type 'React.ReactNode' is not assignable to type
+>   'import(".../@types+react@18.3.31/...").ReactNode'.
+>   Type 'bigint' is not assignable to type 'ReactNode'.
+> ```
+>
+> The `bigint` line is the tell — React 19 added it to `ReactNode`, so seeing it means two different `@types/react` are in play. Upgrading to ≥ 0.22.0 fixes it; on 0.21.1 the workaround is to put every workspace in the repo on the same React major.
+
 ## Quick Start
 
 ### 1. Import Styles
@@ -457,7 +473,7 @@ pnpm clean               # Clean dist/
 
 ## CI/CD Pipeline
 
-Every push triggers **lint**, **typecheck**, **test**, **keyboard:browser**, **smoke:next**, and **size** checks, plus the React 19 matrix (**typecheck:react19**, **test:react19**). On merge requests, **changeset:check** verifies a changeset is present. On `main`, **keyboard:browser:react19** re-runs the APG keyboard specs under React 19 in real Chromium.
+Every push triggers **lint**, **typecheck**, **test**, **keyboard:browser**, **smoke:next**, and **size** checks, plus the React 19 matrix (**typecheck:react19**, **test:react19**). On merge requests, **changeset:check** verifies a changeset is present. On `main`, **keyboard:browser:react19** re-runs the APG keyboard specs under React 19 in real Chromium, and **types:mixed-major** packs the tarball into a two-app fixture on different React majors to verify consumer-side type resolution.
 
 On git tags:
 
