@@ -240,7 +240,12 @@ keyboard:browser:react19:
 types:mixed-major:
   stage: check
   image: node:22-alpine
+  # node:22-alpine has no bash — /bin/sh is busybox — and the verify script
+  # is #!/bin/bash, so without this the job dies on exit 127. Same trap that
+  # bit changeset:check with `git: not found`, and main-only jobs surface it
+  # only after merge. Verified against the real image, not assumed.
   before_script:
+    - apk add --no-cache bash
     - corepack enable && corepack prepare --activate
     - pnpm install --frozen-lockfile --ignore-scripts
   script:
