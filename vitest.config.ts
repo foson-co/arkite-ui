@@ -21,6 +21,14 @@ export default defineConfig({
           include: ['src/**/*.test.{ts,tsx}'],
           environment: 'jsdom',
           setupFiles: ['./src/test-setup.ts'],
+          // GitLab's shared runners are disabled, so CI runs on whichever
+          // self-hosted box the pipeline is currently routed to — measured at
+          // ~8x slower per operation than a dev machine, with harder stalls
+          // under contention. The 5s default turned that into red jobs on
+          // green code: a different test each run, none reproducible locally.
+          // Deliberately generous, and not pinned to one runner's speed —
+          // this is headroom for the machine, not licence for slow tests.
+          testTimeout: 20_000,
           coverage: {
             provider: 'v8',
             include: ['src/components/**', 'src/hooks/**', 'src/stores/**'],
@@ -37,6 +45,8 @@ export default defineConfig({
         test: {
           name: 'keyboard-browser',
           include: ['src/**/*.keyboard.test.tsx'],
+          // Same runner, same reasoning as `unit` above.
+          testTimeout: 20_000,
           browser: {
             enabled: true,
             headless: true,

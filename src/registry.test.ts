@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import { readFileSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 
@@ -46,6 +46,18 @@ function importedNames(source: string): string[] {
 }
 
 describe('registry.json', () => {
+  // Pulling the barrel transforms the entire component tree. Left inside an
+  // `it`, that one-off cost lands on whichever recipe happens to run first
+  // and is billed against that test's timeout — fine locally at ~440ms, but
+  // CI runs ~8x slower per operation, which put the first recipe over the
+  // old 5s limit (and the second one with it, still awaiting the same
+  // in-flight import). Paying it in a hook with its own budget keeps every
+  // recipe's reported timing honest.
+  let lib: Record<string, unknown>
+  beforeAll(async () => {
+    lib = (await import('./index')) as Record<string, unknown>
+  }, 60_000)
+
   it('declares the package it belongs to', () => {
     expect(registry.version).toBe(1)
     expect(registry.package).toBe(pkg.name)
@@ -92,8 +104,7 @@ describe('registry.json', () => {
         }
       })
 
-      it('lists exactly what the demo imports from the library', async () => {
-        const lib = (await import('./index')) as Record<string, unknown>
+      it('lists exactly what the demo imports from the library', () => {
         const actual = files
           .flatMap((file) => importedNames(readFileSync(resolve(root, file), 'utf8')))
           .sort()
