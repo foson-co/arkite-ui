@@ -33,7 +33,7 @@ stages:
 
 default:
   tags:
-    - Ark-Stage
+    - openhands-box  # check/test/build 走共享算力機；deploy 各自覆寫 Ark-Stage
 
 # -------------------------------------------------------------------
 # Shared Templates
