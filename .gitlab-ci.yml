@@ -4,9 +4,9 @@
 # Pipelines are created per *event*, so pushing to a branch that already
 # has an open MR fires twice — once as `push`, once as
 # `merge_request_event` — and runs every job twice on the same SHA. That
-# costs real wall-clock here: shared runners are disabled, so everything
-# queues on the self-hosted Ark-Stage runner at concurrency 2, alongside
-# the rest of the ecosystem's CI.
+# costs real wall-clock here: shared runners are disabled, so every job
+# queues on a self-hosted runner shared with the rest of the ecosystem's
+# CI (check/test/build on openhands-box, release on Ark-Stage).
 #
 # ⚠️ The $CI_COMMIT_TAG rule MUST stay first and unconditional. The tag
 # pipeline is the ONLY channel that publishes to npm (see publish:npm),
@@ -196,11 +196,12 @@ test:react19:
       when: never
     - when: on_success
 
-# main only. Shared runners are disabled and everything queues on Ark-Stage
-# at concurrency 2, so a second playwright-image job on every MR would cost
-# more wall-clock than it buys: jsdom already re-runs these same specs under
-# React 19 in `test:react19`, and what this adds is real-Chromium focus and
-# key semantics — worth catching on main, not worth doubling MR latency.
+# main only. Shared runners are disabled and every job queues on a runner
+# shared with the rest of the ecosystem, so a second playwright-image job on
+# every MR would cost more wall-clock than it buys: jsdom already re-runs
+# these same specs under React 19 in `test:react19`, and what this adds is
+# real-Chromium focus and key semantics — worth catching on main, not worth
+# doubling MR latency.
 keyboard:browser:react19:
   stage: check
   image: mcr.microsoft.com/playwright:v1.58.2-noble
@@ -232,7 +233,7 @@ keyboard:browser:react19:
 #
 # main only, on the same reasoning as keyboard:browser:react19 — it does two
 # full dependency installs from the registry, which is real wall-clock on a
-# runner at concurrency 2. The tradeoff is accepted deliberately: a
+# shared runner. The tradeoff is accepted deliberately: a
 # regression here lands on main before it is caught. It is cheap to catch
 # there because the guard at the top of the script fails in seconds, and the
 # failure mode is a publish-shape change, which only happens on purpose.
@@ -302,11 +303,21 @@ build:
 # -------------------------------------------------------------------
 # Publish: only on tags on main branch
 # (Storybook is deployed to GitHub Pages via .github/workflows/deploy-storybook.yml)
+#
+# ⚠️ Both publish jobs pin `tags:` explicitly rather than inheriting the
+# default. This repo has no deploy job — its release path is `pnpm publish`,
+# and per the warning at the top of this file that path is never exercised by
+# an MR pipeline; it is first proven at release. Inheriting meant a one-line
+# edit to `default: tags:` silently moved npm publishing to another runner,
+# and the failure would surface at `git tag`, not in review. Pinned here so
+# the release runner only ever changes on purpose.
 # -------------------------------------------------------------------
 
 publish:gitlab:
   stage: publish
   image: node:22-alpine
+  tags:
+    - Ark-Stage
   dependencies:
     - build
   variables:
@@ -324,6 +335,8 @@ publish:gitlab:
 publish:npm:
   stage: publish
   image: node:22-alpine
+  tags:
+    - Ark-Stage
   dependencies:
     - build
   variables:
