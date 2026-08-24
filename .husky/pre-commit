@@ -1,1 +1,5 @@
 npx lint-staged
+
+# detect-secrets 等 pre-commit hooks（設定見 /.pre-commit-config.yaml，§5.16）
+# 手動全掃：uvx pre-commit run --all-files
+cd "$(git rev-parse --show-toplevel)" && uvx pre-commit run

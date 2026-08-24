@@ -1,0 +1,41 @@
+# Pre-commit hooks（arkite-frontend 規範 §5.16）
+# 由 .husky/pre-commit 經 `uvx pre-commit run` 觸發；手動全掃：uvx pre-commit run --all-files
+#
+# 本 repo 是純 TypeScript 的發布型 library，因此**沒有**艦隊其他專案那段 ruff——
+# 那幾個 repo 是 Python 後端 + 前端同倉，我們沒有 Python 原始碼。
+# 前端的 ESLint / Prettier 由 lint-staged 負責，不在這裡重複（同 ark-finance 的分工）。
+#
+# 🔴 為什麼這一項對本 repo 比一般 consumer 重（issue #23）：
+# 我們發布到**公開的 npmjs**。secret 漏進 commit 對內部專案是事故，對已發布的公開
+# 套件則是「已經散出去了」——`npm unpublish` 有 72 小時限制，而且拉過的人本地還留著。
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # CHANGELOG.md 由 changesets 產生：它把 changeset 內文連同縮排一起寫出，
+      # 空行因此帶著兩個空格。清掉的話下次 `changeset version` 又會長回來
+      # ——每次發版都多一筆與內容無關的 diff。generated 檔不歸 hook 管。
+      - id: trailing-whitespace
+        exclude: (^|/)pnpm-lock\.yaml$|^CHANGELOG\.md$
+      - id: end-of-file-fixer
+        exclude: (^|/)pnpm-lock\.yaml$|^CHANGELOG\.md$
+      - id: check-yaml
+      - id: check-json
+        # tsconfig 允許註解（JSONC）、lock 檔非我們手寫
+        exclude: (tsconfig.*\.json|(^|/)pnpm-lock\.yaml$)
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        # lock 檔全是 integrity hash（sha512-…），逐行都是高熵字串 ⇒ 全量誤報。
+        # 錨點要寫 (^|/)：smoke/next/ 底下還有一份 lock，只寫 ^pnpm-lock 會漏掉它
+        # ——實測那份會灌進 90+ 筆假命中，而 baseline 記的是**行號**，lock 一重生就全部
+        # 對不上 ⇒ hook 每次改依賴都紅。排除比 baseline 正確。
+        exclude: (^|/)pnpm-lock\.yaml$
