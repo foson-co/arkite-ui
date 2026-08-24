@@ -14,11 +14,10 @@ import { useLocale } from '../../locale'
 
 export type NumberInputSize = 'sm' | 'md' | 'lg'
 
-export interface NumberInputProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'size' | 'onChange' | 'value' | 'defaultValue' | 'type'
-  > {
+export interface NumberInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'onChange' | 'value' | 'defaultValue' | 'type'
+> {
   /** Controlled value */
   value?: number | null
   /** Uncontrolled default value */
@@ -109,11 +108,9 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   ) => {
     const locale = useLocale()
     const isControlled = controlledValue !== undefined
-    const [internalValue, setInternalValue] = useState<number | null>(
-      defaultValue ?? null
-    )
+    const [internalValue, setInternalValue] = useState<number | null>(defaultValue ?? null)
     const [displayValue, setDisplayValue] = useState<string>(() => {
-      const initial = isControlled ? controlledValue : defaultValue ?? null
+      const initial = isControlled ? controlledValue : (defaultValue ?? null)
       return initial != null ? String(initial) : ''
     })
 
@@ -124,7 +121,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     useEffect(() => {
       if (isControlled && controlledValue !== prevControlledRef.current) {
         prevControlledRef.current = controlledValue
-        setDisplayValue(controlledValue != null ? String(controlledValue) : '') // eslint-disable-line react-hooks/set-state-in-effect -- syncing display from controlled prop
+        setDisplayValue(controlledValue != null ? String(controlledValue) : '')
       }
     }, [isControlled, controlledValue])
 
@@ -261,7 +258,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       <div className={cn('relative', 'inline-flex flex-col')}>
         <div className="relative inline-flex items-center">
           {prefix && (
-            <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground text-sm">
+            <span className="text-muted-foreground pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-sm">
               {prefix}
             </span>
           )}
@@ -281,16 +278,14 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
             className={cn(
-              'flex w-full rounded-md border bg-background',
+              'bg-background flex w-full rounded-md border',
               'placeholder:text-muted-foreground',
-              'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+              'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
               'disabled:cursor-not-allowed disabled:opacity-50',
               'transition-colors duration-200',
-              '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none',
+              '[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none',
               sizeStyles[size],
-              error
-                ? 'border-destructive focus-visible:ring-destructive'
-                : 'border-input',
+              error ? 'border-destructive focus-visible:ring-destructive' : 'border-input',
               prefix && 'pl-8',
               suffix && 'pr-8',
               controls && !suffix && 'pr-8',
@@ -301,7 +296,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           {suffix && (
             <span
               className={cn(
-                'pointer-events-none absolute inset-y-0 flex items-center text-muted-foreground text-sm',
+                'text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center text-sm',
                 controls ? 'right-8 pr-1' : 'right-0 pr-3'
               )}
             >
@@ -311,7 +306,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           {controls && (
             <div
               className={cn(
-                'absolute inset-y-0 right-0 flex flex-col border-l border-input',
+                'border-input absolute inset-y-0 right-0 flex flex-col border-l',
                 controlSizeStyles[size],
                 disabled && 'opacity-50'
               )}
@@ -331,7 +326,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
               >
                 <ChevronUp size={iconSize} />
               </button>
-              <div className="border-t border-input" />
+              <div className="border-input border-t" />
               <button
                 type="button"
                 tabIndex={-1}
@@ -350,9 +345,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             </div>
           )}
         </div>
-        {errorMessage && (
-          <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>}
       </div>
     )
   }
