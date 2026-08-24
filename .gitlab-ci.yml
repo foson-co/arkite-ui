@@ -90,6 +90,36 @@ test:
       when: never
     - when: on_success
 
+# 供應鏈稽核閘門（arkite-frontend §5.23.0，issue #23）
+#
+# 由來是一個不對稱：後端每個專案的 CI 都有 pip-audit，前端從來沒有對應要求
+# ——實測 9 個受檢專案只有 2 個在跑 pnpm audit。而這一週前端兩個最大的安全
+# 發現（arkite-frontend #19 dompurify XSS、#24 react-router 未認證 RCE）
+# **都出自那兩家碰巧有在跑的**，不是被規範抓到的。
+#
+# 🔴 為什麼這一條對本 repo 特別重：@arkite-ui/core 裝在全艦隊 11 個前端上。
+# 我們一個有弱點的傳遞依賴會同時出現在 11 份 lockfile 裡，而它們各自的
+# pnpm audit 會把它報成**我們的**問題——卻只有我們修得掉。
+#
+# --prod 是刻意的：devDependencies 的弱點不會進到 consumer 手上。本 repo
+# 完整 audit 有 43 筆，全部落在 storybook / jsdom 這些純開發鏈上；把它們
+# 一起擋會產生大量「擋不掉也不該擋」的紅燈。
+#
+# 直接 allow_failure: false，不設 observation 期：導入時實測 `pnpm audit
+# --prod` 為 0 弱點（dependencies 只有 clsx 與 tailwind-merge），baseline
+# 本來就是清零的，沒有存量要 ratchet。紅了就修依賴，**不得回頭加
+# allow_failure 遮掉**——那會讓新弱點混在存量裡看不見。
+audit:
+  stage: check
+  <<: *node-setup
+  script:
+    - pnpm audit --prod
+  allow_failure: false
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: on_success
+
 # RSC/SSR 環境驗證:在真 Next.js App Router 下 build + 啟動 + Chromium 實測
 # 「use client」邊界(Server Component 直取 tokens)與 hydration(零 console
 # error + 互動可用)。playwright 官方 image 自帶瀏覽器。
@@ -325,9 +355,21 @@ publish:gitlab:
   before_script:
     - corepack enable && corepack prepare --activate
   script:
+    # 用 CI_JOB_TOKEN，不是長期 deploy token（§5.22 / §D.10，issue #23）。
+    # 這是**發到自己的 project**（CI_PROJECT_ID），job token 天生就有寫入權；
+    # §D.8 那條「必須用 deploy token」是從「deploy token 必須走 Basic auth」
+    # 推出來的、從未驗證的推論，艦隊照著它維護了一年的長期憑證。
+    # 2026-08-15 上游實測（pipeline 2762693254）：CI_JOB_TOKEN + _authToken=
+    # 可以 publish，自己專案與跨專案都通。
+    #
+    # ⚠️ 依本檔開頭的警告，publish 路徑不會被 MR pipeline 驗到，第一次證明
+    # 是在 release 當下。回滾方式：把下面那行改回 ${PUBLISH_TOKEN}（CI
+    # variable 先留著別刪，確認下一次發版成功後再移除）。
+    # 風險面比看起來小：consumer 早已改從公開 npmjs 取用，GitLab registry
+    # 這份近幾版的 last_downloaded_at 都是 null。
     - |
       echo "@arkite-ui:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/" > .npmrc
-      echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${PUBLISH_TOKEN}" >> .npmrc
+      echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
     - pnpm publish --no-git-checks
   rules:
     - if: $CI_COMMIT_TAG
