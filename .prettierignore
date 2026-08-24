@@ -1,0 +1,36 @@
+# Prettier 的涵蓋範圍以本檔為單一事實來源。
+#
+# 為什麼要有這個檔（issue #25）：repo 累積了 222 個不合格式的檔案，成因不是
+# 設定漂移（.prettierrc.json 五個月沒變過），而是**沒有任何機制會看到「沒被
+# 碰過的檔案」**——lint-staged 只跑 staged 的、format script 只在手動執行時
+# 跑、CI 完全沒有格式閘門。
+#
+# 修法是讓 CI 跑 `prettier --check .`（全 repo，不列舉 glob）。一旦改成
+# 「全部都檢查」，該排除什麼就必須寫在這裡，否則會去檢查 build 產物。
+
+# 相依與建置產物
+node_modules/
+dist/
+storybook-static/
+coverage/
+smoke/next/.next/
+smoke/next/out/
+
+# 套件管理器產生物。重新格式化只會在下次 install 被改回去。
+pnpm-lock.yaml
+**/pnpm-lock.yaml
+
+# changesets 產生物。它 prepend 新條目時用自己的排版，格式化過的 CHANGELOG
+# 會在**每次發版後**讓 --check 變紅。同理已寫在 .pre-commit-config.yaml。
+CHANGELOG.md
+
+# build 產生物（scripts/generate-llms.mjs）
+llms.txt
+llms-full.txt
+api-report.txt
+
+# .gitignore 標為 "Internal / local-only" 的路徑。它們不在版本控制內，CI 上
+# 根本不存在——不排除的話，本機 `--check` 會因為 CI 看不到的檔案而紅。
+.claude/
+docs/
+WORKLOG.md

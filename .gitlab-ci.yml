@@ -90,6 +90,26 @@ test:
       when: never
     - when: on_success
 
+# 格式閘門（issue #25）
+#
+# 為什麼需要它：本 repo 曾累積 238 個不合格式的檔案，而 .prettierrc.json
+# 五個月沒變過——**不是設定漂移**。成因是既有的兩層都只看得到「被碰過的
+# 檔案」：lint-staged 只跑 staged 的，format script 只在有人手動執行時跑。
+# 沒被碰過的檔案永遠不會被發現，所以會無聲累積。
+#
+# 刻意跑 `prettier --check .`（全 repo）而不列舉 glob：列舉會與 lint-staged
+# 和 format script 各自漂開——那正是原本的病因之一（lint-staged 沒有 .json
+# 而 format script 有）。涵蓋範圍的單一事實來源是 .prettierignore。
+format:
+  stage: check
+  <<: *node-setup
+  script:
+    - pnpm run format:check
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: on_success
+
 # 供應鏈稽核閘門（arkite-frontend §5.23.0，issue #23）
 #
 # 由來是一個不對稱：後端每個專案的 CI 都有 pip-audit，前端從來沒有對應要求

@@ -1,4 +1,7 @@
-npx lint-staged
+# --concurrent false 是必要的，不是保守：下面兩個 glob 會命中**同一個**
+# src/**/*.{ts,tsx} 檔案（一個跑 eslint --fix、一個跑 prettier --write），
+# lint-staged 預設把不同 glob 並行跑 ⇒ 兩個 process 同時改寫同一個檔案。
+npx lint-staged --concurrent false
 
 # detect-secrets 等 pre-commit hooks（設定見 /.pre-commit-config.yaml，§5.16）
 # 手動全掃：uvx pre-commit run --all-files
