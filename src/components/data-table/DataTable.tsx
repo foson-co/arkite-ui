@@ -821,9 +821,13 @@ export function DataTable<T>({
                       ) : (
                         column.header
                       )}
+                      {/* 同上：Escape 捕捉容器，非互動元素。
+                          這裡用 disable/enable 包住，而不是 disable-next-line：後者得寫在
+                          `&& (` 之後的表達式位置，那是**裸的 JS 註解**，esbuild 會把它原樣
+                          打進 dist（實測 index.js 裡真的出現了那行中文）。JSX 註解則在編譯
+                          階段就消掉。 */}
+                      {/* eslint-disable jsx-a11y/no-static-element-interactions */}
                       {canRenderFilter(column) && (
-                        /* 同上：Escape 捕捉容器，非互動元素 */
-                        /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
                         <div
                           ref={(el) => {
                             filterDropdownRefs.current[column.key] = el
@@ -893,6 +897,7 @@ export function DataTable<T>({
                           )}
                         </div>
                       )}
+                      {/* eslint-enable jsx-a11y/no-static-element-interactions */}
                     </div>
                   </TableHead>
                 )
