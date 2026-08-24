@@ -1,0 +1,8 @@
+# 純機械改動的 commit，blame 時略過。
+#
+# 啟用（git 不會自動讀這個檔）：
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+# GitLab 的 blame 檢視會自動採用本檔。
+
+# style: 全 repo 套用 prettier（228 檔，issue #25）
+cfdb650f9d8cb3a3b8ea07b436658c8fb3e59139
