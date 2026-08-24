@@ -301,6 +301,54 @@ size:
 
 # 有程式碼異動卻沒附 changeset 就擋下 MR。
 # 純內部異動（不影響 consumer）用 `pnpm changeset --empty` 過閘。
+# 前端架構合規檢查（arkite-frontend 附錄 C，issue #23）
+#
+# 為什麼 arkite-ui 要有這個 job：舊版 generate-snapshot.sh 把本 repo 放在
+# EXCLUDE，理由寫的是「producer：設計系統（有自己的 audit-consumers.sh）」
+# ——那句話只涵蓋了「它稽核別人」，**沒有涵蓋「誰稽核它」**。而 @arkite-ui/core
+# 是全艦隊 11 個前端的共同依賴，我們的 secret 掃描、audit 閘門、憑證設定出問題
+# 都會傳染出去。上游已於 2026-08-24 把 producer 移進合規對帳。
+#
+# 🔴 釘住上游的**確切 commit**，不釘 tag 名：這是必過 gate，`clone --depth 1`
+# 上游 main 等於「我們合不合得了 MR，取決於別的 repo 此刻的 HEAD」。ark-museum
+# 2026-08-22 實際被咬過（scanner 把註解裡的 dangerouslySetInnerHTML 判成注入點，
+# 白等 4.5 小時）。tag 名也不夠——tag 可以被強制移動，SHA 不會。
+#
+# ⚠️ 本 repo 自己就踩過釘錯版的坑：issue #23 原本建議釘 scanner-2026-08-24
+# （f9c3813），但修掉 3 個 library 誤判的 !33 落在那個 tag **之後**——用該 SHA
+# 實測本 repo 是 22/8/5，用含 !33 的版本才是 33/0/0。**升版前先確認新版含你需要
+# 的修正**：git merge-base --is-ancestor <修正commit> <新tag>。
+#
+# 📌 怎麼升：git ls-remote --tags git@gitlab.com:foson.co/arkite-frontend.git
+# 取新 tag 的 ^{} commit，改下面兩行，**在同一個 MR 裡跑一次確認仍是 0 fail**。
+# 升級是刻意動作，不是自動漂移——這正是釘住的目的。
+#
+# 導入時實測（scanner a3783f6 對 origin/main 97b2dd0）：33 通過 / 0 警告 /
+# 0 未通過，所以直接必過、不設 observation 期。紅了就修，**不得回頭加
+# allow_failure 遮掉**。若是上游誤報，先開 arkite-frontend issue。
+frontend-compliance:
+  stage: check
+  image: node:22  # 腳本需要 node + git
+  variables:
+    ARKITE_FRONTEND_TAG: "scanner-2026-08-24-2"  # 只為可讀
+    # 這是 git commit SHA、不是密鑰；detect-secrets 只看得到 40 位 hex 高熵字串
+    ARKITE_FRONTEND_SHA: "a3783f6b63bfbeea72f8b0ca6547914751e18688"  # pragma: allowlist secret
+  script:
+    # 按 SHA 淺層抓取（GitLab 支援 fetch 任意 commit）；不用 clone --branch <tag>，
+    # 那只釘得住 tag 名、釘不住內容。
+    - mkdir -p /tmp/arkite-frontend && cd /tmp/arkite-frontend && git init -q .
+    - >-
+      git fetch -q --depth 1
+      "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/foson.co/arkite-frontend.git"
+      "$ARKITE_FRONTEND_SHA"
+    - git checkout -q FETCH_HEAD
+    - echo "arkite-frontend scanner 釘於 ${ARKITE_FRONTEND_TAG} (${ARKITE_FRONTEND_SHA})"
+    - /tmp/arkite-frontend/scripts/check-compliance.sh "$CI_PROJECT_DIR"
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: on_success
+
 changeset:check:
   stage: check
   <<: *node-setup
@@ -372,7 +420,11 @@ publish:gitlab:
       echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" >> .npmrc
     - pnpm publish --no-git-checks
   rules:
-    - if: $CI_COMMIT_TAG
+    # 只認版本 tag。原本是裸的 `$CI_COMMIT_TAG`——**任何** tag 都會觸發一次
+    # 發布嘗試，包括之後可能出現的非版本 tag（上游 arkite-frontend 就為了
+    # scanner 另開了 scanner-YYYY-MM-DD 命名空間，正是為了避免這件事）。
+    # 對照 publish:npm 本來就有兩層（$CI_COMMIT_TAG && $NPM_TOKEN），這裡補齊。
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+/
 
 publish:npm:
   stage: publish
