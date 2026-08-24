@@ -39,11 +39,7 @@ export default meta
 
 function hexToRgb(hex: string): [number, number, number] {
   const h = hex.replace('#', '')
-  return [
-    parseInt(h.slice(0, 2), 16),
-    parseInt(h.slice(2, 4), 16),
-    parseInt(h.slice(4, 6), 16),
-  ]
+  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]
 }
 
 function relativeLuminance(hex: string): number {
@@ -70,7 +66,15 @@ function wcagGrade(ratio: number): { grade: string; color: string } {
 
 // --- Layout primitives (don't depend on the rest of the library) ---
 
-function Section({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
+function Section({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string
+  subtitle?: string
+  children: React.ReactNode
+}) {
   return (
     <section style={{ marginBottom: 48 }}>
       <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 4, color: '#111827' }}>{title}</h2>
@@ -221,7 +225,9 @@ function FormTokens({ scheme }: { scheme: ColorScheme }) {
         border: `1px solid ${c.border}`,
       }}
     >
-      <div style={{ fontSize: 12, color: c.mutedForeground, marginBottom: 8 }}>{scheme} · form surfaces</div>
+      <div style={{ fontSize: 12, color: c.mutedForeground, marginBottom: 8 }}>
+        {scheme} · form surfaces
+      </div>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         <div
           style={{
@@ -433,16 +439,28 @@ export const Scales_Typography: StoryFn = () => (
             >
               fontSize.{key}
             </div>
-            <div style={{ width: 60, fontSize: 12, color: '#374151', fontFamily: 'ui-monospace, monospace' }}>
+            <div
+              style={{
+                width: 60,
+                fontSize: 12,
+                color: '#374151',
+                fontFamily: 'ui-monospace, monospace',
+              }}
+            >
               {value}px
             </div>
-            <div style={{ fontSize: value, color: '#111827', lineHeight: 1.2 }}>The quick brown fox</div>
+            <div style={{ fontSize: value, color: '#111827', lineHeight: 1.2 }}>
+              The quick brown fox
+            </div>
           </div>
         ))}
       </div>
     </Section>
 
-    <Section title="Line heights" subtitle="Unitless multipliers. Multiply by font size to get pixel value.">
+    <Section
+      title="Line heights"
+      subtitle="Unitless multipliers. Multiply by font size to get pixel value."
+    >
       {Object.entries(lineHeight).map(([key, value]) => (
         <div
           key={key}
@@ -454,11 +472,19 @@ export const Scales_Typography: StoryFn = () => (
             background: '#fff',
           }}
         >
-          <div style={{ fontSize: 11, color: '#6b7280', marginBottom: 4, fontFamily: 'ui-monospace, monospace' }}>
+          <div
+            style={{
+              fontSize: 11,
+              color: '#6b7280',
+              marginBottom: 4,
+              fontFamily: 'ui-monospace, monospace',
+            }}
+          >
             lineHeight.{key} = {value}
           </div>
           <div style={{ fontSize: 14, lineHeight: value, color: '#111827' }}>
-            The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs. How vexingly quick daft zebras jump.
+            The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.
+            How vexingly quick daft zebras jump.
           </div>
         </div>
       ))}
@@ -479,7 +505,13 @@ export const Scales_Typography: StoryFn = () => (
             >
               fontWeight.{key}
             </div>
-            <div style={{ fontSize: 18, fontWeight: value as React.CSSProperties['fontWeight'], color: '#111827' }}>
+            <div
+              style={{
+                fontSize: 18,
+                fontWeight: value as React.CSSProperties['fontWeight'],
+                color: '#111827',
+              }}
+            >
               The quick brown fox ({value})
             </div>
           </div>
@@ -545,11 +577,33 @@ export const ContrastAudit: StoryFn = () => {
           <tbody>
             {rows.map((row, i) => (
               <tr key={i} style={{ borderBottom: '1px solid #e5e7eb' }}>
-                <td style={{ padding: 8, fontFamily: 'ui-monospace, monospace', color: '#6b7280' }}>{row.scheme}</td>
+                <td style={{ padding: 8, fontFamily: 'ui-monospace, monospace', color: '#6b7280' }}>
+                  {row.scheme}
+                </td>
                 <td style={{ padding: 8 }}>{row.label}</td>
-                <td style={{ padding: 8, fontFamily: 'ui-monospace, monospace', fontSize: 11, color: '#6b7280' }}>{row.fg}</td>
-                <td style={{ padding: 8, fontFamily: 'ui-monospace, monospace', fontSize: 11, color: '#6b7280' }}>{row.bg}</td>
-                <td style={{ padding: 8, fontFamily: 'ui-monospace, monospace', fontWeight: 600 }}>{row.ratio.toFixed(2)}</td>
+                <td
+                  style={{
+                    padding: 8,
+                    fontFamily: 'ui-monospace, monospace',
+                    fontSize: 11,
+                    color: '#6b7280',
+                  }}
+                >
+                  {row.fg}
+                </td>
+                <td
+                  style={{
+                    padding: 8,
+                    fontFamily: 'ui-monospace, monospace',
+                    fontSize: 11,
+                    color: '#6b7280',
+                  }}
+                >
+                  {row.bg}
+                </td>
+                <td style={{ padding: 8, fontFamily: 'ui-monospace, monospace', fontWeight: 600 }}>
+                  {row.ratio.toFixed(2)}
+                </td>
                 <td style={{ padding: 8 }}>
                   <span
                     style={{

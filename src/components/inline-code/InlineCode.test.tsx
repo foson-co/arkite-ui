@@ -29,7 +29,11 @@ describe('InlineCode', () => {
   })
 
   it('forwards additional HTML attributes', () => {
-    render(<InlineCode data-testid="code-el" title="some id">val</InlineCode>)
+    render(
+      <InlineCode data-testid="code-el" title="some id">
+        val
+      </InlineCode>
+    )
     const el = screen.getByTestId('code-el')
     expect(el).toHaveAttribute('title', 'some id')
   })

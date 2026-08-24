@@ -88,15 +88,15 @@ Stack.displayName = 'Stack'
 
 // Convenience components
 /** Horizontal stack that arranges children in a row. */
-export const HStack = forwardRef<HTMLDivElement, Omit<StackProps, 'direction'>>(
-  (props, ref) => <Stack ref={ref} direction="row" {...props} />
-)
+export const HStack = forwardRef<HTMLDivElement, Omit<StackProps, 'direction'>>((props, ref) => (
+  <Stack ref={ref} direction="row" {...props} />
+))
 
 HStack.displayName = 'HStack'
 
 /** Vertical stack that arranges children in a column. */
-export const VStack = forwardRef<HTMLDivElement, Omit<StackProps, 'direction'>>(
-  (props, ref) => <Stack ref={ref} direction="column" {...props} />
-)
+export const VStack = forwardRef<HTMLDivElement, Omit<StackProps, 'direction'>>((props, ref) => (
+  <Stack ref={ref} direction="column" {...props} />
+))
 
 VStack.displayName = 'VStack'

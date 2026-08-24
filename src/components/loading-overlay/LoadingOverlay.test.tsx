@@ -24,7 +24,11 @@ describe('LoadingOverlay', () => {
   })
 
   it('renders custom children instead of spinner', () => {
-    render(<LoadingOverlay><span data-testid="custom-child">custom</span></LoadingOverlay>)
+    render(
+      <LoadingOverlay>
+        <span data-testid="custom-child">custom</span>
+      </LoadingOverlay>
+    )
     expect(screen.getByTestId('custom-child')).toBeInTheDocument()
     expect(screen.queryByRole('status')).not.toBeInTheDocument()
   })

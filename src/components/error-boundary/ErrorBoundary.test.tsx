@@ -11,8 +11,12 @@ function ThrowingComponent({ shouldThrow }: { shouldThrow: boolean }) {
 describe('ErrorBoundary', () => {
   // Suppress console.error for expected errors
   const originalError = console.error
-  beforeAll(() => { console.error = vi.fn() })
-  afterAll(() => { console.error = originalError })
+  beforeAll(() => {
+    console.error = vi.fn()
+  })
+  afterAll(() => {
+    console.error = originalError
+  })
 
   it('renders children when no error', () => {
     render(
@@ -36,9 +40,7 @@ describe('ErrorBoundary', () => {
 
   it('renders custom fallback function', () => {
     render(
-      <ErrorBoundary
-        fallback={({ error }) => <div>Custom: {error.message}</div>}
-      >
+      <ErrorBoundary fallback={({ error }) => <div>Custom: {error.message}</div>}>
         <ThrowingComponent shouldThrow />
       </ErrorBoundary>
     )

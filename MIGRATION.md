@@ -19,22 +19,22 @@ pnpm codemod:v1 ~/workspace/work/<專案> --dry-run  # 只列報告與將變更�
 
 ### 涵蓋的轉換
 
-| 元件 / API | 轉換 |
-|-----------|------|
-| `Alert` | `variant="error"` → `"destructive"`；`onDismiss` → `onClose` |
-| `Progress` / `CircularProgress` | `variant="error"` → `"destructive"` |
-| `CircularProgress` | `size={數值}` → `diameter={數值}`（`size="sm"⎮"md"⎮"lg"` 不動） |
-| `Tabs` | `onValueChange` → `onChange` |
-| `LoadingOverlay` | `visible` → `open` |
-| `Toggle` | → `Switch`（import 與 JSX 一起改；檔內已有 `Switch` 則合併） |
-| `ImperativeToastContainer(Props)` | → `ToastContainer(Props)`（import、JSX、型別註記） |
-| `FormField` / `FormMessage` / `ImageUpload` | `error={字串字面量/模板}` → `errorMessage={同值}` |
-| `DataTable` | `expandable={函式/識別字}` → `renderExpandedRow={同值}`（布林形式不動） |
-| `Tree` | `onCheckChange` → `onSelectionChange` |
-| `Pagination` | `mode=` → `variant=` |
-| `Timeline` | 內聯 `items` 陣列字面量中的 `variant: 'default'` → `'muted'` |
-| `TenantSwitcher` | `currentTenant` → `value`；`onSelect` → `onChange` |
-| toast API | `.clear()` → `.dismissAll()`（含解構）；`toast.success/error/warning/info/show(t, 字串/模板/JSX)` → 第二參數包成 `{ description: ... }`。`toast.error()` 等便捷方法名保留不變 |
+| 元件 / API                                  | 轉換                                                                                                                                                                          |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Alert`                                     | `variant="error"` → `"destructive"`；`onDismiss` → `onClose`                                                                                                                  |
+| `Progress` / `CircularProgress`             | `variant="error"` → `"destructive"`                                                                                                                                           |
+| `CircularProgress`                          | `size={數值}` → `diameter={數值}`（`size="sm"⎮"md"⎮"lg"` 不動）                                                                                                               |
+| `Tabs`                                      | `onValueChange` → `onChange`                                                                                                                                                  |
+| `LoadingOverlay`                            | `visible` → `open`                                                                                                                                                            |
+| `Toggle`                                    | → `Switch`（import 與 JSX 一起改；檔內已有 `Switch` 則合併）                                                                                                                  |
+| `ImperativeToastContainer(Props)`           | → `ToastContainer(Props)`（import、JSX、型別註記）                                                                                                                            |
+| `FormField` / `FormMessage` / `ImageUpload` | `error={字串字面量/模板}` → `errorMessage={同值}`                                                                                                                             |
+| `DataTable`                                 | `expandable={函式/識別字}` → `renderExpandedRow={同值}`（布林形式不動）                                                                                                       |
+| `Tree`                                      | `onCheckChange` → `onSelectionChange`                                                                                                                                         |
+| `Pagination`                                | `mode=` → `variant=`                                                                                                                                                          |
+| `Timeline`                                  | 內聯 `items` 陣列字面量中的 `variant: 'default'` → `'muted'`                                                                                                                  |
+| `TenantSwitcher`                            | `currentTenant` → `value`；`onSelect` → `onChange`                                                                                                                            |
+| toast API                                   | `.clear()` → `.dismissAll()`（含解構）；`toast.success/error/warning/info/show(t, 字串/模板/JSX)` → 第二參數包成 `{ description: ... }`。`toast.error()` 等便捷方法名保留不變 |
 
 ### 一律標 TODO（需人工處理）
 
@@ -73,11 +73,11 @@ pnpm codemod:from-error ~/workspace/work/<專案> --dry-run  # 只列報告
 
 認得的形狀（其他一律不動，不用猜的）：
 
-| Before | After |
-|--------|-------|
-| ``toast.error(`儲存失敗：${getErrorMessage(err)}`)`` | `toast.fromError(err, { prefix: '儲存失敗' })` |
-| `toast.error('儲存失敗: ' + getErrorMessage(err))` | `toast.fromError(err, { prefix: '儲存失敗' })` |
-| `toast.error(getErrorMessage(err))` | `toast.fromError(err)` |
+| Before                                                      | After                                              |
+| ----------------------------------------------------------- | -------------------------------------------------- |
+| ``toast.error(`儲存失敗：${getErrorMessage(err)}`)``        | `toast.fromError(err, { prefix: '儲存失敗' })`     |
+| `toast.error('儲存失敗: ' + getErrorMessage(err))`          | `toast.fromError(err, { prefix: '儲存失敗' })`     |
+| `toast.error(getErrorMessage(err))`                         | `toast.fromError(err)`                             |
 | ``toast.error(`X:${getErrorMessage(e)}`, { duration: 0 })`` | `toast.fromError(e, { prefix: 'X', duration: 0 })` |
 
 注意：
@@ -95,17 +95,17 @@ pnpm codemod:from-error ~/workspace/work/<專案> --dry-run  # 只列報告
 
 v0.7.0 統一了 prop 命名慣例（完整審查見 `docs/API_CONSISTENCY.md`）。**所有舊名稱仍可用**，但會在 dev mode 印出 deprecation 警告，並於 **v1.0 移除** —— 請在升級 v1.0 前完成以下取代：
 
-| 元件 | 舊 | 新 |
-|------|----|----|
-| `Alert` / `Progress` / `CircularProgress` / `Toast` | `variant="error"` | `variant="destructive"` |
-| `Alert` | `onDismiss` | `onClose` |
-| `Tabs` | `onValueChange` | `onChange` |
-| `LoadingOverlay` | `visible` | `open` |
-| `CommandDialog` | `onOpenChange` | `onClose` |
-| `CircularProgress` | `size`（number） | `diameter` |
-| `FormField` / `FormMessage` | `error`（string） | `errorMessage` |
-| `ImageUpload` | `error`（string） | `errorMessage`（`error` 改為 boolean 狀態旗標） |
-| `Toggle`（元件名） | `Toggle` | `Switch` |
+| 元件                                                | 舊                | 新                                              |
+| --------------------------------------------------- | ----------------- | ----------------------------------------------- |
+| `Alert` / `Progress` / `CircularProgress` / `Toast` | `variant="error"` | `variant="destructive"`                         |
+| `Alert`                                             | `onDismiss`       | `onClose`                                       |
+| `Tabs`                                              | `onValueChange`   | `onChange`                                      |
+| `LoadingOverlay`                                    | `visible`         | `open`                                          |
+| `CommandDialog`                                     | `onOpenChange`    | `onClose`                                       |
+| `CircularProgress`                                  | `size`（number）  | `diameter`                                      |
+| `FormField` / `FormMessage`                         | `error`（string） | `errorMessage`                                  |
+| `ImageUpload`                                       | `error`（string） | `errorMessage`（`error` 改為 boolean 狀態旗標） |
+| `Toggle`（元件名）                                  | `Toggle`          | `Switch`                                        |
 
 機械式取代範例（各專案可直接跑）：
 
@@ -131,13 +131,20 @@ grep -rl 'variant="error"' src | xargs sed -i '' 's/<Alert variant="error"/<Aler
 動畫元件已移至獨立的 `motion` entry point，需要額外安裝 `framer-motion`。
 
 **Before (v0.3.x):**
+
 ```tsx
 import { AnimatedModal, AnimatedDrawer } from '@arkite-ui/core'
 ```
 
 **After (v0.4.0+):**
+
 ```tsx
-import { AnimatedModal, AnimatedDrawer, AnimatedToastContainer, useAnimatedToast } from '@arkite-ui/core/motion'
+import {
+  AnimatedModal,
+  AnimatedDrawer,
+  AnimatedToastContainer,
+  useAnimatedToast,
+} from '@arkite-ui/core/motion'
 ```
 
 原因：將 framer-motion 設為 optional peer dependency，讓不需要動畫的專案不需要安裝此套件，減少 bundle size。
@@ -148,14 +155,14 @@ import { AnimatedModal, AnimatedDrawer, AnimatedToastContainer, useAnimatedToast
 
 v0.4.0 新增以下 optional peer dependencies，請依照使用的元件安裝：
 
-| 元件 | 需要安裝的套件 |
-|------|--------------|
-| `CommandPalette` | `cmdk@^1.0.0` |
-| `VirtualList`、`DataTable`（大資料量） | `@tanstack/react-virtual@^3.0.0` |
-| `DropdownMenu` | `@radix-ui/react-dropdown-menu@^2.0.0` |
-| `Popover`、`DatePicker`、`ColorPicker` 等 | `@radix-ui/react-popover@^1.0.0` |
-| `Tooltip` | `@radix-ui/react-tooltip@^1.0.0` |
-| `AnimatedModal`、`AnimatedDrawer`、`AnimatedToastContainer` | `framer-motion@^10 \|\| ^11 \|\| ^12` |
+| 元件                                                        | 需要安裝的套件                         |
+| ----------------------------------------------------------- | -------------------------------------- |
+| `CommandPalette`                                            | `cmdk@^1.0.0`                          |
+| `VirtualList`、`DataTable`（大資料量）                      | `@tanstack/react-virtual@^3.0.0`       |
+| `DropdownMenu`                                              | `@radix-ui/react-dropdown-menu@^2.0.0` |
+| `Popover`、`DatePicker`、`ColorPicker` 等                   | `@radix-ui/react-popover@^1.0.0`       |
+| `Tooltip`                                                   | `@radix-ui/react-tooltip@^1.0.0`       |
+| `AnimatedModal`、`AnimatedDrawer`、`AnimatedToastContainer` | `framer-motion@^10 \|\| ^11 \|\| ^12`  |
 
 安裝範例：
 
@@ -207,11 +214,13 @@ import '@arkite-ui/core/styles.css'
 `variant="destructive"` 已重新命名為 `variant="error"`，更語意化。
 
 **Before:**
+
 ```tsx
 <Alert variant="destructive">...</Alert>
 ```
 
 **After:**
+
 ```tsx
 <Alert variant="error">...</Alert>
 ```

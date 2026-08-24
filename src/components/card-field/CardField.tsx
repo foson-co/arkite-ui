@@ -26,8 +26,8 @@ export const CardField = forwardRef<HTMLDivElement, CardFieldProps>(
 
     return (
       <div ref={ref} className={cn('space-y-1', className)} {...props}>
-        <p className="text-sm text-muted-foreground">{label}</p>
-        <div className="text-sm font-medium text-foreground">{content}</div>
+        <p className="text-muted-foreground text-sm">{label}</p>
+        <div className="text-foreground text-sm font-medium">{content}</div>
       </div>
     )
   }

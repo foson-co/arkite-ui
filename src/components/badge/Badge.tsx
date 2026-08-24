@@ -23,22 +23,14 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default:
-    'bg-primary text-primary-foreground',
-  secondary:
-    'bg-secondary text-secondary-foreground',
-  success:
-    'bg-success text-success-foreground',
-  warning:
-    'bg-warning text-warning-foreground',
-  destructive:
-    'bg-destructive text-destructive-foreground',
-  outline:
-    'border border-border text-foreground bg-transparent',
-  info:
-    'bg-info-soft text-info-soft-foreground',
-  count:
-    'bg-muted text-muted-foreground tabular-nums',
+  default: 'bg-primary text-primary-foreground',
+  secondary: 'bg-secondary text-secondary-foreground',
+  success: 'bg-success text-success-foreground',
+  warning: 'bg-warning text-warning-foreground',
+  destructive: 'bg-destructive text-destructive-foreground',
+  outline: 'border border-border text-foreground bg-transparent',
+  info: 'bg-info-soft text-info-soft-foreground',
+  count: 'bg-muted text-muted-foreground tabular-nums',
 }
 
 const sizeStyles: Record<BadgeSize, string> = {

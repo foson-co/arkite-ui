@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   render: (args) => (
     <CollapsibleSection {...args} className="w-96">
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         This is the section content. It can contain any React nodes.
       </p>
     </CollapsibleSection>
@@ -37,9 +37,7 @@ export const Collapsed: Story = {
   },
   render: (args) => (
     <CollapsibleSection {...args} className="w-96">
-      <p className="text-sm text-muted-foreground">
-        This content is hidden by default.
-      </p>
+      <p className="text-muted-foreground text-sm">This content is hidden by default.</p>
     </CollapsibleSection>
   ),
 }
@@ -83,9 +81,7 @@ export const Disabled: Story = {
   },
   render: (args) => (
     <CollapsibleSection {...args} className="w-96">
-      <p className="text-sm text-muted-foreground">
-        This section cannot be toggled.
-      </p>
+      <p className="text-muted-foreground text-sm">This section cannot be toggled.</p>
     </CollapsibleSection>
   ),
 }
@@ -97,16 +93,12 @@ export const Nested: Story = {
   render: (args) => (
     <CollapsibleSection {...args} className="w-96">
       <div className="space-y-3">
-        <p className="text-sm text-muted-foreground">Parent content</p>
+        <p className="text-muted-foreground text-sm">Parent content</p>
         <CollapsibleSection title="Child Section A" defaultOpen={false}>
-          <p className="text-sm text-muted-foreground">
-            Nested content A
-          </p>
+          <p className="text-muted-foreground text-sm">Nested content A</p>
         </CollapsibleSection>
         <CollapsibleSection title="Child Section B">
-          <p className="text-sm text-muted-foreground">
-            Nested content B
-          </p>
+          <p className="text-muted-foreground text-sm">Nested content B</p>
         </CollapsibleSection>
       </div>
     </CollapsibleSection>

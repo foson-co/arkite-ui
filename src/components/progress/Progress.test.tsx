@@ -46,10 +46,8 @@ describe('Progress', () => {
         <Progress value={50} variant="destructive" aria-label="new" />
       </>
     )
-    const oldBar = screen.getByRole('progressbar', { name: 'old' })
-      .firstElementChild as HTMLElement
-    const newBar = screen.getByRole('progressbar', { name: 'new' })
-      .firstElementChild as HTMLElement
+    const oldBar = screen.getByRole('progressbar', { name: 'old' }).firstElementChild as HTMLElement
+    const newBar = screen.getByRole('progressbar', { name: 'new' }).firstElementChild as HTMLElement
     expect(oldBar.className).toContain('bg-destructive')
     expect(oldBar.className).toBe(newBar.className)
   })
@@ -98,12 +96,8 @@ describe('CircularProgress', () => {
         <CircularProgress value={50} variant="destructive" aria-label="new" />
       </>
     )
-    const oldCircle = screen
-      .getByRole('progressbar', { name: 'old' })
-      .querySelectorAll('circle')[1]
-    const newCircle = screen
-      .getByRole('progressbar', { name: 'new' })
-      .querySelectorAll('circle')[1]
+    const oldCircle = screen.getByRole('progressbar', { name: 'old' }).querySelectorAll('circle')[1]
+    const newCircle = screen.getByRole('progressbar', { name: 'new' }).querySelectorAll('circle')[1]
     expect(oldCircle.getAttribute('class')).toContain('stroke-destructive')
     expect(oldCircle.getAttribute('class')).toBe(newCircle.getAttribute('class'))
   })

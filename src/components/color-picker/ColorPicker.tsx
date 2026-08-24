@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  useCallback,
-  useRef,
-  useState,
-  type ChangeEvent,
-  type MouseEvent,
-} from 'react'
+import { forwardRef, useCallback, useRef, useState, type ChangeEvent, type MouseEvent } from 'react'
 import { cn } from '../../utils/cn'
 import { useLocale } from '../../locale'
 
@@ -174,12 +167,14 @@ export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
             onClick={openNativePicker}
             className={cn(
               'shrink-0 rounded-md border transition-colors duration-200',
-              'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40 focus-visible:ring-offset-0',
+              'focus-visible:ring-ring/40 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
               'disabled:cursor-not-allowed disabled:opacity-50',
               error ? 'border-destructive' : 'border-input',
               cfg.swatch
             )}
-            style={{ backgroundColor: isValidHex(currentValue) ? expandHex(currentValue) : undefined }}
+            style={{
+              backgroundColor: isValidHex(currentValue) ? expandHex(currentValue) : undefined,
+            }}
             aria-label={locale.colorPicker.pickColor}
           />
 
@@ -198,21 +193,14 @@ export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
           {/* Hex text input */}
           <div
             className={cn(
-              'inline-flex items-center rounded-md border bg-background',
+              'bg-background inline-flex items-center rounded-md border',
               'transition-colors duration-200',
-              'focus-within:ring-1 focus-within:ring-ring/40 focus-within:ring-offset-0',
-              error
-                ? 'border-destructive focus-within:ring-destructive'
-                : 'border-input',
+              'focus-within:ring-ring/40 focus-within:ring-1 focus-within:ring-offset-0',
+              error ? 'border-destructive focus-within:ring-destructive' : 'border-input',
               disabled && 'cursor-not-allowed opacity-50'
             )}
           >
-            <span
-              className={cn(
-                'select-none pl-3 font-mono text-muted-foreground',
-                cfg.text
-              )}
-            >
+            <span className={cn('text-muted-foreground pl-3 font-mono select-none', cfg.text)}>
               #
             </span>
             <input
@@ -239,7 +227,11 @@ export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
 
         {/* Preset swatches */}
         {presets && presets.length > 0 && (
-          <div className="flex flex-wrap gap-1.5" role="group" aria-label={locale.colorPicker.presetColors}>
+          <div
+            className="flex flex-wrap gap-1.5"
+            role="group"
+            aria-label={locale.colorPicker.presetColors}
+          >
             {presets.map((color) => {
               const normalized = normalizeHex(color)
               const isActive =
@@ -254,18 +246,14 @@ export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
                   onClick={() => handlePresetClick(color)}
                   className={cn(
                     'rounded-full border transition-all duration-150',
-                    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40 focus-visible:ring-offset-0',
-                    'hover:ring-2 hover:ring-ring hover:ring-offset-1',
+                    'focus-visible:ring-ring/40 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
+                    'hover:ring-ring hover:ring-2 hover:ring-offset-1',
                     'disabled:cursor-not-allowed disabled:opacity-50',
-                    isActive
-                      ? 'ring-2 ring-ring ring-offset-1 border-ring'
-                      : 'border-input',
+                    isActive ? 'ring-ring border-ring ring-2 ring-offset-1' : 'border-input',
                     cfg.preset
                   )}
                   style={{
-                    backgroundColor: isValidHex(normalized)
-                      ? expandHex(normalized)
-                      : undefined,
+                    backgroundColor: isValidHex(normalized) ? expandHex(normalized) : undefined,
                   }}
                   aria-label={locale.colorPicker.selectColor(normalized)}
                 />
@@ -274,9 +262,7 @@ export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
           </div>
         )}
 
-        {errorMessage && (
-          <p className="text-xs text-destructive">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="text-destructive text-xs">{errorMessage}</p>}
       </div>
     )
   }

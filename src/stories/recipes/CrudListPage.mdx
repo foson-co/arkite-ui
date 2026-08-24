@@ -19,7 +19,7 @@ selection; a guarded destructive action; and a toast confirming the outcome.
 - Search/filter state lives in the page and narrows `data` before it reaches
   the table — the table's own sorting and pagination stay uncontrolled. When
   the server does the filtering, switch to the controlled props instead (see
-  the *Server-Side Table* recipe).
+  the _Server-Side Table_ recipe).
 - Row selection is controlled (`selectedRows` + `onSelectionChange`) because
   the page needs the selection for the bulk bar and the delete action.
 - The destructive path is always two-step: `BulkActionBar` → confirm dialog →

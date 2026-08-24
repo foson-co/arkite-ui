@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  useEffect,
-  useId,
-  useRef,
-  type HTMLAttributes,
-  type ReactNode,
-} from 'react'
+import { forwardRef, useEffect, useId, useRef, type HTMLAttributes, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { cn } from '../../utils/cn'
@@ -18,8 +11,10 @@ import type { ModalSize } from '../modal/Modal'
 // so they are excluded from the passthrough props
 type MotionConflictProps = 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'
 
-export interface AnimatedModalProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'title' | MotionConflictProps> {
+export interface AnimatedModalProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'title' | MotionConflictProps
+> {
   open: boolean
   onClose: () => void
   title?: ReactNode
@@ -148,7 +143,7 @@ export const AnimatedModal = forwardRef<HTMLDivElement, AnimatedModalProps>(
             {/* Modal */}
             <motion.div
               ref={(node) => {
-                (modalRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+                ;(modalRef as React.MutableRefObject<HTMLDivElement | null>).current = node
                 if (typeof ref === 'function') ref(node)
                 else if (ref) ref.current = node
               }}
@@ -157,7 +152,7 @@ export const AnimatedModal = forwardRef<HTMLDivElement, AnimatedModalProps>(
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
-                'relative z-50 w-full rounded-lg bg-card shadow-xl',
+                'bg-card relative z-50 w-full rounded-lg shadow-xl',
                 sizeStyles[size],
                 className
               )}
@@ -167,12 +162,12 @@ export const AnimatedModal = forwardRef<HTMLDivElement, AnimatedModalProps>(
                 <div className="flex items-start justify-between gap-4 border-b p-4">
                   <div className="space-y-1">
                     {title && (
-                      <h2 id={titleId} className="text-lg font-semibold leading-none">
+                      <h2 id={titleId} className="text-lg leading-none font-semibold">
                         {title}
                       </h2>
                     )}
                     {description && (
-                      <p id={descriptionId} className="text-sm text-muted-foreground">
+                      <p id={descriptionId} className="text-muted-foreground text-sm">
                         {description}
                       </p>
                     )}
@@ -180,7 +175,7 @@ export const AnimatedModal = forwardRef<HTMLDivElement, AnimatedModalProps>(
                   {showCloseButton && (
                     <button
                       onClick={onClose}
-                      className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                      className="text-muted-foreground hover:text-foreground focus:ring-ring shrink-0 rounded-md p-1 focus:ring-2 focus:outline-none"
                     >
                       <X className="h-5 w-5" />
                       <span className="sr-only">{locale.modal.close}</span>
@@ -190,9 +185,7 @@ export const AnimatedModal = forwardRef<HTMLDivElement, AnimatedModalProps>(
               )}
               <div className="p-4">{children}</div>
               {footer && (
-                <div className="flex items-center justify-end gap-2 border-t p-4">
-                  {footer}
-                </div>
+                <div className="flex items-center justify-end gap-2 border-t p-4">{footer}</div>
               )}
             </motion.div>
           </div>

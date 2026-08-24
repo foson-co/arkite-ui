@@ -23,15 +23,7 @@ const sizeStyles: Record<TextareaSize, string> = {
 /** Multi-line text input with optional auto-resize and error state. */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
-    {
-      className,
-      size = 'md',
-      error = false,
-      errorMessage,
-      autoResize = false,
-      disabled,
-      ...props
-    },
+    { className, size = 'md', error = false, errorMessage, autoResize = false, disabled, ...props },
     ref
   ) => {
     const handleInput = autoResize
@@ -49,23 +41,19 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           disabled={disabled}
           onInput={handleInput}
           className={cn(
-            'flex w-full rounded-md border bg-background',
+            'bg-background flex w-full rounded-md border',
             'placeholder:text-muted-foreground',
-            'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+            'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
             'disabled:cursor-not-allowed disabled:opacity-50',
             'transition-colors duration-200',
             sizeStyles[size],
             autoResize && 'resize-none overflow-hidden',
-            error
-              ? 'border-destructive focus-visible:ring-destructive'
-              : 'border-input',
+            error ? 'border-destructive focus-visible:ring-destructive' : 'border-input',
             className
           )}
           {...props}
         />
-        {errorMessage && (
-          <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>}
       </div>
     )
   }

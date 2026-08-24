@@ -20,10 +20,34 @@ interface Kpi {
 }
 
 const KPIS: Kpi[] = [
-  { label: 'Monthly revenue', value: '$48,290', change: '+8.2%', trend: 'up', history: [31, 34, 33, 37, 36, 40, 42, 41, 45, 48] },
-  { label: 'Active users', value: '2,841', change: '+3.4%', trend: 'up', history: [21, 22, 24, 23, 25, 26, 26, 27, 28, 28] },
-  { label: 'Conversion rate', value: '4.6%', change: '0.0%', trend: 'neutral', history: [4.5, 4.7, 4.6, 4.5, 4.6, 4.7, 4.6, 4.6, 4.5, 4.6] },
-  { label: 'Deploy frequency', value: '18/wk', change: '-5.1%', trend: 'down', history: [24, 23, 25, 22, 21, 22, 20, 19, 19, 18] },
+  {
+    label: 'Monthly revenue',
+    value: '$48,290',
+    change: '+8.2%',
+    trend: 'up',
+    history: [31, 34, 33, 37, 36, 40, 42, 41, 45, 48],
+  },
+  {
+    label: 'Active users',
+    value: '2,841',
+    change: '+3.4%',
+    trend: 'up',
+    history: [21, 22, 24, 23, 25, 26, 26, 27, 28, 28],
+  },
+  {
+    label: 'Conversion rate',
+    value: '4.6%',
+    change: '0.0%',
+    trend: 'neutral',
+    history: [4.5, 4.7, 4.6, 4.5, 4.6, 4.7, 4.6, 4.6, 4.5, 4.6],
+  },
+  {
+    label: 'Deploy frequency',
+    value: '18/wk',
+    change: '-5.1%',
+    trend: 'down',
+    history: [24, 23, 25, 22, 21, 22, 20, 19, 19, 18],
+  },
 ]
 
 interface ServiceTrend {
@@ -49,12 +73,54 @@ interface Activity {
 }
 
 const RECENT_ACTIVITY: Activity[] = [
-  { id: 1, actor: 'mira', action: 'deployed', target: 'gateway v2.14.0', status: 'success', time: '2 min ago' },
-  { id: 2, actor: 'jonas', action: 'updated env', target: 'billing / staging', status: 'success', time: '11 min ago' },
-  { id: 3, actor: 'ci-bot', action: 'deployed', target: 'auth v1.9.3', status: 'failed', time: '24 min ago' },
-  { id: 4, actor: 'sofia', action: 'invited', target: 'lee@acme.dev', status: 'success', time: '1 hr ago' },
-  { id: 5, actor: 'ci-bot', action: 'deployed', target: 'reports v0.8.1', status: 'success', time: '2 hrs ago' },
-  { id: 6, actor: 'mira', action: 'rotated key', target: 'webhooks', status: 'success', time: '3 hrs ago' },
+  {
+    id: 1,
+    actor: 'mira',
+    action: 'deployed',
+    target: 'gateway v2.14.0',
+    status: 'success',
+    time: '2 min ago',
+  },
+  {
+    id: 2,
+    actor: 'jonas',
+    action: 'updated env',
+    target: 'billing / staging',
+    status: 'success',
+    time: '11 min ago',
+  },
+  {
+    id: 3,
+    actor: 'ci-bot',
+    action: 'deployed',
+    target: 'auth v1.9.3',
+    status: 'failed',
+    time: '24 min ago',
+  },
+  {
+    id: 4,
+    actor: 'sofia',
+    action: 'invited',
+    target: 'lee@acme.dev',
+    status: 'success',
+    time: '1 hr ago',
+  },
+  {
+    id: 5,
+    actor: 'ci-bot',
+    action: 'deployed',
+    target: 'reports v0.8.1',
+    status: 'success',
+    time: '2 hrs ago',
+  },
+  {
+    id: 6,
+    actor: 'mira',
+    action: 'rotated key',
+    target: 'webhooks',
+    status: 'success',
+    time: '3 hrs ago',
+  },
 ]
 
 const ACTIVITY_COLUMNS: Column<Activity>[] = [
@@ -75,7 +141,12 @@ const ACTIVITY_COLUMNS: Column<Activity>[] = [
       <Badge variant={a.status === 'success' ? 'success' : 'destructive'}>{a.status}</Badge>
     ),
   },
-  { key: 'time', header: 'When', align: 'right', cell: (a) => <span className="text-muted-foreground">{a.time}</span> },
+  {
+    key: 'time',
+    header: 'When',
+    align: 'right',
+    cell: (a) => <span className="text-muted-foreground">{a.time}</span>,
+  },
 ]
 
 /**
@@ -90,7 +161,7 @@ const ACTIVITY_COLUMNS: Column<Activity>[] = [
  */
 export function DashboardPage() {
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="bg-background min-h-screen p-6">
       <div className="mx-auto flex max-w-5xl flex-col gap-6">
         <PageHeader
           size="lg"
@@ -137,10 +208,18 @@ export function DashboardPage() {
             <CardContent>
               <ul className="divide-y">
                 {SERVICE_TRENDS.map((service) => (
-                  <li key={service.name} className="flex items-center justify-between gap-4 py-2 first:pt-0 last:pb-0">
+                  <li
+                    key={service.name}
+                    className="flex items-center justify-between gap-4 py-2 first:pt-0 last:pb-0"
+                  >
                     <span className="text-sm font-medium">{service.name}</span>
-                    <Sparkline data={service.history} aria-label={`${service.name} 10-day request trend`} />
-                    <span className="text-sm text-muted-foreground tabular-nums">{service.requests}</span>
+                    <Sparkline
+                      data={service.history}
+                      aria-label={`${service.name} 10-day request trend`}
+                    />
+                    <span className="text-muted-foreground text-sm tabular-nums">
+                      {service.requests}
+                    </span>
                   </li>
                 ))}
               </ul>

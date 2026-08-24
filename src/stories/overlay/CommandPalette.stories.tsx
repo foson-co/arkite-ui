@@ -63,7 +63,7 @@ const DialogDemo = () => {
     <>
       <div className="space-y-2 text-center">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           or press <Kbd>⌘</Kbd> <Kbd>K</Kbd>
         </p>
       </div>

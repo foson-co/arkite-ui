@@ -20,10 +20,7 @@ export const Checked: StoryFn = () => (
 )
 
 export const WithLabel: StoryFn = () => (
-  <Checkbox
-    label="Subscribe to newsletter"
-    description="Receive product updates every week"
-  />
+  <Checkbox label="Subscribe to newsletter" description="Receive product updates every week" />
 )
 
 export const Error: StoryFn = () => (
@@ -42,20 +39,13 @@ export const Disabled: StoryFn = () => (
 
 export const Card: StoryFn = () => (
   <div className="flex w-80 flex-col gap-3">
-    <CheckboxCard
-      label="Email notifications"
-      description="Get notified about account activity"
-    />
+    <CheckboxCard label="Email notifications" description="Get notified about account activity" />
     <CheckboxCard
       label="SMS notifications"
       description="Get notified via text message"
       defaultChecked
     />
-    <CheckboxCard
-      label="Push notifications"
-      description="This option is unavailable"
-      disabled
-    />
+    <CheckboxCard label="Push notifications" description="This option is unavailable" disabled />
     <CheckboxCard
       label="Marketing emails"
       description="Promotions and offers"

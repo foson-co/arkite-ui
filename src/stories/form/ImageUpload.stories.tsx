@@ -28,14 +28,7 @@ function SingleImageDemo() {
     setUrls([newUrl])
   }
 
-  return (
-    <ImageUpload
-      max={1}
-      value={urls}
-      onChange={handleUpload}
-      onRemove={() => setUrls([])}
-    />
-  )
+  return <ImageUpload max={1} value={urls} onChange={handleUpload} onRemove={() => setUrls([])} />
 }
 
 export const SingleImage: StoryFn = () => <SingleImageDemo />
@@ -43,11 +36,7 @@ export const SingleImage: StoryFn = () => <SingleImageDemo />
 // ── Single Image with Existing ──
 
 export const SingleImageWithPreview: StoryFn = () => (
-  <ImageUpload
-    max={1}
-    value={[sampleUrls[0]]}
-    onRemove={() => {}}
-  />
+  <ImageUpload max={1} value={[sampleUrls[0]]} onRemove={() => {}} />
 )
 
 // ── Multi Image Grid ──
@@ -64,14 +53,7 @@ function MultiImageDemo() {
     setUrls((prev) => prev.filter((u) => u !== url))
   }
 
-  return (
-    <ImageUpload
-      max={5}
-      value={urls}
-      onChange={handleUpload}
-      onRemove={handleRemove}
-    />
-  )
+  return <ImageUpload max={5} value={urls} onChange={handleUpload} onRemove={handleRemove} />
 }
 
 export const MultiImage: StoryFn = () => <MultiImageDemo />
@@ -79,11 +61,7 @@ export const MultiImage: StoryFn = () => <MultiImageDemo />
 // ── Full (at max) ──
 
 export const AtMaxLimit: StoryFn = () => (
-  <ImageUpload
-    max={3}
-    value={sampleUrls}
-    onRemove={() => {}}
-  />
+  <ImageUpload max={3} value={sampleUrls} onRemove={() => {}} />
 )
 
 // ── With Loading ──
@@ -100,31 +78,18 @@ export const WithLoading: StoryFn = () => (
 // ── With Error ──
 
 export const WithError: StoryFn = () => (
-  <ImageUpload
-    max={1}
-    error
-    errorMessage="Upload failed: file too large"
-  />
+  <ImageUpload max={1} error errorMessage="Upload failed: file too large" />
 )
 
 // ── Disabled ──
 
 export const Disabled: StoryFn = () => (
-  <ImageUpload
-    max={3}
-    value={sampleUrls.slice(0, 2)}
-    disabled
-  />
+  <ImageUpload max={3} value={sampleUrls.slice(0, 2)} disabled />
 )
 
 // ── With Max Size Hint ──
 
-export const WithMaxSize: StoryFn = () => (
-  <ImageUpload
-    max={1}
-    maxSize={5 * 1024 * 1024}
-  />
-)
+export const WithMaxSize: StoryFn = () => <ImageUpload max={1} maxSize={5 * 1024 * 1024} />
 
 // ── Unlimited ──
 

@@ -4,7 +4,12 @@ import { Stack, HStack, VStack } from './Stack'
 
 describe('Stack', () => {
   it('renders children in a flex container', () => {
-    render(<Stack><span>A</span><span>B</span></Stack>)
+    render(
+      <Stack>
+        <span>A</span>
+        <span>B</span>
+      </Stack>
+    )
     expect(screen.getByText('A')).toBeInTheDocument()
     expect(screen.getByText('B')).toBeInTheDocument()
   })

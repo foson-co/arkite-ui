@@ -23,10 +23,19 @@ const InteractiveDemo = () => {
     <div className="space-y-6">
       <Steps steps={steps} currentStep={current} />
       <div className="flex gap-2">
-        <Button variant="outline" size="sm" onClick={() => setCurrent(Math.max(0, current - 1))} disabled={current === 0}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setCurrent(Math.max(0, current - 1))}
+          disabled={current === 0}
+        >
           Back
         </Button>
-        <Button size="sm" onClick={() => setCurrent(Math.min(steps.length, current + 1))} disabled={current >= steps.length}>
+        <Button
+          size="sm"
+          onClick={() => setCurrent(Math.min(steps.length, current + 1))}
+          disabled={current >= steps.length}
+        >
           Next
         </Button>
       </div>
@@ -42,8 +51,12 @@ const VerticalDemo = () => {
     <div className="space-y-6">
       <Steps steps={steps} currentStep={current} orientation="vertical" />
       <div className="flex gap-2">
-        <Button variant="outline" size="sm" onClick={() => setCurrent(Math.max(0, current - 1))}>Back</Button>
-        <Button size="sm" onClick={() => setCurrent(Math.min(steps.length, current + 1))}>Next</Button>
+        <Button variant="outline" size="sm" onClick={() => setCurrent(Math.max(0, current - 1))}>
+          Back
+        </Button>
+        <Button size="sm" onClick={() => setCurrent(Math.min(steps.length, current + 1))}>
+          Next
+        </Button>
       </div>
     </div>
   )
@@ -51,10 +64,6 @@ const VerticalDemo = () => {
 
 export const Vertical: StoryFn = () => <VerticalDemo />
 
-export const AllComplete: StoryFn = () => (
-  <Steps steps={steps} currentStep={steps.length} />
-)
+export const AllComplete: StoryFn = () => <Steps steps={steps} currentStep={steps.length} />
 
-export const Small: StoryFn = () => (
-  <Steps steps={steps} currentStep={1} size="sm" />
-)
+export const Small: StoryFn = () => <Steps steps={steps} currentStep={1} size="sm" />

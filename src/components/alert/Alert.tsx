@@ -1,13 +1,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../../utils/cn'
 import { warnDeprecated } from '../../utils/deprecate'
-import {
-  AlertCircle,
-  CheckCircle2,
-  Info,
-  AlertTriangle,
-  X,
-} from 'lucide-react'
+import { AlertCircle, CheckCircle2, Info, AlertTriangle, X } from 'lucide-react'
 
 export type AlertVariant =
   | 'info'
@@ -40,8 +34,7 @@ const variantStyles: Record<ResolvedAlertVariant, string> = {
   info: 'bg-info-soft border-info-border text-info-soft-foreground',
   success: 'bg-success-soft border-success-border text-success-soft-foreground',
   warning: 'bg-warning-soft border-warning-border text-warning-soft-foreground',
-  destructive:
-    'bg-destructive-soft border-destructive-border text-destructive-soft-foreground',
+  destructive: 'bg-destructive-soft border-destructive-border text-destructive-soft-foreground',
 }
 
 const iconMap: Record<ResolvedAlertVariant, typeof Info> = {
@@ -74,8 +67,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     if (onDismiss) {
       warnDeprecated('Alert', 'onDismiss', 'onClose')
     }
-    const resolvedVariant: ResolvedAlertVariant =
-      variant === 'error' ? 'destructive' : variant
+    const resolvedVariant: ResolvedAlertVariant = variant === 'error' ? 'destructive' : variant
     const handleClose = onClose ?? onDismiss
     const IconComponent = iconMap[resolvedVariant]
 
@@ -91,21 +83,17 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
         {...props}
       >
         {icon && (
-          <div className="shrink-0">
-            {customIcon || <IconComponent className="h-5 w-5" />}
-          </div>
+          <div className="shrink-0">{customIcon || <IconComponent className="h-5 w-5" />}</div>
         )}
         <div className="flex-1 space-y-1">
-          {title && <p className="font-medium leading-none">{title}</p>}
-          {children && (
-            <div className="text-sm opacity-90">{children}</div>
-          )}
+          {title && <p className="leading-none font-medium">{title}</p>}
+          {children && <div className="text-sm opacity-90">{children}</div>}
         </div>
         {dismissible && (
           <button
             type="button"
             onClick={handleClose}
-            className="shrink-0 rounded-md p-1 opacity-70 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
+            className="shrink-0 rounded-md p-1 opacity-70 hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none"
           >
             <X className="h-4 w-4" />
             <span className="sr-only">Dismiss</span>

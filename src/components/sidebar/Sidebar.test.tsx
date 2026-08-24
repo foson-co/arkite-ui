@@ -305,8 +305,6 @@ describe('useSidebar', () => {
       return null
     }
 
-    expect(() => render(<TestComponent />)).toThrow(
-      'useSidebar must be used within a Sidebar'
-    )
+    expect(() => render(<TestComponent />)).toThrow('useSidebar must be used within a Sidebar')
   })
 })

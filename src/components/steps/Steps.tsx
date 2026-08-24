@@ -42,11 +42,7 @@ export const Steps = forwardRef<HTMLDivElement, StepsProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          'flex',
-          isVertical ? 'flex-col gap-0' : 'items-center gap-0',
-          className
-        )}
+        className={cn('flex', isVertical ? 'flex-col gap-0' : 'items-center gap-0', className)}
         {...props}
       >
         {steps.map((step, index) => {
@@ -61,25 +57,24 @@ export const Steps = forwardRef<HTMLDivElement, StepsProps>(
               key={index}
               className={cn(
                 'flex',
-                isVertical ? 'flex-row gap-3' : 'flex-col items-center gap-2 flex-1'
+                isVertical ? 'flex-row gap-3' : 'flex-1 flex-col items-center gap-2'
               )}
             >
-              <div className={cn('flex', isVertical ? 'flex-col items-center' : 'items-center w-full')}>
+              <div
+                className={cn('flex', isVertical ? 'flex-col items-center' : 'w-full items-center')}
+              >
                 {/* Dot */}
                 <div
                   className={cn(
                     'flex shrink-0 items-center justify-center rounded-full font-medium transition-colors',
                     dotSize,
                     status === 'complete' && 'bg-primary text-primary-foreground',
-                    status === 'current' && 'border-2 border-primary text-primary bg-background',
-                    status === 'upcoming' && 'border-2 border-muted-foreground/30 text-muted-foreground bg-background'
+                    status === 'current' && 'border-primary text-primary bg-background border-2',
+                    status === 'upcoming' &&
+                      'border-muted-foreground/30 text-muted-foreground bg-background border-2'
                   )}
                 >
-                  {status === 'complete' ? (
-                    step.icon ?? <CheckIcon />
-                  ) : (
-                    step.icon ?? index + 1
-                  )}
+                  {status === 'complete' ? (step.icon ?? <CheckIcon />) : (step.icon ?? index + 1)}
                 </div>
 
                 {/* Connector line */}
@@ -87,9 +82,7 @@ export const Steps = forwardRef<HTMLDivElement, StepsProps>(
                   <div
                     className={cn(
                       'transition-colors',
-                      isVertical
-                        ? 'w-0.5 flex-1 min-h-[24px] mx-auto my-1'
-                        : 'h-0.5 flex-1 mx-2',
+                      isVertical ? 'mx-auto my-1 min-h-[24px] w-0.5 flex-1' : 'mx-2 h-0.5 flex-1',
                       index < currentStep ? 'bg-primary' : 'bg-muted-foreground/20'
                     )}
                   />
@@ -100,14 +93,14 @@ export const Steps = forwardRef<HTMLDivElement, StepsProps>(
               <div className={cn(isVertical ? 'pt-0.5 pb-4' : 'text-center')}>
                 <p
                   className={cn(
-                    'text-sm font-medium leading-tight',
+                    'text-sm leading-tight font-medium',
                     status === 'upcoming' && 'text-muted-foreground'
                   )}
                 >
                   {step.label}
                 </p>
                 {step.description && (
-                  <p className="text-xs text-muted-foreground mt-0.5">{step.description}</p>
+                  <p className="text-muted-foreground mt-0.5 text-xs">{step.description}</p>
                 )}
               </div>
             </div>

@@ -86,12 +86,7 @@ describe('Select', () => {
   })
 
   it('renders left icon', () => {
-    render(
-      <Select
-        options={defaultOptions}
-        leftIcon={<span data-testid="left-icon">icon</span>}
-      />
-    )
+    render(<Select options={defaultOptions} leftIcon={<span data-testid="left-icon">icon</span>} />)
     expect(screen.getByTestId('left-icon')).toBeInTheDocument()
   })
 

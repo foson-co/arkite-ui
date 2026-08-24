@@ -1,12 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-  TooltipProvider,
-  SimpleTooltip,
-} from './Tooltip'
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, SimpleTooltip } from './Tooltip'
 
 describe('Tooltip', () => {
   it('renders trigger content via compound components', () => {

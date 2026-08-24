@@ -79,12 +79,7 @@ export interface UseServerTableResult {
  * sorted or filtered result set is a different page N.
  */
 export function useServerTable(options: UseServerTableOptions = {}): UseServerTableResult {
-  const {
-    initialPage = 1,
-    initialPageSize = 10,
-    initialSort = null,
-    initialFilters,
-  } = options
+  const { initialPage = 1, initialPageSize = 10, initialSort = null, initialFilters } = options
 
   const initialQuery = useMemo<ServerTableQuery>(
     () => ({
@@ -104,9 +99,7 @@ export function useServerTable(options: UseServerTableOptions = {}): UseServerTa
   }, [])
 
   const setPageSize = useCallback((pageSize: number) => {
-    setQuery((prev) =>
-      prev.pageSize === pageSize ? prev : { ...prev, pageSize, page: 1 }
-    )
+    setQuery((prev) => (prev.pageSize === pageSize ? prev : { ...prev, pageSize, page: 1 }))
   }, [])
 
   const setSort = useCallback((sort: SortState | null) => {

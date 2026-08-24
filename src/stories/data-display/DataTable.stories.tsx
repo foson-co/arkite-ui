@@ -269,8 +269,7 @@ const heatColumns: Column<User>[] = [
     header: 'Status',
     align: 'center',
     // Whole-cell styling — no negative-margin hacks needed for matrix/heatmap cells
-    cellClassName: (row) =>
-      row.status === 'active' ? 'bg-success-soft' : 'bg-warning-soft',
+    cellClassName: (row) => (row.status === 'active' ? 'bg-success-soft' : 'bg-warning-soft'),
     headerClassName: 'bg-muted',
   },
   { key: 'email', header: 'Email (hidden on mobile)', hidden: 'mobile' },
@@ -307,7 +306,7 @@ const SelectionRulesDemo = () => {
         isRowSelectable={(row) => row.role !== 'Admin'}
         pagination={false}
       />
-      <p className="text-xs text-muted-foreground">
+      <p className="text-muted-foreground text-xs">
         onRowSelect log: {log.join(' · ') || '(interact with checkboxes)'}
       </p>
     </div>
@@ -346,7 +345,13 @@ const heatCell = (key: keyof HeatRow & string): Column<HeatRow> => ({
 export const ContinuousHeatmap: StoryFn = () => (
   <DataTable<HeatRow>
     data={heatRows}
-    columns={[{ key: 'metric', header: 'Metric' }, heatCell('q1'), heatCell('q2'), heatCell('q3'), heatCell('q4')]}
+    columns={[
+      { key: 'metric', header: 'Metric' },
+      heatCell('q1'),
+      heatCell('q2'),
+      heatCell('q3'),
+      heatCell('q4'),
+    ]}
     getRowKey={(r) => r.metric}
     compact
     hoverable={false}
@@ -365,8 +370,8 @@ export const ToggleableStatusBadge: StoryFn = () => {
   const toggle = (id: number) =>
     setRows((prev) =>
       prev.map((r) =>
-        r.id === id ? { ...r, status: r.status === 'active' ? 'inactive' : 'active' } : r,
-      ),
+        r.id === id ? { ...r, status: r.status === 'active' ? 'inactive' : 'active' } : r
+      )
     )
   return (
     <DataTable<User>

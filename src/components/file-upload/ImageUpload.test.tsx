@@ -35,9 +35,7 @@ describe('ImageUpload', () => {
 
   it('calls onRemove when Remove is clicked (single)', async () => {
     const onRemove = vi.fn()
-    render(
-      <ImageUpload max={1} value={['https://example.com/img.jpg']} onRemove={onRemove} />
-    )
+    render(<ImageUpload max={1} value={['https://example.com/img.jpg']} onRemove={onRemove} />)
     await userEvent.click(screen.getByText('Remove'))
     expect(onRemove).toHaveBeenCalledWith('https://example.com/img.jpg')
   })
@@ -52,9 +50,7 @@ describe('ImageUpload', () => {
   })
 
   it('does not show hover buttons when disabled (single)', () => {
-    render(
-      <ImageUpload max={1} value={['https://example.com/img.jpg']} disabled />
-    )
+    render(<ImageUpload max={1} value={['https://example.com/img.jpg']} disabled />)
     expect(screen.queryByText('Replace')).not.toBeInTheDocument()
     expect(screen.queryByText('Remove')).not.toBeInTheDocument()
   })

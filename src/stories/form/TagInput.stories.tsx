@@ -36,12 +36,7 @@ function WithInitialTagsDemo() {
 
   return (
     <div className="w-96">
-      <TagInput
-        value={tags}
-        onChange={setTags}
-        placeholder="Add more tags..."
-        aria-label="Tags"
-      />
+      <TagInput value={tags} onChange={setTags} placeholder="Add more tags..." aria-label="Tags" />
     </div>
   )
 }
@@ -72,12 +67,7 @@ export const MaxTags: StoryFn = () => <MaxTagsDemo />
 
 export const Disabled: StoryFn = () => (
   <div className="w-96">
-    <TagInput
-      value={['React', 'TypeScript']}
-      onChange={() => {}}
-      disabled
-      aria-label="Tags"
-    />
+    <TagInput value={['React', 'TypeScript']} onChange={() => {}} disabled aria-label="Tags" />
   </div>
 )
 

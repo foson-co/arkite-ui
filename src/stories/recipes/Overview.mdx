@@ -9,14 +9,14 @@ They exist because the hard part is rarely picking a component; it is knowing
 which components go together, who owns which piece of state, and which pairings
 break. Read the one closest to the page you are building, then adapt.
 
-| Recipe | What it shows |
-|---|---|
-| [CRUD List Page](?path=/docs/recipes-crud-list-page--docs) | Search + filters over a sortable, selectable, paginated table; bulk actions; a guarded destructive path |
-| [Server-Side Table](?path=/docs/recipes-server-side-table--docs) | The same list when the server does the filtering, sorting, and slicing (`totalRows` + `useServerTable`) |
-| [Dashboard](?path=/docs/recipes-dashboard--docs) | KPI tiles, sparklines, and a compact activity table in one grid |
-| [Detail + Drawer Edit](?path=/docs/recipes-detail-drawer-edit--docs) | A read view with an edit drawer, plus a confirmed destructive action |
-| [Form Page](?path=/docs/recipes-form-page--docs) | Sectioned form with validation, mixed control types, and submit handling |
-| [Tenant Admin Shell](?path=/docs/recipes-tenant-admin-shell--docs) | The app frame: `AdminLayout`, tenant switching, sub-navigation |
+| Recipe                                                               | What it shows                                                                                           |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| [CRUD List Page](?path=/docs/recipes-crud-list-page--docs)           | Search + filters over a sortable, selectable, paginated table; bulk actions; a guarded destructive path |
+| [Server-Side Table](?path=/docs/recipes-server-side-table--docs)     | The same list when the server does the filtering, sorting, and slicing (`totalRows` + `useServerTable`) |
+| [Dashboard](?path=/docs/recipes-dashboard--docs)                     | KPI tiles, sparklines, and a compact activity table in one grid                                         |
+| [Detail + Drawer Edit](?path=/docs/recipes-detail-drawer-edit--docs) | A read view with an edit drawer, plus a confirmed destructive action                                    |
+| [Form Page](?path=/docs/recipes-form-page--docs)                     | Sectioned form with validation, mixed control types, and submit handling                                |
+| [Tenant Admin Shell](?path=/docs/recipes-tenant-admin-shell--docs)   | The app frame: `AdminLayout`, tenant switching, sub-navigation                                          |
 
 ## Installing one
 
@@ -36,7 +36,7 @@ updates it, which is the trade: no upgrade path, no constraints either.
 ## Machine-readable index
 
 Every recipe on this page is also an entry in **`registry.json`**, which ships
-inside the npm package. Each entry carries the fields a *selector* needs — not
+inside the npm package. Each entry carries the fields a _selector_ needs — not
 just what the recipe is, but `when` to reach for it and `notWhen` it is the
 wrong shape — plus the exports it composes and the path to its source.
 
@@ -51,31 +51,31 @@ worse than having none.
 
 Reverse index — start from a component you already know and see it in context.
 
-| Component | Appears in |
-|---|---|
-| `AdminLayout` | Tenant Admin Shell |
-| `Badge` | CRUD List Page · Dashboard · Detail + Drawer Edit · Server-Side Table |
-| `BulkActionBar` | CRUD List Page |
-| `Button` | CRUD List Page · Detail + Drawer Edit · Form Page |
-| `Card` | Dashboard · Detail + Drawer Edit · Tenant Admin Shell |
-| `ConfirmDialog` | Detail + Drawer Edit |
-| `DataTable` | CRUD List Page · Dashboard · Server-Side Table |
-| `DescriptionList` | Detail + Drawer Edit · Tenant Admin Shell |
-| `Drawer` | Detail + Drawer Edit |
-| `FilterBar` | CRUD List Page |
-| `Form` | Detail + Drawer Edit · Form Page |
-| `Input` | Detail + Drawer Edit · Form Page |
-| `PageHeader` | CRUD List Page · Dashboard · Detail + Drawer Edit · Form Page · Server-Side Table |
-| `SegmentedControl` | Tenant Admin Shell |
-| `Select` | Form Page |
-| `Sparkline` | Dashboard |
-| `Switch` | Form Page |
-| `TenantSwitcher` | Tenant Admin Shell |
-| `Textarea` | Detail + Drawer Edit · Form Page |
+| Component          | Appears in                                                                        |
+| ------------------ | --------------------------------------------------------------------------------- |
+| `AdminLayout`      | Tenant Admin Shell                                                                |
+| `Badge`            | CRUD List Page · Dashboard · Detail + Drawer Edit · Server-Side Table             |
+| `BulkActionBar`    | CRUD List Page                                                                    |
+| `Button`           | CRUD List Page · Detail + Drawer Edit · Form Page                                 |
+| `Card`             | Dashboard · Detail + Drawer Edit · Tenant Admin Shell                             |
+| `ConfirmDialog`    | Detail + Drawer Edit                                                              |
+| `DataTable`        | CRUD List Page · Dashboard · Server-Side Table                                    |
+| `DescriptionList`  | Detail + Drawer Edit · Tenant Admin Shell                                         |
+| `Drawer`           | Detail + Drawer Edit                                                              |
+| `FilterBar`        | CRUD List Page                                                                    |
+| `Form`             | Detail + Drawer Edit · Form Page                                                  |
+| `Input`            | Detail + Drawer Edit · Form Page                                                  |
+| `PageHeader`       | CRUD List Page · Dashboard · Detail + Drawer Edit · Form Page · Server-Side Table |
+| `SegmentedControl` | Tenant Admin Shell                                                                |
+| `Select`           | Form Page                                                                         |
+| `Sparkline`        | Dashboard                                                                         |
+| `Switch`           | Form Page                                                                         |
+| `TenantSwitcher`   | Tenant Admin Shell                                                                |
+| `Textarea`         | Detail + Drawer Edit · Form Page                                                  |
 
 ## Before you copy one
 
-Recipes show composition, not every rule. The pairings that fail *silently* —
+Recipes show composition, not every rule. The pairings that fail _silently_ —
 wide tables without `minWidth`, `stickyHeader` without a height limit, a
 `DataTable` nested in a `Card` — are collected in **Composition rules** in
 `DESIGN.md`, and four of them now warn at dev time.

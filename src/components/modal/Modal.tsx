@@ -163,12 +163,12 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         {/* Modal */}
         <div
           ref={(node) => {
-            (modalRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+            ;(modalRef as React.MutableRefObject<HTMLDivElement | null>).current = node
             if (typeof ref === 'function') ref(node)
             else if (ref) ref.current = node
           }}
           className={cn(
-            'relative z-50 flex w-full flex-col rounded-lg bg-card shadow-xl',
+            'bg-card relative z-50 flex w-full flex-col rounded-lg shadow-xl',
             // Hard height cap: without it, long content grows past the
             // viewport while the body scroll-lock makes the page unscrollable
             'max-h-[calc(100vh-2rem)]',
@@ -179,48 +179,42 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           {...props}
         >
           <PanelLayout onSubmit={onSubmit}>
-          {/* Header */}
-          {(title || showCloseButton) && (
-            <div className="flex shrink-0 items-start justify-between gap-4 border-b p-4">
-              <div className="space-y-1">
-                {title && (
-                  <h2
-                    id={titleId}
-                    className="text-lg font-semibold leading-none"
+            {/* Header */}
+            {(title || showCloseButton) && (
+              <div className="flex shrink-0 items-start justify-between gap-4 border-b p-4">
+                <div className="space-y-1">
+                  {title && (
+                    <h2 id={titleId} className="text-lg leading-none font-semibold">
+                      {title}
+                    </h2>
+                  )}
+                  {description && (
+                    <p id={descriptionId} className="text-muted-foreground text-sm">
+                      {description}
+                    </p>
+                  )}
+                </div>
+                {showCloseButton && (
+                  <button
+                    onClick={onClose}
+                    className="text-muted-foreground hover:text-foreground focus:ring-ring shrink-0 rounded-md p-1 focus:ring-2 focus:outline-none"
                   >
-                    {title}
-                  </h2>
-                )}
-                {description && (
-                  <p
-                    id={descriptionId}
-                    className="text-sm text-muted-foreground"
-                  >
-                    {description}
-                  </p>
+                    <X className="h-5 w-5" />
+                    <span className="sr-only">{locale.modal.close}</span>
+                  </button>
                 )}
               </div>
-              {showCloseButton && (
-                <button
-                  onClick={onClose}
-                  className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                >
-                  <X className="h-5 w-5" />
-                  <span className="sr-only">{locale.modal.close}</span>
-                </button>
-              )}
-            </div>
-          )}
+            )}
 
-          {/* Body — scrolls when the panel hits its height cap */}
-          <div className="min-h-0 flex-1 overflow-y-auto p-4">{children}</div>
+            {/* Body — scrolls when the panel hits its height cap */}
+            <div className="min-h-0 flex-1 overflow-y-auto p-4">{children}</div>
 
-          {/* Footer */}
-          {footer && (
-            <div className="flex shrink-0 items-center justify-end gap-2 border-t p-4">
-              {footer}
-            </div>
-          )}
+            {/* Footer */}
+            {footer && (
+              <div className="flex shrink-0 items-center justify-end gap-2 border-t p-4">
+                {footer}
+              </div>
+            )}
           </PanelLayout>
         </div>
       </div>
@@ -258,11 +252,7 @@ export type ModalHeaderProps = HTMLAttributes<HTMLDivElement>
 /** Header section for a modal with border separator. */
 export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('border-b p-4', className)}
-      {...props}
-    />
+    <div ref={ref} className={cn('border-b p-4', className)} {...props} />
   )
 )
 
@@ -272,9 +262,7 @@ export type ModalBodyProps = HTMLAttributes<HTMLDivElement>
 
 /** Body content area of a modal. */
 export const ModalBody = forwardRef<HTMLDivElement, ModalBodyProps>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('p-4', className)} {...props} />
-  )
+  ({ className, ...props }, ref) => <div ref={ref} className={cn('p-4', className)} {...props} />
 )
 
 ModalBody.displayName = 'ModalBody'

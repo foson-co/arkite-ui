@@ -11,15 +11,11 @@ export default meta
 
 // ── Default ──
 
-export const Default: StoryFn = () => (
-  <CopyButton value="npm install @arkite-ui/core" />
-)
+export const Default: StoryFn = () => <CopyButton value="npm install @arkite-ui/core" />
 
 // ── Icon Only ──
 
-export const IconOnly: StoryFn = () => (
-  <CopyButton value="secret-api-key-12345" size="icon" />
-)
+export const IconOnly: StoryFn = () => <CopyButton value="secret-api-key-12345" size="icon" />
 
 // ── CopyInput (Default) ──
 

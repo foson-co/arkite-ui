@@ -6,10 +6,7 @@ import { PasswordInput } from './PasswordInput'
 describe('PasswordInput', () => {
   it('renders as password type by default', () => {
     render(<PasswordInput placeholder="Enter password" />)
-    expect(screen.getByPlaceholderText('Enter password')).toHaveAttribute(
-      'type',
-      'password'
-    )
+    expect(screen.getByPlaceholderText('Enter password')).toHaveAttribute('type', 'password')
   })
 
   it('toggles to text type on eye button click', async () => {
@@ -40,9 +37,7 @@ describe('PasswordInput', () => {
     // Still password because controlled — parent hasn't updated
     expect(screen.getByPlaceholderText('pw')).toHaveAttribute('type', 'password')
 
-    rerender(
-      <PasswordInput placeholder="pw" visible={true} onVisibleChange={onVisibleChange} />
-    )
+    rerender(<PasswordInput placeholder="pw" visible={true} onVisibleChange={onVisibleChange} />)
     expect(screen.getByPlaceholderText('pw')).toHaveAttribute('type', 'text')
   })
 

@@ -46,11 +46,15 @@ export const WithActions: Story = {
       <NavbarSpacer />
       <NavbarContent align="right">
         <NavbarItem>
-          <Button size="sm" variant="outline">Docs</Button>
+          <Button size="sm" variant="outline">
+            Docs
+          </Button>
         </NavbarItem>
         <NavbarDivider />
         <NavbarItem>
-          <Button size="sm" variant="primary">Sign In</Button>
+          <Button size="sm" variant="primary">
+            Sign In
+          </Button>
         </NavbarItem>
       </NavbarContent>
     </Navbar>

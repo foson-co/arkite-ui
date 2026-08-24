@@ -80,7 +80,7 @@ export const FilterBarSearch = forwardRef<HTMLDivElement, FilterBarSearchProps>(
           height="15"
           viewBox="0 0 15 15"
           fill="none"
-          className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+          className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2"
         >
           <path
             d="M10 6.5C10 8.433 8.433 10 6.5 10C4.567 10 3 8.433 3 6.5C3 4.567 4.567 3 6.5 3C8.433 3 10 4.567 10 6.5ZM9.30884 10.0159C8.53901 10.6318 7.56251 11 6.5 11C4.01472 11 2 8.98528 2 6.5C2 4.01472 4.01472 2 6.5 2C8.98528 2 11 4.01472 11 6.5C11 7.56251 10.6318 8.53901 10.0159 9.30884L12.8536 12.1464C13.0488 12.3417 13.0488 12.6583 12.8536 12.8536C12.6583 13.0488 12.3417 13.0488 12.1464 12.8536L9.30884 10.0159Z"
@@ -98,9 +98,9 @@ export const FilterBarSearch = forwardRef<HTMLDivElement, FilterBarSearchProps>(
           onChange={(e) => onChange?.(e.target.value)}
           aria-label={resolvedPlaceholder}
           className={cn(
-            'flex h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 text-sm',
+            'border-input bg-background flex h-9 w-full rounded-md border pr-3 pl-9 text-sm',
             'placeholder:text-muted-foreground',
-            'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+            'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
             '[&::-webkit-search-cancel-button]:hidden'
           )}
         />
@@ -123,18 +123,18 @@ export interface FilterBarFiltersProps extends HTMLAttributes<HTMLDivElement> {
 export const FilterBarFilters = forwardRef<HTMLDivElement, FilterBarFiltersProps>(
   ({ className, children, ...props }, ref) => (
     <FilterToolbarContext.Provider value={true}>
-    <div
-      ref={ref}
-      className={cn(
-        // min-w-0 so labelled groups can shrink and wrap rather than pushing
-        // the bar wider than its container.
-        'flex min-w-0 flex-wrap items-center gap-2',
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </div>
+      <div
+        ref={ref}
+        className={cn(
+          // min-w-0 so labelled groups can shrink and wrap rather than pushing
+          // the bar wider than its container.
+          'flex min-w-0 flex-wrap items-center gap-2',
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
     </FilterToolbarContext.Provider>
   )
 )
@@ -192,7 +192,7 @@ export const FilterBarGroup = forwardRef<HTMLDivElement, FilterBarGroupProps>(
       )}
       {...props}
     >
-      <span className="text-2xs font-medium uppercase tracking-wider text-muted-foreground">
+      <span className="text-2xs text-muted-foreground font-medium tracking-wider uppercase">
         {label}
       </span>
       <div className="flex min-w-0 flex-wrap items-center gap-1">{children}</div>
@@ -213,11 +213,7 @@ export interface FilterBarActionsProps extends HTMLAttributes<HTMLDivElement> {
  */
 export const FilterBarActions = forwardRef<HTMLDivElement, FilterBarActionsProps>(
   ({ className, children, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('flex items-center gap-2 sm:ml-auto', className)}
-      {...props}
-    >
+    <div ref={ref} className={cn('flex items-center gap-2 sm:ml-auto', className)} {...props}>
       {children}
     </div>
   )

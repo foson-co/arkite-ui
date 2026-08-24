@@ -22,9 +22,9 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   render: () => (
     <div className="w-64">
-      <p className="text-sm mb-2">Above</p>
+      <p className="mb-2 text-sm">Above</p>
       <Divider />
-      <p className="text-sm mt-2">Below</p>
+      <p className="mt-2 text-sm">Below</p>
     </div>
   ),
 }
@@ -49,7 +49,7 @@ export const LabelPositions: Story = {
 
 export const Vertical: Story = {
   render: () => (
-    <div className="flex items-center h-8 gap-2">
+    <div className="flex h-8 items-center gap-2">
       <span className="text-sm">Home</span>
       <Divider orientation="vertical" />
       <span className="text-sm">Settings</span>

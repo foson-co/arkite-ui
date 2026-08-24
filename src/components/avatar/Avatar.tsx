@@ -18,7 +18,10 @@ export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   status?: StatusType
 }
 
-const sizeStyles: Record<AvatarSize, { container: string; text: string; statusDot: StatusDotSize }> = {
+const sizeStyles: Record<
+  AvatarSize,
+  { container: string; text: string; statusDot: StatusDotSize }
+> = {
   xs: { container: 'h-6 w-6', text: 'text-xs', statusDot: 'xs' },
   sm: { container: 'h-8 w-8', text: 'text-xs', statusDot: 'sm' },
   md: { container: 'h-10 w-10', text: 'text-sm', statusDot: 'md' },
@@ -43,19 +46,7 @@ function getInitials(name: string): string {
 
 /** Displays a user avatar image with fallback initials and an optional status indicator. */
 export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
-  (
-    {
-      className,
-      size = 'md',
-      variant = 'circle',
-      fallback,
-      alt,
-      src,
-      status,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, size = 'md', variant = 'circle', fallback, alt, src, status, ...props }, ref) => {
     const [imageError, setImageError] = useState(false)
     const styles = sizeStyles[size]
     const showFallback = !src || imageError
@@ -70,13 +61,8 @@ export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
     return (
       <div className={containerClasses}>
         {showFallback ? (
-          <span
-            className={cn(
-              'font-medium text-muted-foreground select-none',
-              styles.text
-            )}
-          >
-            {fallback ? getInitials(fallback) : (alt ? getInitials(alt) : '?')}
+          <span className={cn('text-muted-foreground font-medium select-none', styles.text)}>
+            {fallback ? getInitials(fallback) : alt ? getInitials(alt) : '?'}
           </span>
         ) : (
           <img
@@ -92,7 +78,7 @@ export const Avatar = forwardRef<HTMLImageElement, AvatarProps>(
           <StatusDot
             status={status}
             size={styles.statusDot}
-            className="absolute bottom-0 right-0 ring-2 ring-background"
+            className="ring-background absolute right-0 bottom-0 ring-2"
           />
         )}
       </div>
@@ -138,10 +124,10 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
         {remainingCount > 0 && (
           <div
             className={cn(
-              'inline-flex items-center justify-center bg-muted ring-2 ring-background',
+              'bg-muted ring-background inline-flex items-center justify-center ring-2',
               sizeStyles[size].container,
               sizeStyles[size].text,
-              'rounded-full font-medium text-muted-foreground'
+              'text-muted-foreground rounded-full font-medium'
             )}
           >
             +{remainingCount}

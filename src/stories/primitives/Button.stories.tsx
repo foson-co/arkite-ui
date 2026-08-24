@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from '../../components/button'
 
-
 const meta = {
   title: 'Primitives/Button',
   component: Button,
@@ -69,7 +68,7 @@ export const FullWidth: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div className="flex flex-wrap gap-3 items-center">
+    <div className="flex flex-wrap items-center gap-3">
       <Button variant="primary">Primary</Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="outline">Outline</Button>
@@ -84,9 +83,8 @@ export const AllVariants: Story = {
 export const Link: Story = {
   render: () => (
     <p className="text-sm">
-      Inline action in a sentence or table cell:{' '}
-      <Button variant="link">view details</Button> — link look, button semantics.
-      Use a real <code>&lt;a&gt;</code> for navigation.
+      Inline action in a sentence or table cell: <Button variant="link">view details</Button> — link
+      look, button semantics. Use a real <code>&lt;a&gt;</code> for navigation.
     </p>
   ),
 }

@@ -94,9 +94,7 @@ describe('Combobox', () => {
   it('supports multiple selection', async () => {
     const onChange = vi.fn()
     const user = userEvent.setup()
-    render(
-      <Combobox options={options} multiple value={['apple']} onChange={onChange} />
-    )
+    render(<Combobox options={options} multiple value={['apple']} onChange={onChange} />)
 
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByText('Banana'))
@@ -107,14 +105,7 @@ describe('Combobox', () => {
   it('deselects in multiple mode', async () => {
     const onChange = vi.fn()
     const user = userEvent.setup()
-    render(
-      <Combobox
-        options={options}
-        multiple
-        value={['apple', 'banana']}
-        onChange={onChange}
-      />
-    )
+    render(<Combobox options={options} multiple value={['apple', 'banana']} onChange={onChange} />)
 
     await user.click(screen.getByRole('combobox'))
     // "Apple" appears both in the trigger badge and the dropdown option list,
@@ -126,9 +117,7 @@ describe('Combobox', () => {
   })
 
   it('displays multiple selected labels as badges', () => {
-    render(
-      <Combobox options={options} multiple value={['apple', 'banana']} />
-    )
+    render(<Combobox options={options} multiple value={['apple', 'banana']} />)
 
     expect(screen.getByText('Apple')).toBeInTheDocument()
     expect(screen.getByText('Banana')).toBeInTheDocument()
@@ -136,9 +125,7 @@ describe('Combobox', () => {
 
   it('keeps dropdown open after multiple selection', async () => {
     const user = userEvent.setup()
-    render(
-      <Combobox options={options} multiple value={[]} onChange={vi.fn()} />
-    )
+    render(<Combobox options={options} multiple value={[]} onChange={vi.fn()} />)
 
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByText('Apple'))
@@ -283,9 +270,7 @@ describe('Combobox uncontrolled value', () => {
   it('tracks multiple selections uncontrolled', async () => {
     const onChange = vi.fn()
     const user = userEvent.setup()
-    render(
-      <Combobox options={options} multiple defaultValue={['apple']} onChange={onChange} />
-    )
+    render(<Combobox options={options} multiple defaultValue={['apple']} onChange={onChange} />)
 
     await user.click(screen.getByRole('combobox'))
     const dialog = screen.getByRole('dialog')

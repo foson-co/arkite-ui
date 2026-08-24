@@ -53,11 +53,19 @@ export const Dismissible: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div className="space-y-3 w-96">
-      <Alert variant="info" title="Info">Informational message.</Alert>
-      <Alert variant="success" title="Success">Operation completed.</Alert>
-      <Alert variant="warning" title="Warning">Please review carefully.</Alert>
-      <Alert variant="destructive" title="Error">Something went wrong.</Alert>
+    <div className="w-96 space-y-3">
+      <Alert variant="info" title="Info">
+        Informational message.
+      </Alert>
+      <Alert variant="success" title="Success">
+        Operation completed.
+      </Alert>
+      <Alert variant="warning" title="Warning">
+        Please review carefully.
+      </Alert>
+      <Alert variant="destructive" title="Error">
+        Something went wrong.
+      </Alert>
     </div>
   ),
 }

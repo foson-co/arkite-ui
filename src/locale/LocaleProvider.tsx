@@ -15,9 +15,7 @@ function mergeLocale(override?: PartialArkiteLocale): ArkiteLocale {
     if (value === undefined) continue
     const base = (enUS as unknown as Record<string, unknown>)[key]
     merged[key] =
-      typeof value === 'object' && !Array.isArray(value)
-        ? { ...(base as object), ...value }
-        : value
+      typeof value === 'object' && !Array.isArray(value) ? { ...(base as object), ...value } : value
   }
   return merged as unknown as ArkiteLocale
 }

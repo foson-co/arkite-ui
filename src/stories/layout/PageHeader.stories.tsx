@@ -68,7 +68,7 @@ export const Sizes: StoryFn = () => (
 export const WithBreadcrumb: StoryFn = () => (
   <PageHeader
     breadcrumb={
-      <nav className="text-sm text-muted-foreground">
+      <nav className="text-muted-foreground text-sm">
         <span>Settings</span> / <span className="text-foreground">General</span>
       </nav>
     }

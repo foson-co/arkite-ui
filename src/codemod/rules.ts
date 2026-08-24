@@ -204,7 +204,10 @@ function attrStringLiteralNode(attr: JsxAttribute): StringLike | undefined {
   if (Node.isStringLiteral(init)) return init
   if (Node.isJsxExpression(init)) {
     const expr = init.getExpression()
-    if (expr != null && (Node.isStringLiteral(expr) || Node.isNoSubstitutionTemplateLiteral(expr))) {
+    if (
+      expr != null &&
+      (Node.isStringLiteral(expr) || Node.isNoSubstitutionTemplateLiteral(expr))
+    ) {
       return expr
     }
   }
@@ -438,7 +441,12 @@ const WRAPPABLE_KINDS = new Set<SyntaxKind>([
 
 /** node 的 symbol 是否綁定到 decl(識別字與宣告同名不算,要同一個綁定) */
 function isBoundTo(node: Node, decl: Node): boolean {
-  return node.getSymbol()?.getDeclarations().some((d) => d === decl) ?? false
+  return (
+    node
+      .getSymbol()
+      ?.getDeclarations()
+      .some((d) => d === decl) ?? false
+  )
 }
 
 /**
@@ -466,7 +474,12 @@ function toastObjectDeclarations(sf: SourceFile): Set<Node> {
 /** identifier 是否參照到 arkite 的 toast 物件(以宣告綁定判定,非名稱比對) */
 function isArkiteToastRef(node: Node, decls: Set<Node>): boolean {
   if (!Node.isIdentifier(node)) return false
-  return node.getSymbol()?.getDeclarations().some((d) => decls.has(d)) ?? false
+  return (
+    node
+      .getSymbol()
+      ?.getDeclarations()
+      .some((d) => decls.has(d)) ?? false
+  )
 }
 
 interface ToastMethodCall {
@@ -566,7 +579,8 @@ function errorMessageRule(name: string, components: readonly string[]): Rule {
     transform(sf) {
       return editUntilStable(() => {
         const entry = arkiteJsxAttrEntries(sf, components, 'error').find(
-          (e) => classifyErrorValue(e.attr) === 'string' && getJsxAttr(e.element, 'errorMessage') == null
+          (e) =>
+            classifyErrorValue(e.attr) === 'string' && getJsxAttr(e.element, 'errorMessage') == null
         )
         if (entry == null) return false
         entry.attr.getNameNode().replaceWithText('errorMessage')
@@ -725,10 +739,13 @@ const toastDismissAllRule: Rule = {
 
 const toastDescriptionRule: Rule = {
   name: 'toast-description-option',
-  description: 'toast.success/error/warning/info/show(t, 字串/模板/JSX) → 第二參數包成 { description }',
+  description:
+    'toast.success/error/warning/info/show(t, 字串/模板/JSX) → 第二參數包成 { description }',
   transform(sf) {
     return editUntilStable(() => {
-      const hit = toastMethodCalls(sf).find(({ second }) => classifyToastSecondArg(second) === 'wrap')
+      const hit = toastMethodCalls(sf).find(
+        ({ second }) => classifyToastSecondArg(second) === 'wrap'
+      )
       if (hit == null) return false
       hit.second.replaceWithText(`{ description: ${hit.second.getText()} }`)
       return true
@@ -797,7 +814,13 @@ function matchFromErrorCall(sf: SourceFile): FromErrorMatch | undefined {
     // 形狀 A:toast.error(getErrorMessage(err))
     const bare = unwrapGetErrorMessageCall(first)
     if (bare != null) {
-      return { call, objText: obj.getText(), errText: bare.getText(), prefix: undefined, optionsProps }
+      return {
+        call,
+        objText: obj.getText(),
+        errText: bare.getText(),
+        prefix: undefined,
+        optionsProps,
+      }
     }
     // 形狀 B:toast.error(`前綴:${getErrorMessage(err)}`)(單一插值、插值後無尾字)
     if (Node.isTemplateExpression(first)) {
@@ -816,7 +839,10 @@ function matchFromErrorCall(sf: SourceFile): FromErrorMatch | undefined {
       }
     }
     // 形狀 C:toast.error('前綴:' + getErrorMessage(err))
-    if (Node.isBinaryExpression(first) && first.getOperatorToken().getKind() === SyntaxKind.PlusToken) {
+    if (
+      Node.isBinaryExpression(first) &&
+      first.getOperatorToken().getKind() === SyntaxKind.PlusToken
+    ) {
       const left = unwrapExpression(first.getLeft())
       if (!Node.isStringLiteral(left) && !Node.isNoSubstitutionTemplateLiteral(left)) continue
       const err = unwrapGetErrorMessageCall(first.getRight())
@@ -860,11 +886,13 @@ const toastFromErrorRule: Rule = {
       for (const ni of decl.getNamedImports()) {
         if (ni.getName() !== 'getErrorMessage') continue
         const localName = ni.getAliasNode()?.getText() ?? ni.getName()
-        const used = sf.getDescendantsOfKind(SyntaxKind.Identifier).some(
-          (id) =>
-            id.getText() === localName &&
-            id.getFirstAncestorByKind(SyntaxKind.ImportDeclaration) == null
-        )
+        const used = sf
+          .getDescendantsOfKind(SyntaxKind.Identifier)
+          .some(
+            (id) =>
+              id.getText() === localName &&
+              id.getFirstAncestorByKind(SyntaxKind.ImportDeclaration) == null
+          )
         if (used) continue
         const parent = ni.getImportDeclaration()
         ni.remove()
@@ -894,7 +922,12 @@ export const rules: readonly Rule[] = [
     'error',
     'destructive'
   ),
-  propRenameRule('alert-onclose', 'Alert onDismiss → onClose', ['Alert'], [['onDismiss', 'onClose']]),
+  propRenameRule(
+    'alert-onclose',
+    'Alert onDismiss → onClose',
+    ['Alert'],
+    [['onDismiss', 'onClose']]
+  ),
   propStringValueRule(
     'progress-variant-destructive',
     'Progress/CircularProgress variant="error" → variant="destructive"',
@@ -904,16 +937,36 @@ export const rules: readonly Rule[] = [
     'destructive'
   ),
   circularProgressDiameterRule,
-  propRenameRule('tabs-onchange', 'Tabs onValueChange → onChange', ['Tabs'], [['onValueChange', 'onChange']]),
-  propRenameRule('loading-overlay-open', 'LoadingOverlay visible → open', ['LoadingOverlay'], [['visible', 'open']]),
+  propRenameRule(
+    'tabs-onchange',
+    'Tabs onValueChange → onChange',
+    ['Tabs'],
+    [['onValueChange', 'onChange']]
+  ),
+  propRenameRule(
+    'loading-overlay-open',
+    'LoadingOverlay visible → open',
+    ['LoadingOverlay'],
+    [['visible', 'open']]
+  ),
   toggleToSwitchRule,
   imperativeToastContainerRule,
   commandDialogRule,
   errorMessageRule('form-error-message', ['FormField', 'FormMessage']),
   errorMessageRule('image-upload-error-message', ['ImageUpload']),
   dataTableRule,
-  propRenameRule('tree-onselectionchange', 'Tree onCheckChange → onSelectionChange', ['Tree'], [['onCheckChange', 'onSelectionChange']]),
-  propRenameRule('pagination-variant', 'Pagination mode → variant', ['Pagination'], [['mode', 'variant']]),
+  propRenameRule(
+    'tree-onselectionchange',
+    'Tree onCheckChange → onSelectionChange',
+    ['Tree'],
+    [['onCheckChange', 'onSelectionChange']]
+  ),
+  propRenameRule(
+    'pagination-variant',
+    'Pagination mode → variant',
+    ['Pagination'],
+    [['mode', 'variant']]
+  ),
   timelineRule,
   propRenameRule(
     'tenant-switcher-props',
@@ -985,7 +1038,10 @@ function planTodoInsert(sf: SourceFile, text: string, req: TodoRequest): Planned
 }
 
 /** 對單一檔案套用整組規則(先轉換、再於最終 AST 上規劃並插入 TODO 註解) */
-export function applyRulesToSourceFile(sf: SourceFile, ruleSet: readonly Rule[] = rules): FileOutcome {
+export function applyRulesToSourceFile(
+  sf: SourceFile,
+  ruleSet: readonly Rule[] = rules
+): FileOutcome {
   const before = sf.getFullText()
   const hits: Record<string, RuleHit> = {}
   for (const rule of ruleSet) {

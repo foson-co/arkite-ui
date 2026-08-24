@@ -15,15 +15,7 @@ export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
 /** Animated loading placeholder with pulse or wave animation. */
 export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
   (
-    {
-      className,
-      variant = 'default',
-      animation = 'pulse',
-      width,
-      height,
-      style,
-      ...props
-    },
+    { className, variant = 'default', animation = 'pulse', width, height, style, ...props },
     ref
   ) => {
     const variantStyles = {
@@ -42,12 +34,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          'bg-muted',
-          variantStyles[variant],
-          animationStyles[animation],
-          className
-        )}
+        className={cn('bg-muted', variantStyles[variant], animationStyles[animation], className)}
         style={{
           width: typeof width === 'number' ? `${width}px` : width,
           height: typeof height === 'number' ? `${height}px` : height,
@@ -133,14 +120,8 @@ export interface SkeletonCardProps extends HTMLAttributes<HTMLDivElement> {
 /** Card-shaped skeleton with optional image, avatar, and text placeholders. */
 export const SkeletonCard = forwardRef<HTMLDivElement, SkeletonCardProps>(
   ({ showImage = true, showAvatar = false, lines = 3, className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('rounded-lg border bg-card p-4 space-y-4', className)}
-      {...props}
-    >
-      {showImage && (
-        <Skeleton className="h-32 w-full" variant="rounded" />
-      )}
+    <div ref={ref} className={cn('bg-card space-y-4 rounded-lg border p-4', className)} {...props}>
+      {showImage && <Skeleton className="h-32 w-full" variant="rounded" />}
       {showAvatar && (
         <div className="flex items-center gap-3">
           <SkeletonAvatar />

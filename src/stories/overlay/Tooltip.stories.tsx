@@ -38,25 +38,33 @@ export const Positions: StoryFn = () => (
   <div className="flex gap-4">
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" size="sm">Top</Button>
+        <Button variant="outline" size="sm">
+          Top
+        </Button>
       </TooltipTrigger>
       <TooltipContent side="top">Top tooltip</TooltipContent>
     </Tooltip>
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" size="sm">Right</Button>
+        <Button variant="outline" size="sm">
+          Right
+        </Button>
       </TooltipTrigger>
       <TooltipContent side="right">Right tooltip</TooltipContent>
     </Tooltip>
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" size="sm">Bottom</Button>
+        <Button variant="outline" size="sm">
+          Bottom
+        </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom">Bottom tooltip</TooltipContent>
     </Tooltip>
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" size="sm">Left</Button>
+        <Button variant="outline" size="sm">
+          Left
+        </Button>
       </TooltipTrigger>
       <TooltipContent side="left">Left tooltip</TooltipContent>
     </Tooltip>
@@ -78,13 +86,17 @@ export const CustomOffset: StoryFn = () => (
   <div className="flex gap-8">
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" size="sm">Default (4px)</Button>
+        <Button variant="outline" size="sm">
+          Default (4px)
+        </Button>
       </TooltipTrigger>
       <TooltipContent sideOffset={4}>sideOffset: 4</TooltipContent>
     </Tooltip>
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" size="sm">Relaxed (10px)</Button>
+        <Button variant="outline" size="sm">
+          Relaxed (10px)
+        </Button>
       </TooltipTrigger>
       <TooltipContent sideOffset={10}>sideOffset: 10</TooltipContent>
     </Tooltip>
@@ -93,10 +105,12 @@ export const CustomOffset: StoryFn = () => (
 
 /** Radix auto-flips when hitting viewport edges */
 export const BoundaryAware: StoryFn = () => (
-  <div className="flex justify-between w-full px-0">
+  <div className="flex w-full justify-between px-0">
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" size="sm">Left edge</Button>
+        <Button variant="outline" size="sm">
+          Left edge
+        </Button>
       </TooltipTrigger>
       <TooltipContent side="left" collisionPadding={8}>
         Auto-flips when clipped
@@ -104,7 +118,9 @@ export const BoundaryAware: StoryFn = () => (
     </Tooltip>
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" size="sm">Right edge</Button>
+        <Button variant="outline" size="sm">
+          Right edge
+        </Button>
       </TooltipTrigger>
       <TooltipContent side="right" collisionPadding={8}>
         Auto-flips when clipped

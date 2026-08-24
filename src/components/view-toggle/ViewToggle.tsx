@@ -5,8 +5,10 @@ import { useLocale } from '../../locale'
 
 export type ViewMode = 'table' | 'card'
 
-export interface ViewToggleProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface ViewToggleProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   /** Current view mode (controlled) */
   value?: ViewMode
   /** Initial view mode for uncontrolled usage */
@@ -40,8 +42,16 @@ export const ViewToggle = forwardRef<HTMLDivElement, ViewToggleProps>(
     const currentValue = isControlled ? value : internalValue
 
     const options: ViewOption[] = [
-      { mode: 'table', icon: <LayoutList className={styles.icon} />, label: locale.viewToggle.tableView },
-      { mode: 'card', icon: <LayoutGrid className={styles.icon} />, label: locale.viewToggle.cardView },
+      {
+        mode: 'table',
+        icon: <LayoutList className={styles.icon} />,
+        label: locale.viewToggle.tableView,
+      },
+      {
+        mode: 'card',
+        icon: <LayoutGrid className={styles.icon} />,
+        label: locale.viewToggle.cardView,
+      },
     ]
 
     return (
@@ -50,7 +60,7 @@ export const ViewToggle = forwardRef<HTMLDivElement, ViewToggleProps>(
         role="radiogroup"
         aria-label={locale.viewToggle.label}
         className={cn(
-          'inline-flex items-center gap-1 rounded-md border border-input bg-background p-1',
+          'border-input bg-background inline-flex items-center gap-1 rounded-md border p-1',
           styles.wrapper,
           className
         )}

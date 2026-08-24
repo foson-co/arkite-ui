@@ -17,18 +17,18 @@ pnpm storybook       # Preview components at http://localhost:6006
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Watch mode (rebuild on change) |
-| `pnpm build` | Production build (tsup) |
-| `pnpm storybook` | Launch Storybook |
-| `pnpm test` | Run unit tests (412 tests) |
-| `pnpm test:watch` | Tests in watch mode |
-| `pnpm test:coverage` | Tests with coverage report |
-| `pnpm lint` | Lint source code (ESLint 9) |
-| `pnpm typecheck` | TypeScript type check |
-| `pnpm size` | Check bundle size budget |
-| `pnpm changeset` | Add a changeset for your MR |
+| Command              | Description                    |
+| -------------------- | ------------------------------ |
+| `pnpm dev`           | Watch mode (rebuild on change) |
+| `pnpm build`         | Production build (tsup)        |
+| `pnpm storybook`     | Launch Storybook               |
+| `pnpm test`          | Run unit tests (412 tests)     |
+| `pnpm test:watch`    | Tests in watch mode            |
+| `pnpm test:coverage` | Tests with coverage report     |
+| `pnpm lint`          | Lint source code (ESLint 9)    |
+| `pnpm typecheck`     | TypeScript type check          |
+| `pnpm size`          | Check bundle size budget       |
+| `pnpm changeset`     | Add a changeset for your MR    |
 
 ## Adding a New Component
 
@@ -55,7 +55,7 @@ pnpm storybook       # Preview components at http://localhost:6006
 Recipes are whole-page compositions under `src/stories/recipes/`. Unlike a component, one is **shipped as source you install** (`npx arkite-ui add <name>`), so it carries an extra obligation: an entry in `registry.json`.
 
 1. `MyPage.demo.tsx` — the page itself, importing from `'../../index'` (the `add` CLI rewrites that to the package name; `registry.json → install.importRewrite` is the only transform, so don't invent other repo-relative imports)
-2. `MyPage.stories.tsx` + `MyPage.mdx` — same as any story, plus the "Key decisions" prose that explains *why* the pieces fit
+2. `MyPage.stories.tsx` + `MyPage.mdx` — same as any story, plus the "Key decisions" prose that explains _why_ the pieces fit
 3. Add it to `src/stories/recipes/Overview.mdx` (both tables)
 4. **Add an entry to `registry.json`** — `name`, `title`, `summary`, `when`, `notWhen`, `uses`, `files`, `docs`
 
@@ -83,10 +83,10 @@ Recipes are whole-page compositions under `src/stories/recipes/`. Unlike a compo
 
 All interactive components follow a consistent sizing pattern:
 
-| Size | Height | Usage |
-|------|--------|-------|
-| `sm` | `h-8` (32px) | Compact UIs, table cells |
-| `md` | `h-10` (40px) | Default |
+| Size | Height        | Usage                     |
+| ---- | ------------- | ------------------------- |
+| `sm` | `h-8` (32px)  | Compact UIs, table cells  |
+| `md` | `h-10` (40px) | Default                   |
 | `lg` | `h-12` (48px) | Touch targets, hero forms |
 
 Components using density: Button, Input, Select, SearchInput, Combobox, DatePicker, Textarea.
@@ -136,7 +136,7 @@ CI will warn if a merge request is missing a changeset.
 
 This is the agreed team process — every release follows it, in this order.
 
-### 1. Sync happens *before* release, not after
+### 1. Sync happens _before_ release, not after
 
 A library change is not "done" when the code merges. Each change ships **in the same MR** with:
 
@@ -197,6 +197,7 @@ We enforce bundle size budgets via [size-limit](https://github.com/ai/size-limit
 - `dist/tailwind-preset.js` < 10 KB
 
 If your changes cause the bundle to exceed the budget, consider:
+
 - Tree-shaking unused dependencies
 - Lazy-loading heavy components
 - Moving optional features behind peer dependencies

@@ -7,7 +7,16 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'secondary', 'success', 'warning', 'destructive', 'outline', 'info', 'count'],
+      options: [
+        'default',
+        'secondary',
+        'success',
+        'warning',
+        'destructive',
+        'outline',
+        'info',
+        'count',
+      ],
     },
   },
   args: {
@@ -61,22 +70,31 @@ export const Count: Story = {
   render: () => (
     <div className="space-y-4">
       <div>
-        <p className="text-sm font-medium mb-2">Neutral count pills — e.g. after tab labels</p>
+        <p className="mb-2 text-sm font-medium">Neutral count pills — e.g. after tab labels</p>
         <div className="flex flex-wrap items-center gap-4">
           <span className="inline-flex items-center text-sm">
-            Items <Badge variant="count" size="sm" className="ml-1.5">{12}</Badge>
+            Items{' '}
+            <Badge variant="count" size="sm" className="ml-1.5">
+              {12}
+            </Badge>
           </span>
           <span className="inline-flex items-center text-sm">
-            Photos <Badge variant="count" size="sm" className="ml-1.5">{7}</Badge>
+            Photos{' '}
+            <Badge variant="count" size="sm" className="ml-1.5">
+              {7}
+            </Badge>
           </span>
           <span className="inline-flex items-center text-sm">
-            Logs <Badge variant="count" size="sm" className="ml-1.5" max={99}>{150}</Badge>
+            Logs{' '}
+            <Badge variant="count" size="sm" className="ml-1.5" max={99}>
+              {150}
+            </Badge>
           </span>
         </div>
       </div>
-      <div className="rounded-md border border-border p-4 text-xs text-muted-foreground">
-        <p className="font-medium text-foreground mb-2">Usage</p>
-        <pre className="bg-muted p-3 rounded overflow-x-auto">{`// Composes with max
+      <div className="border-border text-muted-foreground rounded-md border p-4 text-xs">
+        <p className="text-foreground mb-2 font-medium">Usage</p>
+        <pre className="bg-muted overflow-x-auto rounded p-3">{`// Composes with max
 <Badge variant="count" max={99}>{itemCount}</Badge>  // 150 → "99+"`}</pre>
       </div>
     </div>
@@ -88,37 +106,63 @@ export const MaxCount: Story = {
   render: () => (
     <div className="space-y-4">
       <div>
-        <p className="text-sm font-medium mb-2">With <code className="text-xs">max=99</code></p>
+        <p className="mb-2 text-sm font-medium">
+          With <code className="text-xs">max=99</code>
+        </p>
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="destructive" max={99}>{3}</Badge>
-          <Badge variant="destructive" max={99}>{50}</Badge>
-          <Badge variant="destructive" max={99}>{99}</Badge>
-          <Badge variant="destructive" max={99}>{100}</Badge>
-          <Badge variant="destructive" max={99}>{9999}</Badge>
+          <Badge variant="destructive" max={99}>
+            {3}
+          </Badge>
+          <Badge variant="destructive" max={99}>
+            {50}
+          </Badge>
+          <Badge variant="destructive" max={99}>
+            {99}
+          </Badge>
+          <Badge variant="destructive" max={99}>
+            {100}
+          </Badge>
+          <Badge variant="destructive" max={99}>
+            {9999}
+          </Badge>
         </div>
       </div>
 
       <div>
-        <p className="text-sm font-medium mb-2">With <code className="text-xs">max=9</code> (compact counters)</p>
+        <p className="mb-2 text-sm font-medium">
+          With <code className="text-xs">max=9</code> (compact counters)
+        </p>
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="info" max={9}>{1}</Badge>
-          <Badge variant="info" max={9}>{9}</Badge>
-          <Badge variant="info" max={9}>{10}</Badge>
-          <Badge variant="info" max={9}>{42}</Badge>
+          <Badge variant="info" max={9}>
+            {1}
+          </Badge>
+          <Badge variant="info" max={9}>
+            {9}
+          </Badge>
+          <Badge variant="info" max={9}>
+            {10}
+          </Badge>
+          <Badge variant="info" max={9}>
+            {42}
+          </Badge>
         </div>
       </div>
 
       <div>
-        <p className="text-sm font-medium mb-2">Non-numeric children pass through</p>
+        <p className="mb-2 text-sm font-medium">Non-numeric children pass through</p>
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="success" max={99}>New</Badge>
-          <Badge variant="outline" max={99}>Beta</Badge>
+          <Badge variant="success" max={99}>
+            New
+          </Badge>
+          <Badge variant="outline" max={99}>
+            Beta
+          </Badge>
         </div>
       </div>
 
-      <div className="rounded-md border border-border p-4 text-xs text-muted-foreground">
-        <p className="font-medium text-foreground mb-2">Usage</p>
-        <pre className="bg-muted p-3 rounded overflow-x-auto">{`// Cap at 99; anything higher becomes "99+"
+      <div className="border-border text-muted-foreground rounded-md border p-4 text-xs">
+        <p className="text-foreground mb-2 font-medium">Usage</p>
+        <pre className="bg-muted overflow-x-auto rounded p-3">{`// Cap at 99; anything higher becomes "99+"
 <Badge variant="destructive" max={99}>{unreadCount}</Badge>
 
 // String children are unaffected
@@ -147,16 +191,20 @@ const orderStatusMap: Record<string, { label: string; variant: BadgeVariant }> =
 }
 
 /** Reusable pattern — wrap in your project as a helper */
-const StatusBadge = ({ status, map }: { status: string; map: Record<string, { label: string; variant: BadgeVariant }> }) => {
+const StatusBadge = ({
+  status,
+  map,
+}: {
+  status: string
+  map: Record<string, { label: string; variant: BadgeVariant }>
+}) => {
   const info = map[status]
   return <Badge variant={info?.variant ?? 'outline'}>{info?.label ?? status}</Badge>
 }
 
 /** Active / inactive toggle — a common one-liner, no wrapper needed */
 const ActiveBadge = ({ isActive }: { isActive: boolean }) => (
-  <Badge variant={isActive ? 'success' : 'outline'}>
-    {isActive ? 'Active' : 'Inactive'}
-  </Badge>
+  <Badge variant={isActive ? 'success' : 'outline'}>{isActive ? 'Active' : 'Inactive'}</Badge>
 )
 
 export const StatusBadgePattern: Story = {
@@ -164,7 +212,7 @@ export const StatusBadgePattern: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-medium mb-3">Order statuses</p>
+        <p className="mb-3 text-sm font-medium">Order statuses</p>
         <div className="flex flex-wrap gap-2">
           {Object.keys(orderStatusMap).map((status) => (
             <StatusBadge key={status} status={status} map={orderStatusMap} />
@@ -173,16 +221,16 @@ export const StatusBadgePattern: Story = {
       </div>
 
       <div>
-        <p className="text-sm font-medium mb-3">Active / Inactive</p>
+        <p className="mb-3 text-sm font-medium">Active / Inactive</p>
         <div className="flex gap-2">
           <ActiveBadge isActive />
           <ActiveBadge isActive={false} />
         </div>
       </div>
 
-      <div className="rounded-md border border-border p-4 text-xs text-muted-foreground space-y-2">
-        <p className="font-medium text-foreground">How to use this pattern:</p>
-        <pre className="bg-muted p-3 rounded text-xs overflow-x-auto">{`// 1. Define status map in your project
+      <div className="border-border text-muted-foreground space-y-2 rounded-md border p-4 text-xs">
+        <p className="text-foreground font-medium">How to use this pattern:</p>
+        <pre className="bg-muted overflow-x-auto rounded p-3 text-xs">{`// 1. Define status map in your project
 const statusMap = {
   active:   { label: '啟用', variant: 'success' },
   inactive: { label: '停用', variant: 'outline' },

@@ -3,8 +3,7 @@ import { cn } from '../../utils/cn'
 import { Search, X, Loader2 } from 'lucide-react'
 import { useLocale } from '../../locale'
 
-export interface SearchInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /** Input size */
   size?: 'sm' | 'md' | 'lg'
   /** Loading state */
@@ -107,7 +106,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         {/* Search icon */}
         <div
           className={cn(
-            'absolute top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none',
+            'text-muted-foreground pointer-events-none absolute top-1/2 -translate-y-1/2',
             iconPositionStyles[size]
           )}
         >
@@ -123,9 +122,9 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           value={currentValue}
           onChange={handleChange}
           className={cn(
-            'w-full rounded-md border border-input bg-background',
+            'border-input bg-background w-full rounded-md border',
             'ring-offset-background placeholder:text-muted-foreground',
-            'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+            'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
             'disabled:cursor-not-allowed disabled:opacity-50',
             '[&::-webkit-search-cancel-button]:hidden',
             sizeStyles[size],
@@ -135,16 +134,9 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         />
 
         {/* Clear button or loading spinner */}
-        <div
-          className={cn(
-            'absolute top-1/2 -translate-y-1/2',
-            clearPositionStyles[size]
-          )}
-        >
+        <div className={cn('absolute top-1/2 -translate-y-1/2', clearPositionStyles[size])}>
           {loading ? (
-            <Loader2
-              className={cn(iconSizeStyles[size], 'animate-spin text-muted-foreground')}
-            />
+            <Loader2 className={cn(iconSizeStyles[size], 'text-muted-foreground animate-spin')} />
           ) : showClear ? (
             <button
               type="button"

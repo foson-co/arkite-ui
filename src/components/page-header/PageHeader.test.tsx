@@ -37,23 +37,17 @@ describe('PageHeader', () => {
   })
 
   it('renders actions slot', () => {
-    render(
-      <PageHeader title="Users" actions={<button>Add User</button>} />
-    )
+    render(<PageHeader title="Users" actions={<button>Add User</button>} />)
     expect(screen.getByRole('button', { name: 'Add User' })).toBeInTheDocument()
   })
 
   it('renders badge slot', () => {
-    render(
-      <PageHeader title="Users" badge={<span data-testid="badge">Active</span>} />
-    )
+    render(<PageHeader title="Users" badge={<span data-testid="badge">Active</span>} />)
     expect(screen.getByTestId('badge')).toBeInTheDocument()
   })
 
   it('renders breadcrumb slot', () => {
-    render(
-      <PageHeader title="Users" breadcrumb={<nav data-testid="crumbs">Home / Users</nav>} />
-    )
+    render(<PageHeader title="Users" breadcrumb={<nav data-testid="crumbs">Home / Users</nav>} />)
     expect(screen.getByTestId('crumbs')).toBeInTheDocument()
   })
 

@@ -17,20 +17,13 @@ import { useLocale } from '../../locale'
 /* -------------------------------------------------------------------------- */
 
 const buttonVariantStyles: Record<ButtonVariant, string> = {
-  primary:
-    'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
-  secondary:
-    'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-  outline:
-    'border border-input bg-background hover:bg-secondary hover:text-secondary-foreground',
-  ghost:
-    'hover:bg-secondary hover:text-secondary-foreground',
-  destructive:
-    'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm',
-  gradient:
-    'gradient-primary text-white hover:opacity-90 shadow-sm',
-  link:
-    'text-primary underline-offset-4 hover:underline h-auto p-0 rounded-none',
+  primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
+  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+  outline: 'border border-input bg-background hover:bg-secondary hover:text-secondary-foreground',
+  ghost: 'hover:bg-secondary hover:text-secondary-foreground',
+  destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm',
+  gradient: 'gradient-primary text-white hover:opacity-90 shadow-sm',
+  link: 'text-primary underline-offset-4 hover:underline h-auto p-0 rounded-none',
 }
 
 const buttonSizeStyles: Record<ButtonSize, string> = {
@@ -59,11 +52,7 @@ const iconSizeMap: Record<ButtonSize, number> = {
 /*  useCopyToClipboard                                                        */
 /* -------------------------------------------------------------------------- */
 
-function useCopyToClipboard(
-  value: string,
-  feedbackDuration: number,
-  onCopy?: () => void
-) {
+function useCopyToClipboard(value: string, feedbackDuration: number, onCopy?: () => void) {
   const [copied, setCopied] = useState(false)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -88,8 +77,7 @@ function useCopyToClipboard(
 /*  CopyButton                                                                */
 /* -------------------------------------------------------------------------- */
 
-export interface CopyButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+export interface CopyButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** The text value to copy to the clipboard. */
   value: string
   /** Callback fired after a successful copy. */
@@ -126,11 +114,7 @@ export const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(
     ref
   ) => {
     const locale = useLocale()
-    const { copied, copy } = useCopyToClipboard(
-      value,
-      feedbackDuration,
-      onCopyProp
-    )
+    const { copied, copy } = useCopyToClipboard(value, feedbackDuration, onCopyProp)
 
     const iconSize = iconSizeMap[size]
 
@@ -143,7 +127,7 @@ export const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(
         className={cn(
           'inline-flex items-center justify-center gap-2',
           'font-medium transition-all duration-200',
-          'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40 focus-visible:ring-offset-0',
+          'focus-visible:ring-ring/40 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
           'disabled:pointer-events-none disabled:opacity-50',
           buttonVariantStyles[variant],
           buttonSizeStyles[size],
@@ -174,8 +158,10 @@ CopyButton.displayName = 'CopyButton'
 /*  CopyInput                                                                 */
 /* -------------------------------------------------------------------------- */
 
-export interface CopyInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'value'> {
+export interface CopyInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'value'
+> {
   /** The text value displayed in the input and copied to the clipboard. */
   value: string
   /** Callback fired after a successful copy. */
@@ -196,22 +182,11 @@ export interface CopyInputProps
  */
 export const CopyInput = forwardRef<HTMLInputElement, CopyInputProps>(
   (
-    {
-      value,
-      onCopy: onCopyProp,
-      size = 'md',
-      feedbackDuration = 2000,
-      className,
-      ...props
-    },
+    { value, onCopy: onCopyProp, size = 'md', feedbackDuration = 2000, className, ...props },
     ref
   ) => {
     const locale = useLocale()
-    const { copied, copy } = useCopyToClipboard(
-      value,
-      feedbackDuration,
-      onCopyProp
-    )
+    const { copied, copy } = useCopyToClipboard(value, feedbackDuration, onCopyProp)
 
     const iconSize = size === 'lg' ? 18 : size === 'sm' ? 14 : 16
 
@@ -224,9 +199,9 @@ export const CopyInput = forwardRef<HTMLInputElement, CopyInputProps>(
           readOnly
           aria-label={locale.copyButton.copyValue}
           className={cn(
-            'flex w-full rounded-md border border-input bg-muted',
+            'border-input bg-muted flex w-full rounded-md border',
             'text-muted-foreground',
-            'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40 focus-visible:ring-offset-0',
+            'focus-visible:ring-ring/40 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
             'cursor-default select-all',
             'transition-colors duration-200',
             inputSizeStyles[size],
@@ -241,13 +216,13 @@ export const CopyInput = forwardRef<HTMLInputElement, CopyInputProps>(
             'absolute inset-y-0 right-0 flex items-center px-3',
             'text-muted-foreground hover:text-foreground',
             'transition-colors duration-200',
-            'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40 focus-visible:ring-offset-0',
+            'focus-visible:ring-ring/40 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
             'rounded-r-md'
           )}
           onClick={copy}
         >
           {copied ? (
-            <Check size={iconSize} className="shrink-0 text-success" />
+            <Check size={iconSize} className="text-success shrink-0" />
           ) : (
             <Copy size={iconSize} className="shrink-0" />
           )}

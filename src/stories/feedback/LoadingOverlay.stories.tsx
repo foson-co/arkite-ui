@@ -11,8 +11,8 @@ const meta: Meta = {
 export default meta
 
 const Box = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative h-48 w-full rounded-md border bg-background p-4">
-    <p className="text-sm text-muted-foreground">Content underneath the overlay</p>
+  <div className="bg-background relative h-48 w-full rounded-md border p-4">
+    <p className="text-muted-foreground text-sm">Content underneath the overlay</p>
     <p className="mt-2 text-sm">This text is covered by the loading overlay.</p>
     {children}
   </div>
@@ -39,8 +39,8 @@ export const WithBlur: StoryFn = () => (
 export const Sizes: StoryFn = () => (
   <div className="flex gap-4">
     {(['sm', 'md', 'lg'] as const).map((size) => (
-      <div key={size} className="relative h-32 w-48 rounded-md border bg-background p-4">
-        <p className="text-xs text-muted-foreground">size=&quot;{size}&quot;</p>
+      <div key={size} className="bg-background relative h-32 w-48 rounded-md border p-4">
+        <p className="text-muted-foreground text-xs">size=&quot;{size}&quot;</p>
         <LoadingOverlay size={size} />
       </div>
     ))}

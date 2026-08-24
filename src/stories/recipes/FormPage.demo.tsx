@@ -92,7 +92,7 @@ export function FormPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="bg-background min-h-screen p-6">
       <div className="mx-auto flex max-w-2xl flex-col gap-6">
         <PageHeader
           title="New project"

@@ -31,7 +31,7 @@ export const Default: Story = {
     <div className="flex h-[500px]">
       <Sidebar {...args}>
         <SidebarHeader>
-          <span className="font-semibold text-sm px-2">Arkite</span>
+          <span className="px-2 text-sm font-semibold">Arkite</span>
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup label="Main">
@@ -49,7 +49,7 @@ export const Default: Story = {
           <SidebarToggle />
         </SidebarFooter>
       </Sidebar>
-      <div className="flex-1 p-6 bg-muted">
+      <div className="bg-muted flex-1 p-6">
         <p className="text-muted-foreground">Main content area</p>
       </div>
     </div>

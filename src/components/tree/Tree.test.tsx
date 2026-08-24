@@ -79,27 +79,14 @@ describe('Tree', () => {
   it('selects a node on click', async () => {
     const onSelect = vi.fn()
     const user = userEvent.setup()
-    render(
-      <Tree
-        data={sampleData}
-        defaultExpandedKeys={['root']}
-        onSelect={onSelect}
-      />
-    )
+    render(<Tree data={sampleData} defaultExpandedKeys={['root']} onSelect={onSelect} />)
 
     await user.click(screen.getByText('Child 2'))
     expect(onSelect).toHaveBeenCalledWith('child-2', expect.objectContaining({ key: 'child-2' }))
   })
 
   it('checkable mode renders checkboxes', () => {
-    render(
-      <Tree
-        data={sampleData}
-        defaultExpandedKeys={['root']}
-        checkable
-        checkedKeys={[]}
-      />
-    )
+    render(<Tree data={sampleData} defaultExpandedKeys={['root']} checkable checkedKeys={[]} />)
     const checkboxes = screen.getAllByRole('checkbox')
     expect(checkboxes.length).toBeGreaterThan(0)
   })
@@ -177,13 +164,7 @@ describe('Tree', () => {
   it('disabled nodes are not clickable', async () => {
     const onSelect = vi.fn()
     const user = userEvent.setup()
-    render(
-      <Tree
-        data={disabledData}
-        defaultExpandedKeys={['root']}
-        onSelect={onSelect}
-      />
-    )
+    render(<Tree data={disabledData} defaultExpandedKeys={['root']} onSelect={onSelect} />)
 
     await user.click(screen.getByText('Disabled Child'))
     expect(onSelect).not.toHaveBeenCalled()
@@ -234,9 +215,7 @@ describe('Tree', () => {
     // Internal state updated without a controlled checkedKeys prop
     expect(checkboxes[2]).toHaveAttribute('aria-checked', 'true')
     expect(checkboxes[0]).toHaveAttribute('aria-checked', 'mixed')
-    expect(onSelectionChange).toHaveBeenCalledWith(
-      expect.arrayContaining(['grandchild-1'])
-    )
+    expect(onSelectionChange).toHaveBeenCalledWith(expect.arrayContaining(['grandchild-1']))
   })
 
   it('controlled checkedKeys overrides defaultCheckedKeys', () => {
@@ -257,12 +236,7 @@ describe('Tree', () => {
   })
 
   it('default expanded keys work', () => {
-    render(
-      <Tree
-        data={sampleData}
-        defaultExpandedKeys={['root', 'child-1']}
-      />
-    )
+    render(<Tree data={sampleData} defaultExpandedKeys={['root', 'child-1']} />)
     expect(screen.getByText('Child 1')).toBeInTheDocument()
     expect(screen.getByText('Grandchild 1')).toBeInTheDocument()
     expect(screen.getByText('Grandchild 2')).toBeInTheDocument()
@@ -285,12 +259,8 @@ describe('Tree', () => {
     const checkboxes = screen.getAllByRole('checkbox')
     await user.click(checkboxes[2])
 
-    expect(onCheckChange).toHaveBeenCalledWith(
-      expect.arrayContaining(['grandchild-1'])
-    )
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('`onCheckChange` is deprecated')
-    )
+    expect(onCheckChange).toHaveBeenCalledWith(expect.arrayContaining(['grandchild-1']))
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('`onCheckChange` is deprecated'))
     warnSpy.mockRestore()
   })
 
@@ -317,35 +287,25 @@ describe('Tree', () => {
   })
 
   it('defaultSelectedKey sets initial uncontrolled selection', () => {
-    render(
-      <Tree
-        data={sampleData}
-        defaultExpandedKeys={['root']}
-        defaultSelectedKey="child-2"
-      />
-    )
+    render(<Tree data={sampleData} defaultExpandedKeys={['root']} defaultSelectedKey="child-2" />)
     const node = screen.getByText('Child 2').closest('[role="treeitem"]')
     expect(node).toHaveAttribute('aria-selected', 'true')
   })
 
   it('updates uncontrolled selection on click', async () => {
     const user = userEvent.setup()
-    render(
-      <Tree
-        data={sampleData}
-        defaultExpandedKeys={['root']}
-        defaultSelectedKey="child-2"
-      />
-    )
+    render(<Tree data={sampleData} defaultExpandedKeys={['root']} defaultSelectedKey="child-2" />)
 
     await user.click(screen.getByText('Sibling'))
 
-    expect(
-      screen.getByText('Sibling').closest('[role="treeitem"]')
-    ).toHaveAttribute('aria-selected', 'true')
-    expect(
-      screen.getByText('Child 2').closest('[role="treeitem"]')
-    ).toHaveAttribute('aria-selected', 'false')
+    expect(screen.getByText('Sibling').closest('[role="treeitem"]')).toHaveAttribute(
+      'aria-selected',
+      'true'
+    )
+    expect(screen.getByText('Child 2').closest('[role="treeitem"]')).toHaveAttribute(
+      'aria-selected',
+      'false'
+    )
   })
 
   it('controlled selectedKey overrides defaultSelectedKey', async () => {
@@ -359,20 +319,24 @@ describe('Tree', () => {
       />
     )
 
-    expect(
-      screen.getByText('Child 2').closest('[role="treeitem"]')
-    ).toHaveAttribute('aria-selected', 'true')
-    expect(
-      screen.getByText('Sibling').closest('[role="treeitem"]')
-    ).toHaveAttribute('aria-selected', 'false')
+    expect(screen.getByText('Child 2').closest('[role="treeitem"]')).toHaveAttribute(
+      'aria-selected',
+      'true'
+    )
+    expect(screen.getByText('Sibling').closest('[role="treeitem"]')).toHaveAttribute(
+      'aria-selected',
+      'false'
+    )
 
     // Clicking another node does not change a controlled selection
     await user.click(screen.getByText('Sibling'))
-    expect(
-      screen.getByText('Child 2').closest('[role="treeitem"]')
-    ).toHaveAttribute('aria-selected', 'true')
-    expect(
-      screen.getByText('Sibling').closest('[role="treeitem"]')
-    ).toHaveAttribute('aria-selected', 'false')
+    expect(screen.getByText('Child 2').closest('[role="treeitem"]')).toHaveAttribute(
+      'aria-selected',
+      'true'
+    )
+    expect(screen.getByText('Sibling').closest('[role="treeitem"]')).toHaveAttribute(
+      'aria-selected',
+      'false'
+    )
   })
 })

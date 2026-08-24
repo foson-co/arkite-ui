@@ -31,7 +31,7 @@ user) → `TenantSwitcher` in `navbarLeft` → your page content as children.
   "All Tenants" platform view, so the page can distinguish tenant scope from
   platform scope.
 - Routing: the demo simulates a router with `useState` + `onNavigate`. In a
-  real SPA keep `onNavigate` and *also* pass
+  real SPA keep `onNavigate` and _also_ pass
   `renderLink={({ href, children, className }) => <Link to={href} …/>}` so
   nav items render as real anchors your router understands.
 

@@ -59,13 +59,17 @@ const FromErrorDemo = () => (
   <div className="flex flex-wrap gap-2">
     <Button
       variant="destructive"
-      onClick={() => toast.fromError(new Error('Connection timed out'), { prefix: 'Failed to save' })}
+      onClick={() =>
+        toast.fromError(new Error('Connection timed out'), { prefix: 'Failed to save' })
+      }
     >
       Error instance
     </Button>
     <Button
       variant="outline"
-      onClick={() => toast.fromError({ detail: 'quota exceeded (429)' }, { prefix: 'Upload failed' })}
+      onClick={() =>
+        toast.fromError({ detail: 'quota exceeded (429)' }, { prefix: 'Upload failed' })
+      }
     >
       API envelope (custom formatError)
     </Button>

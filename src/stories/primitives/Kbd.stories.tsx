@@ -11,10 +11,13 @@ export default meta
 export const Default: StoryFn = () => (
   <div className="flex items-center gap-4">
     <div className="flex items-center gap-1">
-      <Kbd>⌘</Kbd><Kbd>K</Kbd>
+      <Kbd>⌘</Kbd>
+      <Kbd>K</Kbd>
     </div>
     <div className="flex items-center gap-1">
-      <Kbd>Ctrl</Kbd><Kbd>Shift</Kbd><Kbd>P</Kbd>
+      <Kbd>Ctrl</Kbd>
+      <Kbd>Shift</Kbd>
+      <Kbd>P</Kbd>
     </div>
     <div className="flex items-center gap-1">
       <Kbd>Esc</Kbd>
@@ -25,12 +28,14 @@ export const Default: StoryFn = () => (
 export const Sizes: StoryFn = () => (
   <div className="flex items-center gap-6">
     <div className="flex items-center gap-1">
-      <span className="text-sm text-muted-foreground mr-2">sm:</span>
-      <Kbd size="sm">⌘</Kbd><Kbd size="sm">S</Kbd>
+      <span className="text-muted-foreground mr-2 text-sm">sm:</span>
+      <Kbd size="sm">⌘</Kbd>
+      <Kbd size="sm">S</Kbd>
     </div>
     <div className="flex items-center gap-1">
-      <span className="text-sm text-muted-foreground mr-2">md:</span>
-      <Kbd size="md">⌘</Kbd><Kbd size="md">S</Kbd>
+      <span className="text-muted-foreground mr-2 text-sm">md:</span>
+      <Kbd size="md">⌘</Kbd>
+      <Kbd size="md">S</Kbd>
     </div>
   </div>
 )

@@ -1,10 +1,4 @@
-import {
-  cloneElement,
-  isValidElement,
-  useRef,
-  type MouseEvent,
-  type ReactElement,
-} from 'react'
+import { cloneElement, isValidElement, useRef, type MouseEvent, type ReactElement } from 'react'
 
 export interface FileTriggerProps {
   /** Accepted file types (native `accept` attribute) */

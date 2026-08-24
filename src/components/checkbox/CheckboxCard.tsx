@@ -2,8 +2,7 @@ import { forwardRef, useId, type InputHTMLAttributes } from 'react'
 import { cn } from '../../utils/cn'
 import { Check } from 'lucide-react'
 
-export interface CheckboxCardProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+export interface CheckboxCardProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   /** Card title / label */
   label: string
   /** Optional description below the label */
@@ -28,16 +27,14 @@ export const CheckboxCard = forwardRef<HTMLInputElement, CheckboxCardProps>(
       <label
         htmlFor={inputId}
         className={cn(
-          'relative flex items-start gap-3 rounded-lg border bg-background p-4',
+          'bg-background relative flex items-start gap-3 rounded-lg border p-4',
           'transition-colors duration-200',
           'has-[:checked]:bg-primary/5',
-          'has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-ring/40 has-[:focus-visible]:ring-offset-0',
-          error
-            ? 'border-destructive'
-            : 'border-input has-[:checked]:border-primary',
+          'has-[:focus-visible]:ring-ring/40 has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-offset-0',
+          error ? 'border-destructive' : 'border-input has-[:checked]:border-primary',
           disabled
             ? 'cursor-not-allowed opacity-50'
-            : 'cursor-pointer hover:border-muted-foreground/50',
+            : 'hover:border-muted-foreground/50 cursor-pointer',
           className
         )}
       >
@@ -59,18 +56,14 @@ export const CheckboxCard = forwardRef<HTMLInputElement, CheckboxCardProps>(
               : 'border-input peer-checked:border-primary peer-checked:bg-primary'
           )}
         >
-          <Check className="h-3.5 w-3.5 text-primary-foreground opacity-0 transition-opacity" />
+          <Check className="text-primary-foreground h-3.5 w-3.5 opacity-0 transition-opacity" />
         </div>
         <div className="space-y-1">
-          <div className="text-sm font-medium leading-none">{label}</div>
+          <div className="text-sm leading-none font-medium">{label}</div>
           {description && (
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              {description}
-            </p>
+            <p className="text-muted-foreground text-xs leading-relaxed">{description}</p>
           )}
-          {errorMessage && (
-            <p className="text-xs text-destructive">{errorMessage}</p>
-          )}
+          {errorMessage && <p className="text-destructive text-xs">{errorMessage}</p>}
         </div>
       </label>
     )

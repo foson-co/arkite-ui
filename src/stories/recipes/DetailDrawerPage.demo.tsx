@@ -88,7 +88,7 @@ export function DetailDrawerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="bg-background min-h-screen p-6">
       <div className="mx-auto flex max-w-3xl flex-col gap-4">
         <PageHeader
           title={customer.name}

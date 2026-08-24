@@ -2,11 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { Steps } from './Steps'
 
-const basicSteps = [
-  { label: 'Account' },
-  { label: 'Profile' },
-  { label: 'Review' },
-]
+const basicSteps = [{ label: 'Account' }, { label: 'Profile' }, { label: 'Review' }]
 
 describe('Steps', () => {
   it('renders all step labels', () => {
@@ -62,7 +58,9 @@ describe('Steps', () => {
   })
 
   it('renders vertical orientation', () => {
-    const { container } = render(<Steps steps={basicSteps} currentStep={0} orientation="vertical" />)
+    const { container } = render(
+      <Steps steps={basicSteps} currentStep={0} orientation="vertical" />
+    )
     const root = container.firstElementChild!
     expect(root.className).toContain('flex-col')
   })

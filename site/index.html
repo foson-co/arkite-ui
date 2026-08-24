@@ -1,277 +1,875 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Production-ready React components for multi-tenant SaaS admin panels — data tables, admin layouts, filter bars. Tailwind CSS v4 + Radix UI + TypeScript, AI-ready docs (llms.txt)." />
-<link rel="canonical" href="https://ui.foson.co/" />
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="Arkite UI" />
-<meta property="og:title" content="Arkite UI — React components for SaaS admin panels" />
-<meta property="og:description" content="70 production-ready React components for multi-tenant SaaS back-offices. Tailwind CSS v4 + Radix UI + TypeScript, AI-ready docs built in." />
-<meta property="og:url" content="https://ui.foson.co/" />
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Arkite UI — React components for SaaS admin panels" />
-<meta name="twitter:description" content="70 production-ready React components for multi-tenant SaaS back-offices. Tailwind CSS v4 + Radix UI + TypeScript." />
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  "name": "Arkite UI",
-  "description": "Production-ready React components for multi-tenant SaaS admin panels. Tailwind CSS v4 + Radix UI + TypeScript.",
-  "url": "https://ui.foson.co/",
-  "codeRepository": "https://github.com/foson-co/arkite-ui",
-  "programmingLanguage": "TypeScript",
-  "runtimePlatform": "React",
-  "keywords": "react admin components, react data table server-side pagination, multi-select combobox, accessible react components WCAG, zero-runtime css tailwind components, react admin dashboard, dark mode react ui, command palette react, otp input react",
-  "license": "https://opensource.org/licenses/MIT",
-  "author": { "@type": "Organization", "name": "Foson", "url": "https://foson.co", "sameAs": ["https://github.com/foson-co"] },
-  "publisher": { "@type": "Organization", "name": "Foson", "url": "https://foson.co" },
-  "sameAs": ["https://github.com/foson-co/arkite-ui", "https://www.npmjs.com/package/@arkite-ui/core"]
-}
-</script>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%236a4dff'/%3E%3Cpath d='M16 8l7.5 17h-3.7l-1.6-3.8h-8.7L7.9 25H4.5L12 8h4zm-2.1 4L11 18.6h6.2L14.1 12z' fill='%23fff'/%3E%3C/svg%3E" />
-<script>
-  // Legacy deep links: Storybook used to live at the site root, so old
-  // bookmarks look like /?path=/docs/... — forward them to /storybook/.
-  if (/[?&]path=/.test(location.search)) {
-    location.replace('./storybook/' + location.search)
-  }
-</script>
-<title>Arkite UI — React components for SaaS admin panels</title>
-<style>
-  :root {
-    --bg: #fafafa; --surface: #ffffff; --ink: #16181d; --muted: #6b7280;
-    --line: #e5e7eb; --line-soft: #f1f2f4; --brand: #6a4dff; --brand-ink: #ffffff;
-    --brand-soft: #efedfd; --code-bg: #16181d; --code-ink: #e8e9ed;
-    --success: #15803d; --success-soft: #f0fdf4; --success-border: #bbf7d0;
-    --warning: #b45309; --warning-soft: #fffbeb; --warning-border: #fde68a;
-    --shadow: 0 1px 2px rgb(22 24 29 / 0.05), 0 8px 24px rgb(22 24 29 / 0.06);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #101116; --surface: #191b22; --ink: #e8e9ed; --muted: #9aa0ad;
-      --line: #2c2f38; --line-soft: #23252d; --brand: #8f7aff; --brand-ink: #101116;
-      --brand-soft: #272348; --code-bg: #0b0c10; --code-ink: #d6d8de;
-      --success: #4ade80; --success-soft: #0f2417; --success-border: #14532d;
-      --warning: #fbbf24; --warning-soft: #2a1e05; --warning-border: #78350f;
-      --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.35);
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #101116; --surface: #191b22; --ink: #e8e9ed; --muted: #9aa0ad;
-    --line: #2c2f38; --line-soft: #23252d; --brand: #8f7aff; --brand-ink: #101116;
-    --brand-soft: #272348; --code-bg: #0b0c10; --code-ink: #d6d8de;
-    --success: #4ade80; --success-soft: #0f2417; --success-border: #14532d;
-    --warning: #fbbf24; --warning-soft: #2a1e05; --warning-border: #78350f;
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.35);
-  }
-  * { box-sizing: border-box; margin: 0; }
-  body {
-    background: var(--bg); color: var(--ink);
-    font-family: "Inter", system-ui, -apple-system, "PingFang TC", sans-serif;
-    line-height: 1.6; -webkit-font-smoothing: antialiased;
-  }
-  a { color: inherit; text-decoration: none; }
-  code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
-  /* Full-bleed like the header and Storybook — no centered column,
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Production-ready React components for multi-tenant SaaS admin panels — data tables, admin layouts, filter bars. Tailwind CSS v4 + Radix UI + TypeScript, AI-ready docs (llms.txt)."
+    />
+    <link rel="canonical" href="https://ui.foson.co/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Arkite UI" />
+    <meta property="og:title" content="Arkite UI — React components for SaaS admin panels" />
+    <meta
+      property="og:description"
+      content="70 production-ready React components for multi-tenant SaaS back-offices. Tailwind CSS v4 + Radix UI + TypeScript, AI-ready docs built in."
+    />
+    <meta property="og:url" content="https://ui.foson.co/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Arkite UI — React components for SaaS admin panels" />
+    <meta
+      name="twitter:description"
+      content="70 production-ready React components for multi-tenant SaaS back-offices. Tailwind CSS v4 + Radix UI + TypeScript."
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "Arkite UI",
+        "description": "Production-ready React components for multi-tenant SaaS admin panels. Tailwind CSS v4 + Radix UI + TypeScript.",
+        "url": "https://ui.foson.co/",
+        "codeRepository": "https://github.com/foson-co/arkite-ui",
+        "programmingLanguage": "TypeScript",
+        "runtimePlatform": "React",
+        "keywords": "react admin components, react data table server-side pagination, multi-select combobox, accessible react components WCAG, zero-runtime css tailwind components, react admin dashboard, dark mode react ui, command palette react, otp input react",
+        "license": "https://opensource.org/licenses/MIT",
+        "author": {
+          "@type": "Organization",
+          "name": "Foson",
+          "url": "https://foson.co",
+          "sameAs": ["https://github.com/foson-co"]
+        },
+        "publisher": { "@type": "Organization", "name": "Foson", "url": "https://foson.co" },
+        "sameAs": [
+          "https://github.com/foson-co/arkite-ui",
+          "https://www.npmjs.com/package/@arkite-ui/core"
+        ]
+      }
+    </script>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%236a4dff'/%3E%3Cpath d='M16 8l7.5 17h-3.7l-1.6-3.8h-8.7L7.9 25H4.5L12 8h4zm-2.1 4L11 18.6h6.2L14.1 12z' fill='%23fff'/%3E%3C/svg%3E"
+    />
+    <script>
+      // Legacy deep links: Storybook used to live at the site root, so old
+      // bookmarks look like /?path=/docs/... — forward them to /storybook/.
+      if (/[?&]path=/.test(location.search)) {
+        location.replace('./storybook/' + location.search)
+      }
+    </script>
+    <title>Arkite UI — React components for SaaS admin panels</title>
+    <style>
+      :root {
+        --bg: #fafafa;
+        --surface: #ffffff;
+        --ink: #16181d;
+        --muted: #6b7280;
+        --line: #e5e7eb;
+        --line-soft: #f1f2f4;
+        --brand: #6a4dff;
+        --brand-ink: #ffffff;
+        --brand-soft: #efedfd;
+        --code-bg: #16181d;
+        --code-ink: #e8e9ed;
+        --success: #15803d;
+        --success-soft: #f0fdf4;
+        --success-border: #bbf7d0;
+        --warning: #b45309;
+        --warning-soft: #fffbeb;
+        --warning-border: #fde68a;
+        --shadow: 0 1px 2px rgb(22 24 29 / 0.05), 0 8px 24px rgb(22 24 29 / 0.06);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --bg: #101116;
+          --surface: #191b22;
+          --ink: #e8e9ed;
+          --muted: #9aa0ad;
+          --line: #2c2f38;
+          --line-soft: #23252d;
+          --brand: #8f7aff;
+          --brand-ink: #101116;
+          --brand-soft: #272348;
+          --code-bg: #0b0c10;
+          --code-ink: #d6d8de;
+          --success: #4ade80;
+          --success-soft: #0f2417;
+          --success-border: #14532d;
+          --warning: #fbbf24;
+          --warning-soft: #2a1e05;
+          --warning-border: #78350f;
+          --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.35);
+        }
+      }
+      :root[data-theme='dark'] {
+        --bg: #101116;
+        --surface: #191b22;
+        --ink: #e8e9ed;
+        --muted: #9aa0ad;
+        --line: #2c2f38;
+        --line-soft: #23252d;
+        --brand: #8f7aff;
+        --brand-ink: #101116;
+        --brand-soft: #272348;
+        --code-bg: #0b0c10;
+        --code-ink: #d6d8de;
+        --success: #4ade80;
+        --success-soft: #0f2417;
+        --success-border: #14532d;
+        --warning: #fbbf24;
+        --warning-soft: #2a1e05;
+        --warning-border: #78350f;
+        --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.35);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          'Inter',
+          system-ui,
+          -apple-system,
+          'PingFang TC',
+          sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      code,
+      pre,
+      .mono {
+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      /* Full-bleed like the header and Storybook — no centered column,
      so moving between the landing and the app surfaces feels seamless */
-  .wrap { padding: 0 24px; }
+      .wrap {
+        padding: 0 24px;
+      }
 
-  /* ── nav ── */
-  nav { border-bottom: 1px solid var(--line); background: var(--surface); position: sticky; top: 0; z-index: 10; }
-  /* Height/padding/type must mirror the bar injected into Storybook
+      /* ── nav ── */
+      nav {
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      /* Height/padding/type must mirror the bar injected into Storybook
      (.storybook/manager-head.html) — the two must read as one header */
-  .nav-in { display: flex; align-items: center; gap: 28px; height: 56px; padding: 0 24px; }
-  .wordmark { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -0.01em; font-size: 15px; }
-  .logo { width: 26px; height: 26px; border-radius: 6px; background: var(--brand); color: var(--brand-ink); display: grid; place-items: center; font-weight: 700; font-size: 15px; }
-  .nav-links { display: flex; gap: 22px; margin-left: auto; font-size: 14px; color: var(--muted); }
-  .nav-links a:hover { color: var(--ink); }
-  .nav-links .cta { color: var(--brand); font-weight: 550; }
+      .nav-in {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        height: 56px;
+        padding: 0 24px;
+      }
+      .wordmark {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 650;
+        letter-spacing: -0.01em;
+        font-size: 15px;
+      }
+      .logo {
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+        background: var(--brand);
+        color: var(--brand-ink);
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 22px;
+        margin-left: auto;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .nav-links a:hover {
+        color: var(--ink);
+      }
+      .nav-links .cta {
+        color: var(--brand);
+        font-weight: 550;
+      }
 
-  /* ── hero ── */
-  .hero { max-width: 880px; margin: 0 auto; text-align: center; padding-block: 88px 48px; }
-  .eyebrow { font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brand); font-weight: 650; margin-bottom: 14px; }
-  h1 { font-size: clamp(34px, 4.5vw, 46px); line-height: 1.12; letter-spacing: -0.025em; font-weight: 675; text-wrap: balance; margin-bottom: 18px; }
-  .lede { color: var(--muted); font-size: 17px; max-width: 34em; margin: 0 auto 30px; }
-  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 34px; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 20px; border-radius: 8px; font-size: 14.5px; font-weight: 550; transition: 0.15s; }
-  .btn-primary { background: var(--brand); color: var(--brand-ink); }
-  .btn-primary:hover { filter: brightness(1.08); }
-  .btn-ghost { border: 1px solid var(--line); background: var(--surface); }
-  .btn-ghost:hover { border-color: var(--muted); }
-  .stats { display: flex; gap: 34px; flex-wrap: wrap; justify-content: center; }
-  .stat b { display: block; font-size: 19px; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-  .stat span { font-size: 12.5px; color: var(--muted); }
+      /* ── hero ── */
+      .hero {
+        max-width: 880px;
+        margin: 0 auto;
+        text-align: center;
+        padding-block: 88px 48px;
+      }
+      .eyebrow {
+        font-size: 12.5px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--brand);
+        font-weight: 650;
+        margin-bottom: 14px;
+      }
+      h1 {
+        font-size: clamp(34px, 4.5vw, 46px);
+        line-height: 1.12;
+        letter-spacing: -0.025em;
+        font-weight: 675;
+        text-wrap: balance;
+        margin-bottom: 18px;
+      }
+      .lede {
+        color: var(--muted);
+        font-size: 17px;
+        max-width: 34em;
+        margin: 0 auto 30px;
+      }
+      .cta-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 34px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 42px;
+        padding: 0 20px;
+        border-radius: 8px;
+        font-size: 14.5px;
+        font-weight: 550;
+        transition: 0.15s;
+      }
+      .btn-primary {
+        background: var(--brand);
+        color: var(--brand-ink);
+      }
+      .btn-primary:hover {
+        filter: brightness(1.08);
+      }
+      .btn-ghost {
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+      .btn-ghost:hover {
+        border-color: var(--muted);
+      }
+      .stats {
+        display: flex;
+        gap: 34px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .stat b {
+        display: block;
+        font-size: 19px;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
+      }
+      .stat span {
+        font-size: 12.5px;
+        color: var(--muted);
+      }
 
-  /* ── admin vignette ── */
-  .stage { position: relative; max-width: 1240px; margin: 0 auto; padding: 8px 24px 72px; }
-  .stage::before { content: ''; position: absolute; inset: -40px 15% 30% 15%; background: radial-gradient(closest-side, var(--brand-soft), transparent 70%); z-index: -1; }
-  .vignette { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; font-size: 13px; }
-  .v-titlebar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--line-soft); }
-  .dot { width: 10px; height: 10px; border-radius: 99px; background: var(--line); }
-  .v-body { display: grid; grid-template-columns: 52px 1fr; }
-  .v-rail { border-right: 1px solid var(--line-soft); padding: 10px 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .rail-item { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; color: var(--muted); font-size: 15px; }
-  .rail-item.on { background: var(--brand-soft); color: var(--ink); }
-  .v-main { padding: 14px 16px 12px; min-width: 0; }
-  .v-toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
-  .v-search { flex: 1 1 150px; display: flex; align-items: center; gap: 7px; height: 32px; padding: 0 11px; border: 1px solid var(--line); border-radius: 7px; color: var(--muted); }
-  .chip { height: 32px; display: inline-flex; align-items: center; gap: 6px; padding: 0 11px; border: 1px solid var(--line); border-radius: 7px; color: var(--muted); white-space: nowrap; }
-  .v-btn { height: 32px; padding: 0 13px; display: inline-flex; align-items: center; background: var(--brand); color: var(--brand-ink); border-radius: 7px; font-weight: 550; white-space: nowrap; }
-  table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; padding: 7px 10px; border-bottom: 1px solid var(--line); }
-  td { padding: 9px 10px; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
-  td.num { font-variant-numeric: tabular-nums; color: var(--muted); }
-  .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 550; padding: 2px 9px; border-radius: 99px; border: 1px solid; }
-  .badge::before { content: ""; width: 5px; height: 5px; border-radius: 99px; background: currentColor; }
-  .b-ok { color: var(--success); background: var(--success-soft); border-color: var(--success-border); }
-  .b-warn { color: var(--warning); background: var(--warning-soft); border-color: var(--warning-border); }
-  .v-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; color: var(--muted); font-size: 12px; }
-  .pager { display: flex; gap: 4px; }
-  .pg { width: 26px; height: 26px; border: 1px solid var(--line); border-radius: 6px; display: grid; place-items: center; }
-  .pg.on { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+      /* ── admin vignette ── */
+      .stage {
+        position: relative;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 8px 24px 72px;
+      }
+      .stage::before {
+        content: '';
+        position: absolute;
+        inset: -40px 15% 30% 15%;
+        background: radial-gradient(closest-side, var(--brand-soft), transparent 70%);
+        z-index: -1;
+      }
+      .vignette {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        font-size: 13px;
+      }
+      .v-titlebar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line-soft);
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 99px;
+        background: var(--line);
+      }
+      .v-body {
+        display: grid;
+        grid-template-columns: 52px 1fr;
+      }
+      .v-rail {
+        border-right: 1px solid var(--line-soft);
+        padding: 10px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+      .rail-item {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .rail-item.on {
+        background: var(--brand-soft);
+        color: var(--ink);
+      }
+      .v-main {
+        padding: 14px 16px 12px;
+        min-width: 0;
+      }
+      .v-toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .v-search {
+        flex: 1 1 150px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        height: 32px;
+        padding: 0 11px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        color: var(--muted);
+      }
+      .chip {
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0 11px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .v-btn {
+        height: 32px;
+        padding: 0 13px;
+        display: inline-flex;
+        align-items: center;
+        background: var(--brand);
+        color: var(--brand-ink);
+        border-radius: 7px;
+        font-weight: 550;
+        white-space: nowrap;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th {
+        text-align: left;
+        font-size: 11.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        font-weight: 600;
+        padding: 7px 10px;
+        border-bottom: 1px solid var(--line);
+      }
+      td {
+        padding: 9px 10px;
+        border-bottom: 1px solid var(--line-soft);
+        white-space: nowrap;
+      }
+      td.num {
+        font-variant-numeric: tabular-nums;
+        color: var(--muted);
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11.5px;
+        font-weight: 550;
+        padding: 2px 9px;
+        border-radius: 99px;
+        border: 1px solid;
+      }
+      .badge::before {
+        content: '';
+        width: 5px;
+        height: 5px;
+        border-radius: 99px;
+        background: currentColor;
+      }
+      .b-ok {
+        color: var(--success);
+        background: var(--success-soft);
+        border-color: var(--success-border);
+      }
+      .b-warn {
+        color: var(--warning);
+        background: var(--warning-soft);
+        border-color: var(--warning-border);
+      }
+      .v-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .pager {
+        display: flex;
+        gap: 4px;
+      }
+      .pg {
+        width: 26px;
+        height: 26px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        display: grid;
+        place-items: center;
+      }
+      .pg.on {
+        background: var(--brand);
+        color: var(--brand-ink);
+        border-color: var(--brand);
+      }
 
-  /* ── sections ── */
-  section { padding: 56px 0 64px; max-width: 1240px; margin: 0 auto; }
-  .sec-head.center { text-align: center; }
-  .sec-head.center p { margin: 0 auto; }
-  .sec-head { margin-bottom: 26px; }
-  h2 { font-size: 24px; font-weight: 650; letter-spacing: -0.015em; margin-bottom: 6px; }
-  .sec-head p { color: var(--muted); font-size: 15px; max-width: 44em; }
-  .features { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
-  @media (min-width: 1000px) { .features { grid-template-columns: repeat(4, 1fr); } .feature.lg { grid-column: span 2; } }
-  @media (max-width: 640px) { .features { grid-template-columns: 1fr; } }
-  .feature.lg { background: linear-gradient(160deg, var(--brand-soft), var(--surface) 55%); }
-  .feature { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; }
-  .feature h3 { font-size: 15px; font-weight: 620; margin-bottom: 6px; }
-  .feature p { font-size: 13.5px; color: var(--muted); }
-  .feature code { font-size: 12px; background: var(--line-soft); padding: 1px 5px; border-radius: 4px; }
+      /* ── sections ── */
+      section {
+        padding: 56px 0 64px;
+        max-width: 1240px;
+        margin: 0 auto;
+      }
+      .sec-head.center {
+        text-align: center;
+      }
+      .sec-head.center p {
+        margin: 0 auto;
+      }
+      .sec-head {
+        margin-bottom: 26px;
+      }
+      h2 {
+        font-size: 24px;
+        font-weight: 650;
+        letter-spacing: -0.015em;
+        margin-bottom: 6px;
+      }
+      .sec-head p {
+        color: var(--muted);
+        font-size: 15px;
+        max-width: 44em;
+      }
+      .features {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @media (min-width: 1000px) {
+        .features {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .feature.lg {
+          grid-column: span 2;
+        }
+      }
+      @media (max-width: 640px) {
+        .features {
+          grid-template-columns: 1fr;
+        }
+      }
+      .feature.lg {
+        background: linear-gradient(160deg, var(--brand-soft), var(--surface) 55%);
+      }
+      .feature {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px 22px;
+      }
+      .feature h3 {
+        font-size: 15px;
+        font-weight: 620;
+        margin-bottom: 6px;
+      }
+      .feature p {
+        font-size: 13.5px;
+        color: var(--muted);
+      }
+      .feature code {
+        font-size: 12px;
+        background: var(--line-soft);
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
 
-  /* ── quickstart ── */
-  .qs { max-width: 760px; margin: 0 auto; text-align: center; }
-  .qs pre { text-align: left; margin-top: 26px; }
-  pre { background: var(--code-bg); color: var(--code-ink); border-radius: 12px; padding: 20px 22px; font-size: 13px; line-height: 1.75; overflow-x: auto; }
-  .tok-k { color: #b3a5ff; } .tok-s { color: #9ece8f; } .tok-c { color: #7a8194; }
+      /* ── quickstart ── */
+      .qs {
+        max-width: 760px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .qs pre {
+        text-align: left;
+        margin-top: 26px;
+      }
+      pre {
+        background: var(--code-bg);
+        color: var(--code-ink);
+        border-radius: 12px;
+        padding: 20px 22px;
+        font-size: 13px;
+        line-height: 1.75;
+        overflow-x: auto;
+      }
+      .tok-k {
+        color: #b3a5ff;
+      }
+      .tok-s {
+        color: #9ece8f;
+      }
+      .tok-c {
+        color: #7a8194;
+      }
 
-  /* ── presets ── */
-  .presets { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
-  .preset { flex: 0 1 230px; }
-  .preset { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
-  .swatches { display: flex; gap: 6px; margin-bottom: 10px; }
-  .sw { width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgb(0 0 0 / 0.06); }
-  .preset b { font-size: 14px; font-weight: 620; }
-  .preset span { display: block; font-size: 12.5px; color: var(--muted); }
+      /* ── presets ── */
+      .presets {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .preset {
+        flex: 0 1 230px;
+      }
+      .preset {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px 18px;
+      }
+      .swatches {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 10px;
+      }
+      .sw {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        border: 1px solid rgb(0 0 0 / 0.06);
+      }
+      .preset b {
+        font-size: 14px;
+        font-weight: 620;
+      }
+      .preset span {
+        display: block;
+        font-size: 12.5px;
+        color: var(--muted);
+      }
 
-  .cindex { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-  .cindex div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
-  .cindex b { display: block; font-size: 14px; font-weight: 650; margin-bottom: 8px; }
-  .cindex span { font-size: 13px; color: var(--muted); line-height: 1.8; }
-  .cindex-cta { text-align: center; margin-top: 22px; font-size: 14px; }
-  .cindex-cta a { color: var(--brand); font-weight: 550; }
-  .band { max-width: 1240px; margin: 24px auto 72px; padding: 56px 32px; text-align: center; border-radius: 18px; background: linear-gradient(150deg, var(--brand-soft), var(--surface) 70%); border: 1px solid var(--line); }
-  .band h2 { font-size: 28px; margin-bottom: 10px; }
-  .band p { color: var(--muted); margin-bottom: 24px; }
-  footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--muted); font-size: 13px; display: flex; }
-  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; width: 100%; }
+      .cindex {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .cindex div {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 18px 20px;
+      }
+      .cindex b {
+        display: block;
+        font-size: 14px;
+        font-weight: 650;
+        margin-bottom: 8px;
+      }
+      .cindex span {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .cindex-cta {
+        text-align: center;
+        margin-top: 22px;
+        font-size: 14px;
+      }
+      .cindex-cta a {
+        color: var(--brand);
+        font-weight: 550;
+      }
+      .band {
+        max-width: 1240px;
+        margin: 24px auto 72px;
+        padding: 56px 32px;
+        text-align: center;
+        border-radius: 18px;
+        background: linear-gradient(150deg, var(--brand-soft), var(--surface) 70%);
+        border: 1px solid var(--line);
+      }
+      .band h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+      .band p {
+        color: var(--muted);
+        margin-bottom: 24px;
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 26px 0 40px;
+        color: var(--muted);
+        font-size: 13px;
+        display: flex;
+      }
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        width: 100%;
+      }
 
-  @media (max-width: 860px) {
-    .hero { padding-block: 56px 36px; }
-    .qs { grid-template-columns: 1fr; }
-  }
-</style>
-
-</head>
-<body>
-<nav><div class="nav-in">
-  <a class="wordmark" href="#"><span class="logo">A</span>Arkite UI</a>
-  <div class="nav-links">
-    <a href="./storybook/">Components</a>
-    <a href="./storybook/?path=/docs/getting-started--docs">Docs</a>
-    <a href="./storybook/?path=/docs/foundation-design-tokens--docs">Tokens</a>
-    <a href="https://github.com/foson-co/arkite-ui">GitHub</a>
-    <a class="cta" href="https://starter.foson.co">Live demo →</a>
-  </div>
-</div></nav>
-
-<header class="wrap hero">
-  <div>
-    <div class="eyebrow">@arkite-ui/core · v__VERSION__</div>
-    <h1>The admin-panel layer your products share.</h1>
-    <p class="lede">Production-ready React components for multi-tenant SaaS back-offices — data-dense, utilitarian, calm. One versioned package; every product upgrades together.</p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="./storybook/">Browse components →</a>
-      <a class="btn btn-ghost" href="https://starter.foson.co">Live starter demo</a>
-      <a class="btn btn-ghost" href="./storybook/?path=/docs/getting-started--docs">Getting started</a>
-    </div>
-    <div class="stats">
-      <div class="stat"><b>70</b><span>components</span></div>
-      <div class="stat"><b>1,200+</b><span>tests</span></div>
-      <div class="stat"><b>AA</b><span>WCAG · CI-enforced</span></div>
-      <div class="stat"><b>en · 繁中</b><span>built-in locales</span></div>
-    </div>
-  </div>
-</header>
-
-<div class="stage">
-  <div class="vignette" aria-hidden="true">
-    <div class="v-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-    <div class="v-body">
-      <div class="v-rail">
-        <div class="rail-item on">▦</div>
-        <div class="rail-item">▤</div>
-        <div class="rail-item">◔</div>
-        <div class="rail-item">⚙</div>
-      </div>
-      <div class="v-main">
-        <div class="v-toolbar">
-          <div class="v-search">⌕ 搜尋訂單…</div>
-          <span class="chip">狀態 ▾</span>
-          <span class="chip">2026-08-01 – 08-07 ▾</span>
-          <span class="v-btn">匯出</span>
+      @media (max-width: 860px) {
+        .hero {
+          padding-block: 56px 36px;
+        }
+        .qs {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-in">
+        <a class="wordmark" href="#"><span class="logo">A</span>Arkite UI</a>
+        <div class="nav-links">
+          <a href="./storybook/">Components</a>
+          <a href="./storybook/?path=/docs/getting-started--docs">Docs</a>
+          <a href="./storybook/?path=/docs/foundation-design-tokens--docs">Tokens</a>
+          <a href="https://github.com/foson-co/arkite-ui">GitHub</a>
+          <a class="cta" href="https://starter.foson.co">Live demo →</a>
         </div>
-        <table>
-          <thead><tr><th>訂單編號</th><th>租戶</th><th>狀態</th><th>金額</th><th>更新時間</th></tr></thead>
-          <tbody>
-            <tr><td class="mono">ORD-20817</td><td>雲杉美術館</td><td><span class="badge b-ok">已完成</span></td><td class="num">$12,800</td><td class="num">08-07 14:20</td></tr>
-            <tr><td class="mono">ORD-20816</td><td>南方文創</td><td><span class="badge b-warn">待付款</span></td><td class="num">$3,600</td><td class="num">08-07 13:05</td></tr>
-            <tr><td class="mono">ORD-20815</td><td>山田製作所</td><td><span class="badge b-ok">已完成</span></td><td class="num">$28,400</td><td class="num">08-07 11:47</td></tr>
-            <tr><td class="mono">ORD-20814</td><td>雲杉美術館</td><td><span class="badge b-ok">已完成</span></td><td class="num">$7,200</td><td class="num">08-06 18:31</td></tr>
-          </tbody>
-        </table>
-        <div class="v-foot">
-          <span>第 1-4 筆，共 128 筆</span>
-          <div class="pager"><span class="pg on">1</span><span class="pg">2</span><span class="pg">3</span><span class="pg">…</span></div>
+      </div>
+    </nav>
+
+    <header class="wrap hero">
+      <div>
+        <div class="eyebrow">@arkite-ui/core · v__VERSION__</div>
+        <h1>The admin-panel layer your products share.</h1>
+        <p class="lede">
+          Production-ready React components for multi-tenant SaaS back-offices — data-dense,
+          utilitarian, calm. One versioned package; every product upgrades together.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="./storybook/">Browse components →</a>
+          <a class="btn btn-ghost" href="https://starter.foson.co">Live starter demo</a>
+          <a class="btn btn-ghost" href="./storybook/?path=/docs/getting-started--docs"
+            >Getting started</a
+          >
+        </div>
+        <div class="stats">
+          <div class="stat"><b>70</b><span>components</span></div>
+          <div class="stat"><b>1,200+</b><span>tests</span></div>
+          <div class="stat"><b>AA</b><span>WCAG · CI-enforced</span></div>
+          <div class="stat"><b>en · 繁中</b><span>built-in locales</span></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="stage">
+      <div class="vignette" aria-hidden="true">
+        <div class="v-titlebar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+        <div class="v-body">
+          <div class="v-rail">
+            <div class="rail-item on">▦</div>
+            <div class="rail-item">▤</div>
+            <div class="rail-item">◔</div>
+            <div class="rail-item">⚙</div>
+          </div>
+          <div class="v-main">
+            <div class="v-toolbar">
+              <div class="v-search">⌕ 搜尋訂單…</div>
+              <span class="chip">狀態 ▾</span>
+              <span class="chip">2026-08-01 – 08-07 ▾</span>
+              <span class="v-btn">匯出</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>訂單編號</th>
+                  <th>租戶</th>
+                  <th>狀態</th>
+                  <th>金額</th>
+                  <th>更新時間</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mono">ORD-20817</td>
+                  <td>雲杉美術館</td>
+                  <td><span class="badge b-ok">已完成</span></td>
+                  <td class="num">$12,800</td>
+                  <td class="num">08-07 14:20</td>
+                </tr>
+                <tr>
+                  <td class="mono">ORD-20816</td>
+                  <td>南方文創</td>
+                  <td><span class="badge b-warn">待付款</span></td>
+                  <td class="num">$3,600</td>
+                  <td class="num">08-07 13:05</td>
+                </tr>
+                <tr>
+                  <td class="mono">ORD-20815</td>
+                  <td>山田製作所</td>
+                  <td><span class="badge b-ok">已完成</span></td>
+                  <td class="num">$28,400</td>
+                  <td class="num">08-07 11:47</td>
+                </tr>
+                <tr>
+                  <td class="mono">ORD-20814</td>
+                  <td>雲杉美術館</td>
+                  <td><span class="badge b-ok">已完成</span></td>
+                  <td class="num">$7,200</td>
+                  <td class="num">08-06 18:31</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="v-foot">
+              <span>第 1-4 筆，共 128 筆</span>
+              <div class="pager">
+                <span class="pg on">1</span><span class="pg">2</span><span class="pg">3</span
+                ><span class="pg">…</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<section class="wrap">
-  <div class="sec-head center">
-    <h2>Built for back-offices, not brochures</h2>
-    <p>General-purpose kits stop at buttons and dialogs. Arkite ships the layer above — the composites every admin panel rebuilds badly.</p>
-  </div>
-  <div class="features">
-    <div class="feature lg"><h3>Admin composites</h3><p><code>AdminLayout</code> with permission-aware nav, <code>TenantSwitcher</code>, <code>DataTable</code>, <code>FilterBar</code>, <code>BulkActionBar</code> — wired to work together.</p></div>
-    <div class="feature"><h3>Accessible React components</h3><p>WCAG AA contrast enforced by CI, keyboard navigation tested in real Chromium, screen-reader-friendly forms with proper label association. Accessibility is a test suite here, not a promise.</p></div>
-    <div class="feature"><h3>Localized to the bone</h3><p>Placeholders, empty states, calendar names, every aria-label — one <code>LocaleProvider</code> localizes the whole tree. English and Traditional Chinese built in.</p></div>
-    <div class="feature"><h3>Zero-runtime CSS, automatic dark mode</h3><p>Tailwind CSS v4 + design tokens — no CSS-in-JS runtime, no style recalculation cost. Dark mode follows <code>prefers-color-scheme</code> out of the box; retheme everything from one <code>--radius</code>.</p></div>
-    <div class="feature"><h3>Data table with server-side pagination</h3><p>Server-side pagination, sorting, and column filters with one hook — <code>useServerTable</code> owns the state, you fetch, the table renders. Frozen columns, row selection, and expandable rows included.</p></div>
-    <div class="feature lg"><h3>AI-ready by design</h3><p><code>llms.txt</code> ships in the package — setup, design rules, and the full typed API, machine-readable. Your coding agent imports the right component on the first try.</p></div>
-    <div class="feature lg"><h3>Upgrades that don't break you</h3><p>The public API is snapshot-tested — every prop change is deliberate. Breaking changes ship with a codemod: one command migrates your repo.</p></div>
-    <div class="feature lg"><h3>Mobile back-office, built in</h3><p>Desktop sidebar, mobile bottom tabs: <code>hideSidebar="mobile"</code> + <code>bottomNav</code> slot with safe-area padding handled. One layout, both form factors.</p></div>
-  </div>
-</section>
+    <section class="wrap">
+      <div class="sec-head center">
+        <h2>Built for back-offices, not brochures</h2>
+        <p>
+          General-purpose kits stop at buttons and dialogs. Arkite ships the layer above — the
+          composites every admin panel rebuilds badly.
+        </p>
+      </div>
+      <div class="features">
+        <div class="feature lg">
+          <h3>Admin composites</h3>
+          <p>
+            <code>AdminLayout</code> with permission-aware nav, <code>TenantSwitcher</code>,
+            <code>DataTable</code>, <code>FilterBar</code>, <code>BulkActionBar</code> — wired to
+            work together.
+          </p>
+        </div>
+        <div class="feature">
+          <h3>Accessible React components</h3>
+          <p>
+            WCAG AA contrast enforced by CI, keyboard navigation tested in real Chromium,
+            screen-reader-friendly forms with proper label association. Accessibility is a test
+            suite here, not a promise.
+          </p>
+        </div>
+        <div class="feature">
+          <h3>Localized to the bone</h3>
+          <p>
+            Placeholders, empty states, calendar names, every aria-label — one
+            <code>LocaleProvider</code> localizes the whole tree. English and Traditional Chinese
+            built in.
+          </p>
+        </div>
+        <div class="feature">
+          <h3>Zero-runtime CSS, automatic dark mode</h3>
+          <p>
+            Tailwind CSS v4 + design tokens — no CSS-in-JS runtime, no style recalculation cost.
+            Dark mode follows <code>prefers-color-scheme</code> out of the box; retheme everything
+            from one <code>--radius</code>.
+          </p>
+        </div>
+        <div class="feature">
+          <h3>Data table with server-side pagination</h3>
+          <p>
+            Server-side pagination, sorting, and column filters with one hook —
+            <code>useServerTable</code> owns the state, you fetch, the table renders. Frozen
+            columns, row selection, and expandable rows included.
+          </p>
+        </div>
+        <div class="feature lg">
+          <h3>AI-ready by design</h3>
+          <p>
+            <code>llms.txt</code> ships in the package — setup, design rules, and the full typed
+            API, machine-readable. Your coding agent imports the right component on the first try.
+          </p>
+        </div>
+        <div class="feature lg">
+          <h3>Upgrades that don't break you</h3>
+          <p>
+            The public API is snapshot-tested — every prop change is deliberate. Breaking changes
+            ship with a codemod: one command migrates your repo.
+          </p>
+        </div>
+        <div class="feature lg">
+          <h3>Mobile back-office, built in</h3>
+          <p>
+            Desktop sidebar, mobile bottom tabs: <code>hideSidebar="mobile"</code> +
+            <code>bottomNav</code> slot with safe-area padding handled. One layout, both form
+            factors.
+          </p>
+        </div>
+      </div>
+    </section>
 
-<section class="wrap">
-  <div class="qs">
-    <div class="sec-head center">
-      <h2>One command to start</h2>
-      <p>Not a zero-dependency drop-in: components need React, Tailwind CSS v4, and a few peer packages. <code class="mono">init</code> sets all of it up — installs the peers and writes the theme CSS. Prefer manual control? The <a href="./storybook/?path=/docs/getting-started--docs" style="color:var(--brand)">Getting Started</a> guide lists every step.</p>
-    </div>
-    <pre><span class="tok-c"># scaffolds peer deps + Tailwind v4 theme CSS</span>
+    <section class="wrap">
+      <div class="qs">
+        <div class="sec-head center">
+          <h2>One command to start</h2>
+          <p>
+            Not a zero-dependency drop-in: components need React, Tailwind CSS v4, and a few peer
+            packages. <code class="mono">init</code> sets all of it up — installs the peers and
+            writes the theme CSS. Prefer manual control? The
+            <a href="./storybook/?path=/docs/getting-started--docs" style="color: var(--brand)"
+              >Getting Started</a
+            >
+            guide lists every step.
+          </p>
+        </div>
+        <pre><span class="tok-c"># scaffolds peer deps + Tailwind v4 theme CSS</span>
 npx @arkite-ui/core init
 
 <span class="tok-k">import</span> { Button, LocaleProvider, zhTW } <span class="tok-k">from</span> <span class="tok-s">'@arkite-ui/core'</span>
@@ -280,50 +878,135 @@ npx @arkite-ui/core init
 &lt;<span class="tok-k">LocaleProvider</span> locale={zhTW}&gt;
   &lt;<span class="tok-k">Button</span> variant=<span class="tok-s">"primary"</span>&gt;開始使用&lt;/<span class="tok-k">Button</span>&gt;
 &lt;/<span class="tok-k">LocaleProvider</span>&gt;</pre>
-  </div>
-</section>
+      </div>
+    </section>
 
-<section class="wrap">
-  <div class="sec-head center">
-    <h2>Four presets, or bring a hex</h2>
-    <p>Swap the entire palette at runtime. Custom brands get AA-passing foregrounds automatically.</p>
-  </div>
-  <div class="presets">
-    <div class="preset"><div class="swatches"><span class="sw" style="background:#6a4dff"></span><span class="sw" style="background:#14b8a6"></span><span class="sw" style="background:#1d6ff4"></span></div><b>Default</b><span>Stripe-inspired purple</span></div>
-    <div class="preset"><div class="swatches"><span class="sw" style="background:#2e3238"></span><span class="sw" style="background:#6f7680"></span><span class="sw" style="background:#1d6ff4"></span></div><b>Neutral</b><span>Zinc monochrome</span></div>
-    <div class="preset"><div class="swatches"><span class="sw" style="background:#0073e6"></span><span class="sw" style="background:#0bc5de"></span><span class="sw" style="background:#1d6ff4"></span></div><b>Ocean</b><span>Blue tones</span></div>
-    <div class="preset"><div class="swatches"><span class="sw" style="background:#218757"></span><span class="sw" style="background:#e8933a"></span><span class="sw" style="background:#1d6ff4"></span></div><b>Forest</b><span>Green tones</span></div>
-  </div>
-</section>
+    <section class="wrap">
+      <div class="sec-head center">
+        <h2>Four presets, or bring a hex</h2>
+        <p>
+          Swap the entire palette at runtime. Custom brands get AA-passing foregrounds
+          automatically.
+        </p>
+      </div>
+      <div class="presets">
+        <div class="preset">
+          <div class="swatches">
+            <span class="sw" style="background: #6a4dff"></span
+            ><span class="sw" style="background: #14b8a6"></span
+            ><span class="sw" style="background: #1d6ff4"></span>
+          </div>
+          <b>Default</b><span>Stripe-inspired purple</span>
+        </div>
+        <div class="preset">
+          <div class="swatches">
+            <span class="sw" style="background: #2e3238"></span
+            ><span class="sw" style="background: #6f7680"></span
+            ><span class="sw" style="background: #1d6ff4"></span>
+          </div>
+          <b>Neutral</b><span>Zinc monochrome</span>
+        </div>
+        <div class="preset">
+          <div class="swatches">
+            <span class="sw" style="background: #0073e6"></span
+            ><span class="sw" style="background: #0bc5de"></span
+            ><span class="sw" style="background: #1d6ff4"></span>
+          </div>
+          <b>Ocean</b><span>Blue tones</span>
+        </div>
+        <div class="preset">
+          <div class="swatches">
+            <span class="sw" style="background: #218757"></span
+            ><span class="sw" style="background: #e8933a"></span
+            ><span class="sw" style="background: #1d6ff4"></span>
+          </div>
+          <b>Forest</b><span>Green tones</span>
+        </div>
+      </div>
+    </section>
 
+    <section class="wrap">
+      <div class="sec-head center">
+        <h2>Everything an admin panel needs</h2>
+        <p>
+          70 components. The ones other libraries make you wish for — multi-select, frozen columns,
+          command palette — are already here.
+        </p>
+      </div>
+      <div class="cindex">
+        <div>
+          <b>Tables &amp; data</b
+          ><span
+            >Data table with sorting, column filters, row selection, expandable rows · server-side
+            pagination hook · frozen / sticky columns · virtualized list for 10,000+ rows · infinite
+            scroll · pagination · description list · timeline · calendar · tree view</span
+          >
+        </div>
+        <div>
+          <b>Inputs &amp; forms</b
+          ><span
+            >Searchable multi-select combobox · tag input · date picker &amp; date range picker ·
+            number input · OTP / one-time-code input · color picker · file upload with drag-and-drop
+            · headless file trigger · password input · switch, checkbox, radio group · form layout
+            with validation messages</span
+          >
+        </div>
+        <div>
+          <b>Overlays &amp; feedback</b
+          ><span
+            >Modal dialog with form support · side drawer · confirm &amp; delete dialogs · dropdown
+            menu with nested submenus · popover · tooltip · toast notifications with error helper ·
+            alert · progress · skeleton loaders · empty &amp; error states</span
+          >
+        </div>
+        <div>
+          <b>Navigation &amp; layout</b
+          ><span
+            >Admin layout with collapsible sidebar &amp; mobile bottom navigation · command palette
+            (⌘K) · tenant switcher for multi-tenant SaaS · breadcrumbs · tabs · steps wizard ·
+            segmented control · filter bar · bulk action bar · sticky page header</span
+          >
+        </div>
+      </div>
+      <p class="cindex-cta"><a href="./storybook/">Browse all 70 in Storybook →</a></p>
+    </section>
 
-<section class="wrap">
-  <div class="sec-head center">
-    <h2>Everything an admin panel needs</h2>
-    <p>70 components. The ones other libraries make you wish for — multi-select, frozen columns, command palette — are already here.</p>
-  </div>
-  <div class="cindex">
-    <div><b>Tables &amp; data</b><span>Data table with sorting, column filters, row selection, expandable rows · server-side pagination hook · frozen / sticky columns · virtualized list for 10,000+ rows · infinite scroll · pagination · description list · timeline · calendar · tree view</span></div>
-    <div><b>Inputs &amp; forms</b><span>Searchable multi-select combobox · tag input · date picker &amp; date range picker · number input · OTP / one-time-code input · color picker · file upload with drag-and-drop · headless file trigger · password input · switch, checkbox, radio group · form layout with validation messages</span></div>
-    <div><b>Overlays &amp; feedback</b><span>Modal dialog with form support · side drawer · confirm &amp; delete dialogs · dropdown menu with nested submenus · popover · tooltip · toast notifications with error helper · alert · progress · skeleton loaders · empty &amp; error states</span></div>
-    <div><b>Navigation &amp; layout</b><span>Admin layout with collapsible sidebar &amp; mobile bottom navigation · command palette (⌘K) · tenant switcher for multi-tenant SaaS · breadcrumbs · tabs · steps wizard · segmented control · filter bar · bulk action bar · sticky page header</span></div>
-  </div>
-  <p class="cindex-cta"><a href="./storybook/">Browse all 70 in Storybook →</a></p>
-</section>
+    <div class="wrap">
+      <div class="band">
+        <h2>Ship your back-office this week</h2>
+        <p>
+          Start from the template — admin shell, server-driven table, forms, and mobile nav already
+          wired.
+        </p>
+        <div class="cta-row" style="justify-content: center; margin-bottom: 0">
+          <a class="btn btn-primary" href="https://starter.foson.co">Open the live demo →</a>
+          <a class="btn btn-ghost" href="https://github.com/foson-co/arkite-admin-starter"
+            >Use the template</a
+          >
+        </div>
+      </div>
+    </div>
 
-<div class="wrap"><div class="band">
-  <h2>Ship your back-office this week</h2>
-  <p>Start from the template — admin shell, server-driven table, forms, and mobile nav already wired.</p>
-  <div class="cta-row" style="justify-content:center; margin-bottom:0">
-    <a class="btn btn-primary" href="https://starter.foson.co">Open the live demo →</a>
-    <a class="btn btn-ghost" href="https://github.com/foson-co/arkite-admin-starter">Use the template</a>
-  </div>
-</div></div>
-
-<footer><div class="wrap">
-  <span>© 2026 Arkite UI — MIT License · an open-source project by <a href="https://foson.co">Foson</a></span>
-  <span><a href="./storybook/">Storybook</a> · <a href="https://starter.foson.co">Starter demo</a> · <a href="https://github.com/foson-co/arkite-ui">GitHub</a> · <a href="https://www.npmjs.com/package/@arkite-ui/core">npm</a></span>
-</div></footer>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "8c2976d201ff4eb09e89382e42ee62c6"}'></script><!-- End Cloudflare Web Analytics -->
-</body>
+    <footer>
+      <div class="wrap">
+        <span
+          >© 2026 Arkite UI — MIT License · an open-source project by
+          <a href="https://foson.co">Foson</a></span
+        >
+        <span
+          ><a href="./storybook/">Storybook</a> ·
+          <a href="https://starter.foson.co">Starter demo</a> ·
+          <a href="https://github.com/foson-co/arkite-ui">GitHub</a> ·
+          <a href="https://www.npmjs.com/package/@arkite-ui/core">npm</a></span
+        >
+      </div>
+    </footer>
+    <!-- Cloudflare Web Analytics -->
+    <script
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "8c2976d201ff4eb09e89382e42ee62c6"}'
+    ></script>
+    <!-- End Cloudflare Web Analytics -->
+  </body>
 </html>

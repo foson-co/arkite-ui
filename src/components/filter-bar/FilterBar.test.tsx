@@ -64,8 +64,12 @@ describe('FilterBarFilters', () => {
   it('renders filter children', () => {
     render(
       <FilterBarFilters>
-        <select data-testid="filter-1"><option>All</option></select>
-        <select data-testid="filter-2"><option>Active</option></select>
+        <select data-testid="filter-1">
+          <option>All</option>
+        </select>
+        <select data-testid="filter-2">
+          <option>Active</option>
+        </select>
       </FilterBarFilters>
     )
     expect(screen.getByTestId('filter-1')).toBeInTheDocument()
@@ -92,7 +96,9 @@ describe('FilterBar composition', () => {
       <FilterBar>
         <FilterBarSearch placeholder="Search..." />
         <FilterBarFilters>
-          <select><option>Status</option></select>
+          <select>
+            <option>Status</option>
+          </select>
         </FilterBarFilters>
         <FilterBarActions>
           <button>Export</button>

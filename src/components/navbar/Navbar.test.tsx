@@ -91,7 +91,9 @@ describe('NavbarBrand', () => {
       <NavbarBrand
         name="App"
         renderLink={({ href, children }) => (
-          <a href={href} data-testid="custom-link">{children}</a>
+          <a href={href} data-testid="custom-link">
+            {children}
+          </a>
         )}
       />
     )
@@ -108,7 +110,11 @@ describe('NavbarLink', () => {
   })
 
   it('applies active state class', () => {
-    render(<NavbarLink href="/docs" active>Docs</NavbarLink>)
+    render(
+      <NavbarLink href="/docs" active>
+        Docs
+      </NavbarLink>
+    )
     expect(screen.getByRole('link').className).toContain('text-foreground')
   })
 
@@ -142,7 +148,9 @@ describe('NavbarLink', () => {
     render(
       <NavbarLink
         renderLink={({ href, children }) => (
-          <a href={href} data-testid="custom-link">{children}</a>
+          <a href={href} data-testid="custom-link">
+            {children}
+          </a>
         )}
       >
         Docs

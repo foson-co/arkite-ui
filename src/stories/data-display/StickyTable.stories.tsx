@@ -67,7 +67,11 @@ export const StickyActionColumn: Story = {
     <div className="max-w-[600px] rounded-md border">
       <Table
         minWidth={900}
-        wrapperProps={{ tabIndex: 0, role: 'region', 'aria-label': 'Table with sticky action column' }}
+        wrapperProps={{
+          tabIndex: 0,
+          role: 'region',
+          'aria-label': 'Table with sticky action column',
+        }}
       >
         <TableHeader>
           <TableRow>

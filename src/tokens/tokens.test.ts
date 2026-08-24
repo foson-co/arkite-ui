@@ -1,13 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  colors,
-  fontSize,
-  fontWeight,
-  lineHeight,
-  primitives,
-  radius,
-  spacing,
-} from './index'
+import { colors, fontSize, fontWeight, lineHeight, primitives, radius, spacing } from './index'
 import { contrastRatio, hexLuminance, WCAG_AA } from '../theme/contrast'
 
 describe('primitives', () => {
@@ -17,18 +9,25 @@ describe('primitives', () => {
   })
 
   it('has the seven palettes we committed to', () => {
-    const palettes = Object.keys(primitives).filter(
-      (k) => k !== 'white' && k !== 'black',
-    )
+    const palettes = Object.keys(primitives).filter((k) => k !== 'white' && k !== 'black')
     expect(palettes.sort()).toEqual(
-      ['amber', 'blue', 'gray', 'green', 'purple', 'red', 'teal'].sort(),
+      ['amber', 'blue', 'gray', 'green', 'purple', 'red', 'teal'].sort()
     )
   })
 
   it('every palette has all 11 shades (50..950)', () => {
     const expectedShades = [
-      '50', '100', '200', '300', '400', '500',
-      '600', '700', '800', '900', '950',
+      '50',
+      '100',
+      '200',
+      '300',
+      '400',
+      '500',
+      '600',
+      '700',
+      '800',
+      '900',
+      '950',
     ]
     for (const [name, palette] of Object.entries(primitives)) {
       if (name === 'white' || name === 'black') continue
@@ -53,9 +52,7 @@ describe('semantic colors', () => {
   })
 
   it('light and dark have identical key sets', () => {
-    expect(Object.keys(colors.light).sort()).toEqual(
-      Object.keys(colors.dark).sort(),
-    )
+    expect(Object.keys(colors.light).sort()).toEqual(Object.keys(colors.dark).sort())
   })
 
   it('all values resolve to hex colors', () => {
@@ -81,7 +78,7 @@ describe('semantic colors', () => {
       for (const [key, value] of Object.entries(colors[scheme])) {
         expect(
           allPrimitives.has(value),
-          `colors.${scheme}.${key} = ${value} is not in the primitive scale`,
+          `colors.${scheme}.${key} = ${value} is not in the primitive scale`
         ).toBe(true)
       }
     }
@@ -139,11 +136,11 @@ describe('semantic color contrast (WCAG AA regression guard)', () => {
       for (const [bgKey, fgKey] of pairs) {
         const ratio = contrastRatio(
           hexLuminance(colors[scheme][fgKey]),
-          hexLuminance(colors[scheme][bgKey]),
+          hexLuminance(colors[scheme][bgKey])
         )
         expect(
           ratio,
-          `${scheme}.${fgKey} (${colors[scheme][fgKey]}) on ${scheme}.${bgKey} (${colors[scheme][bgKey]}) = ${ratio.toFixed(2)}:1`,
+          `${scheme}.${fgKey} (${colors[scheme][fgKey]}) on ${scheme}.${bgKey} (${colors[scheme][bgKey]}) = ${ratio.toFixed(2)}:1`
         ).toBeGreaterThanOrEqual(WCAG_AA)
       }
     })

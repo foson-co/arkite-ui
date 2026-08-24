@@ -103,7 +103,7 @@ function AnimatedToastItem({
         </div>
       )}
       <div className="flex-1 space-y-1">
-        {title && <p className="font-medium leading-none">{title}</p>}
+        {title && <p className="leading-none font-medium">{title}</p>}
         {description && <p className="text-sm opacity-90">{description}</p>}
         {action && (
           <button
@@ -114,10 +114,7 @@ function AnimatedToastItem({
           </button>
         )}
       </div>
-      <button
-        onClick={onClose}
-        className="shrink-0 rounded-md p-1 opacity-70 hover:opacity-100"
-      >
+      <button onClick={onClose} className="shrink-0 rounded-md p-1 opacity-70 hover:opacity-100">
         <X className="h-4 w-4" />
         <span className="sr-only">{locale.toast.close}</span>
       </button>
@@ -140,7 +137,7 @@ export function AnimatedToastContainer({
   return (
     <div
       className={cn(
-        'fixed z-50 flex flex-col gap-2 pointer-events-none',
+        'pointer-events-none fixed z-50 flex flex-col gap-2',
         positionStyles[position],
         className
       )}
@@ -164,21 +161,18 @@ export function useAnimatedToast() {
   const { addToast, removeToast, clearToasts } = useToastStore()
 
   const toast = useMemo(() => {
-    const t = Object.assign(
-      (options: Omit<ToastData, 'id'>) => addToast(options),
-      {
-        success: (title: ReactNode, description?: ReactNode) =>
-          addToast({ title, description, variant: 'success' as const }),
-        error: (title: ReactNode, description?: ReactNode) =>
-          addToast({ title, description, variant: 'destructive' as const }),
-        warning: (title: ReactNode, description?: ReactNode) =>
-          addToast({ title, description, variant: 'warning' as const }),
-        info: (title: ReactNode, description?: ReactNode) =>
-          addToast({ title, description, variant: 'info' as const }),
-        dismiss: removeToast,
-        clear: clearToasts,
-      }
-    )
+    const t = Object.assign((options: Omit<ToastData, 'id'>) => addToast(options), {
+      success: (title: ReactNode, description?: ReactNode) =>
+        addToast({ title, description, variant: 'success' as const }),
+      error: (title: ReactNode, description?: ReactNode) =>
+        addToast({ title, description, variant: 'destructive' as const }),
+      warning: (title: ReactNode, description?: ReactNode) =>
+        addToast({ title, description, variant: 'warning' as const }),
+      info: (title: ReactNode, description?: ReactNode) =>
+        addToast({ title, description, variant: 'info' as const }),
+      dismiss: removeToast,
+      clear: clearToasts,
+    })
     return t
   }, [addToast, removeToast, clearToasts])
 

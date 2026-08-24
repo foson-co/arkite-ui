@@ -94,7 +94,12 @@ describe('Breadcrumb', () => {
   describe('renderLink', () => {
     it('calls renderLink with { href, children, className, active } for items with href', () => {
       const renderLink = vi.fn(
-        ({ href, children, className, active }: {
+        ({
+          href,
+          children,
+          className,
+          active,
+        }: {
           href: string
           children: ReactNode
           className?: string

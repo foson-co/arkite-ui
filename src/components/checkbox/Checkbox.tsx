@@ -4,8 +4,10 @@ import { Check } from 'lucide-react'
 
 export type CheckboxSize = 'sm' | 'md' | 'lg'
 
-export interface CheckboxProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> {
+export interface CheckboxProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'type'
+> {
   /** Checkbox size */
   size?: CheckboxSize
   /** Label text */
@@ -71,7 +73,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             htmlFor={checkboxId}
             className={cn(
               'flex shrink-0 cursor-pointer items-center justify-center rounded border',
-              'peer-focus-visible:ring-1 peer-focus-visible:ring-ring/40 peer-focus-visible:ring-offset-0',
+              'peer-focus-visible:ring-ring/40 peer-focus-visible:ring-1 peer-focus-visible:ring-offset-0',
               'peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
               'peer-checked:[&>svg]:opacity-100',
               'transition-colors duration-200',
@@ -83,10 +85,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           >
             <Check
               aria-hidden="true"
-              className={cn(
-                'text-primary-foreground opacity-0 transition-opacity',
-                styles.icon
-              )}
+              className={cn('text-primary-foreground opacity-0 transition-opacity', styles.icon)}
             />
           </label>
         </div>
@@ -96,7 +95,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               <label
                 htmlFor={checkboxId}
                 className={cn(
-                  'font-medium leading-none cursor-pointer',
+                  'cursor-pointer leading-none font-medium',
                   styles.text,
                   disabled && 'cursor-not-allowed opacity-50'
                 )}
@@ -104,12 +103,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 {label}
               </label>
             )}
-            {description && (
-              <p className="text-xs text-muted-foreground">{description}</p>
-            )}
-            {errorMessage && (
-              <p className="text-xs text-destructive">{errorMessage}</p>
-            )}
+            {description && <p className="text-muted-foreground text-xs">{description}</p>}
+            {errorMessage && <p className="text-destructive text-xs">{errorMessage}</p>}
           </div>
         )}
       </div>

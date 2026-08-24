@@ -8,9 +8,7 @@ import { SegmentedControl } from '../../components/segmented-control'
 const navigation: AdminNavGroup[] = [
   {
     label: 'Overview',
-    items: [
-      { path: '/dashboard', label: 'Dashboard' },
-    ],
+    items: [{ path: '/dashboard', label: 'Dashboard' }],
   },
   {
     label: 'Platform',
@@ -27,7 +25,11 @@ const navigation: AdminNavGroup[] = [
       {
         path: '/runs',
         label: 'Runs',
-        badge: <Badge variant="info" className="text-2xs px-1.5 py-0">3</Badge>,
+        badge: (
+          <Badge variant="info" className="text-2xs px-1.5 py-0">
+            3
+          </Badge>
+        ),
       },
       { path: '/items', label: 'Items' },
     ],
@@ -41,9 +43,7 @@ const navigation: AdminNavGroup[] = [
   },
   {
     label: 'Settings',
-    items: [
-      { path: '/settings', label: 'Settings' },
-    ],
+    items: [{ path: '/settings', label: 'Settings' }],
   },
 ]
 
@@ -75,7 +75,10 @@ const DefaultDemo = () => {
     >
       <div className="space-y-4">
         <h1 className="text-2xl font-bold">
-          {path.replace('/', '').replace('-', ' ').replace(/^\w/, (c) => c.toUpperCase()) || 'Dashboard'}
+          {path
+            .replace('/', '')
+            .replace('-', ' ')
+            .replace(/^\w/, (c) => c.toUpperCase()) || 'Dashboard'}
         </h1>
         <p className="text-muted-foreground">Current path: {path}</p>
       </div>
@@ -123,7 +126,14 @@ const CustomRenderLinkDemo = () => {
       hasPermission={() => true}
       renderLink={({ href, children, className }) => (
         // In a real app, this would be <Link href={href}>
-        <a href={href} className={className} onClick={(e) => { e.preventDefault(); setPath(href) }}>
+        <a
+          href={href}
+          className={className}
+          onClick={(e) => {
+            e.preventDefault()
+            setPath(href)
+          }}
+        >
           {children}
         </a>
       )}
@@ -179,17 +189,16 @@ const railNavigation: AdminNavGroup[] = [
     label: '管理',
     path: '/admin',
     icon: <Users size={20} />,
-    items: [
-      { path: '/admin/users', label: '使用者' },
-    ],
+    items: [{ path: '/admin/users', label: '使用者' }],
   },
 ]
 
 const RailDemo = ({ withSubNav }: { withSubNav: boolean }) => {
   const [path, setPath] = useState('/market/tw')
-  const activeGroup = railNavigation.find((g) =>
-    g.items.some((i) => path === i.path || path.startsWith(`${i.path}/`))
-    || (g.path && (path === g.path || path.startsWith(`${g.path}/`)))
+  const activeGroup = railNavigation.find(
+    (g) =>
+      g.items.some((i) => path === i.path || path.startsWith(`${i.path}/`)) ||
+      (g.path && (path === g.path || path.startsWith(`${g.path}/`)))
   )
 
   return (
@@ -207,7 +216,10 @@ const RailDemo = ({ withSubNav }: { withSubNav: boolean }) => {
           <SegmentedControl
             size="sm"
             options={activeGroup.items.map((i) => ({ value: i.path, label: i.label }))}
-            value={activeGroup.items.find((i) => path === i.path || path.startsWith(`${i.path}/`))?.path ?? activeGroup.items[0].path}
+            value={
+              activeGroup.items.find((i) => path === i.path || path.startsWith(`${i.path}/`))
+                ?.path ?? activeGroup.items[0].path
+            }
             onChange={(v) => setPath(v)}
           />
         ) : undefined
@@ -216,7 +228,7 @@ const RailDemo = ({ withSubNav }: { withSubNav: boolean }) => {
       <div className="space-y-2">
         <h1 className="text-2xl font-bold">{activeGroup?.label ?? 'Dashboard'}</h1>
         <p className="text-muted-foreground">Current path: {path}</p>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           {withSubNav
             ? '在頂部 subNav 切換同區塊的子項；左側 rail 切換大類。'
             : 'subNav 未提供 — 只有左側 rail 導航。'}
@@ -269,9 +281,9 @@ const MobileBottomNavDemo = () => {
       <div className="space-y-2">
         <h1 className="text-2xl font-bold">Mobile bottom nav</h1>
         <p className="text-muted-foreground">Current path: {path}</p>
-        <p className="text-sm text-muted-foreground">
-          縮窄視窗(或用 Storybook viewport 切到 mobile):側欄消失、底部導覽出現,
-          safe-area padding 已內建,main 區自動讓位。
+        <p className="text-muted-foreground text-sm">
+          縮窄視窗(或用 Storybook viewport 切到 mobile):側欄消失、底部導覽出現, safe-area padding
+          已內建,main 區自動讓位。
         </p>
       </div>
     </AdminLayout>

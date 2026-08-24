@@ -47,17 +47,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         disabled={disabled}
         className={cn(
-          'flex w-full rounded-md border bg-background',
+          'bg-background flex w-full rounded-md border',
           'placeholder:text-muted-foreground',
-          'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+          'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
           'disabled:cursor-not-allowed disabled:opacity-50',
           'transition-colors duration-200',
           // Size
           sizeStyles[size],
           // Error state
-          error
-            ? 'border-destructive focus-visible:ring-destructive'
-            : 'border-input',
+          error ? 'border-destructive focus-visible:ring-destructive' : 'border-input',
           // Addon padding
           leftAddon && 'pl-10',
           rightAddon && 'pr-10',
@@ -75,20 +73,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className={cn('relative', fullWidth && 'w-full')}>
         <div className="relative">
           {leftAddon && (
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
+            <div className="text-muted-foreground pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               {leftAddon}
             </div>
           )}
           {inputElement}
           {rightAddon && (
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground">
+            <div className="text-muted-foreground absolute inset-y-0 right-0 flex items-center pr-3">
               {rightAddon}
             </div>
           )}
         </div>
-        {errorMessage && (
-          <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>}
       </div>
     )
   }

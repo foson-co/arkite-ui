@@ -10,8 +10,10 @@ import { cn } from '../../utils/cn'
 import { Upload, X, File, Image, FileText, FileArchive } from 'lucide-react'
 import { useLocale } from '../../locale'
 
-export interface FileUploadProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'onError'> {
+export interface FileUploadProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type' | 'value' | 'onChange' | 'onError'
+> {
   /** Accepted file types */
   accept?: string
   /** Allow multiple files */
@@ -168,7 +170,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
         {/* Hidden input */}
         <input
           ref={(node) => {
-            (inputRef as React.MutableRefObject<HTMLInputElement | null>).current = node
+            ;(inputRef as React.MutableRefObject<HTMLInputElement | null>).current = node
             if (typeof ref === 'function') ref(node)
             else if (ref) ref.current = node
           }}
@@ -198,7 +200,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={cn(
-            'relative flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors cursor-pointer',
+            'relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors',
             isDragging
               ? 'border-primary bg-primary/5'
               : 'border-muted-foreground/25 hover:border-muted-foreground/50',
@@ -208,14 +210,10 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
         >
           {children || (
             <>
-              <Upload className="mb-4 h-10 w-10 text-muted-foreground" />
-              <p className="mb-1 text-sm font-medium">
-                {locale.fileUpload.dropzone}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {accept
-                  ? locale.fileUpload.acceptedTypes(accept)
-                  : locale.fileUpload.anyFileType}
+              <Upload className="text-muted-foreground mb-4 h-10 w-10" />
+              <p className="mb-1 text-sm font-medium">{locale.fileUpload.dropzone}</p>
+              <p className="text-muted-foreground text-xs">
+                {accept ? locale.fileUpload.acceptedTypes(accept) : locale.fileUpload.anyFileType}
                 {maxSize && ` \u2022 ${locale.fileUpload.maxSizeNote(formatFileSize(maxSize))}`}
               </p>
             </>
@@ -230,14 +228,12 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
               return (
                 <li
                   key={`${file.name}-${index}`}
-                  className="flex items-center gap-3 rounded-lg border bg-card p-3"
+                  className="bg-card flex items-center gap-3 rounded-lg border p-3"
                 >
-                  <Icon className="h-8 w-8 shrink-0 text-muted-foreground" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{file.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {formatFileSize(file.size)}
-                    </p>
+                  <Icon className="text-muted-foreground h-8 w-8 shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium">{file.name}</p>
+                    <p className="text-muted-foreground text-xs">{formatFileSize(file.size)}</p>
                   </div>
                   <button
                     type="button"
@@ -245,7 +241,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
                       e.stopPropagation()
                       handleRemove(index)
                     }}
-                    className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground shrink-0 rounded-md p-1"
                   >
                     <X className="h-4 w-4" />
                     <span className="sr-only">{locale.fileUpload.remove}</span>
@@ -263,8 +259,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
 FileUpload.displayName = 'FileUpload'
 
 // Compact variant
-export interface FileUploadButtonProps
-  extends Omit<HTMLAttributes<HTMLButtonElement>, 'onChange'> {
+export interface FileUploadButtonProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'onChange'> {
   /** Accepted file types */
   accept?: string
   /** Allow multiple files */
@@ -278,15 +273,7 @@ export interface FileUploadButtonProps
 /** Compact button variant that opens a native file picker on click. */
 export const FileUploadButton = forwardRef<HTMLButtonElement, FileUploadButtonProps>(
   (
-    {
-      className,
-      accept,
-      multiple = false,
-      onChange,
-      disabled = false,
-      children,
-      ...props
-    },
+    { className, accept, multiple = false, onChange, disabled = false, children, ...props },
     ref
   ) => {
     const locale = useLocale()
@@ -321,8 +308,8 @@ export const FileUploadButton = forwardRef<HTMLButtonElement, FileUploadButtonPr
           onClick={handleClick}
           disabled={disabled}
           className={cn(
-            'inline-flex items-center gap-2 rounded-md border bg-background px-4 py-2 text-sm font-medium transition-colors',
-            'hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+            'bg-background inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors',
+            'hover:bg-muted focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
             'disabled:pointer-events-none disabled:opacity-50',
             className
           )}

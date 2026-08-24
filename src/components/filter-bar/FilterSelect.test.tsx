@@ -54,9 +54,7 @@ describe('FilterSelect', () => {
   it('calls onChange with empty string when selecting all', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
-    render(
-      <FilterSelect options={statusOptions} value="active" onChange={onChange} />
-    )
+    render(<FilterSelect options={statusOptions} value="active" onChange={onChange} />)
     await user.selectOptions(screen.getByRole('combobox'), '')
     expect(onChange).toHaveBeenCalledWith('')
   })

@@ -22,14 +22,16 @@ const DefaultDemo = () => {
         description="This modal uses Framer Motion for smooth enter/exit animations."
         footer={
           <>
-            <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
             <Button onClick={() => setOpen(false)}>Confirm</Button>
           </>
         }
       >
         <p className="text-muted-foreground">
-          Notice the smooth scale and fade animation when opening and closing.
-          The backdrop also fades in and out independently.
+          Notice the smooth scale and fade animation when opening and closing. The backdrop also
+          fades in and out independently.
         </p>
       </AnimatedModal>
     </>

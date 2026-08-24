@@ -50,13 +50,7 @@ describe('DateRangePicker', () => {
 
   it('selects start date via calendar and auto-switches to end field', async () => {
     const onStartChange = vi.fn()
-    render(
-      <DateRangePicker
-        onStartChange={onStartChange}
-        startDate={null}
-        endDate={null}
-      />
-    )
+    render(<DateRangePicker onStartChange={onStartChange} startDate={null} endDate={null} />)
     const inputs = screen.getAllByRole('textbox')
     await userEvent.click(inputs[0])
 
@@ -126,12 +120,8 @@ describe('DateRangePicker', () => {
 
     // Find chevron buttons by querying all buttons and filtering
     const allButtons = screen.getAllByRole('button')
-    const nextBtn = allButtons.find(
-      (b) => b.querySelector('.lucide-chevron-right') !== null
-    )!
-    const prevBtn = allButtons.find(
-      (b) => b.querySelector('.lucide-chevron-left') !== null
-    )!
+    const nextBtn = allButtons.find((b) => b.querySelector('.lucide-chevron-right') !== null)!
+    const prevBtn = allButtons.find((b) => b.querySelector('.lucide-chevron-left') !== null)!
 
     await userEvent.click(nextBtn)
     expect(screen.getByText('February 2024')).toBeInTheDocument()
@@ -168,9 +158,7 @@ describe('DateRangePicker variant="calendar"', () => {
   it('shows formatted date range on trigger when dates are set', () => {
     const start = new Date(2024, 0, 15)
     const end = new Date(2024, 0, 20)
-    render(
-      <DateRangePicker variant="calendar" startDate={start} endDate={end} />
-    )
+    render(<DateRangePicker variant="calendar" startDate={start} endDate={end} />)
     expect(screen.getByText('2024-01-15 ~ 2024-01-20')).toBeInTheDocument()
   })
 
@@ -189,13 +177,21 @@ describe('DateRangePicker variant="calendar"', () => {
     const nextMonthDate = new Date(currentYear, currentMonth + 1, 1)
 
     const MONTHS = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ]
 
-    expect(
-      screen.getByText(`${MONTHS[currentMonth]} ${currentYear}`)
-    ).toBeInTheDocument()
+    expect(screen.getByText(`${MONTHS[currentMonth]} ${currentYear}`)).toBeInTheDocument()
     expect(
       screen.getByText(`${MONTHS[nextMonthDate.getMonth()]} ${nextMonthDate.getFullYear()}`)
     ).toBeInTheDocument()
@@ -243,13 +239,7 @@ describe('DateRangePicker variant="calendar"', () => {
   it('shows range highlight between start and end dates', async () => {
     const start = new Date(2024, 0, 10)
     const end = new Date(2024, 0, 20)
-    render(
-      <DateRangePicker
-        variant="calendar"
-        startDate={start}
-        endDate={end}
-      />
-    )
+    render(<DateRangePicker variant="calendar" startDate={start} endDate={end} />)
 
     // Open popover
     await userEvent.click(screen.getByTestId('calendar-trigger'))
@@ -303,12 +293,7 @@ describe('DateRangePicker variant="calendar"', () => {
   })
 
   it('navigates months in calendar variant', async () => {
-    render(
-      <DateRangePicker
-        variant="calendar"
-        startDate={new Date(2024, 0, 15)}
-      />
-    )
+    render(<DateRangePicker variant="calendar" startDate={new Date(2024, 0, 15)} />)
 
     await userEvent.click(screen.getByTestId('calendar-trigger'))
 
@@ -335,9 +320,7 @@ describe('DateRangePicker variant="calendar"', () => {
   })
 
   it('renders errorMessage text (calendar variant)', () => {
-    render(
-      <DateRangePicker variant="calendar" error errorMessage="Invalid range" />
-    )
+    render(<DateRangePicker variant="calendar" error errorMessage="Invalid range" />)
     const message = screen.getByText('Invalid range')
     expect(message).toBeInTheDocument()
     expect(message.className).toContain('text-destructive')
@@ -346,11 +329,7 @@ describe('DateRangePicker variant="calendar"', () => {
 
 describe('DateRangePicker range value API', () => {
   it('displays a controlled range from value', () => {
-    render(
-      <DateRangePicker
-        value={{ start: new Date(2024, 0, 15), end: new Date(2024, 0, 20) }}
-      />
-    )
+    render(<DateRangePicker value={{ start: new Date(2024, 0, 15), end: new Date(2024, 0, 20) }} />)
     const inputs = screen.getAllByRole('textbox')
     expect(inputs[0]).toHaveValue('2024-01-15')
     expect(inputs[1]).toHaveValue('2024-01-20')
@@ -487,7 +466,9 @@ describe('DateRangePicker labelPlacement', () => {
       <DateRangePicker startLabel="From" endLabel="To" data-testid="drp" />
     )
     expect(container.firstElementChild).toHaveClass('items-end')
-    rerender(<DateRangePicker startLabel="From" endLabel="To" labelPlacement="inside" data-testid="drp" />)
+    rerender(
+      <DateRangePicker startLabel="From" endLabel="To" labelPlacement="inside" data-testid="drp" />
+    )
     expect(container.firstElementChild).toHaveClass('items-center')
   })
 

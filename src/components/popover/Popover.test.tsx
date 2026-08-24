@@ -1,12 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverAnchor,
-  PopoverClose,
-} from './Popover'
+import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverClose } from './Popover'
 
 describe('Popover', () => {
   it('renders trigger content', () => {

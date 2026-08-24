@@ -28,13 +28,10 @@ describe('theme presets contrast (WCAG AA regression guard)', () => {
       it(`${name}.${mode}: every pair meets 4.5:1`, () => {
         const tokens = preset[mode]
         for (const [bgKey, fgKey] of pairs) {
-          const ratio = contrastRatio(
-            hslLuminance(tokens[fgKey]),
-            hslLuminance(tokens[bgKey]),
-          )
+          const ratio = contrastRatio(hslLuminance(tokens[fgKey]), hslLuminance(tokens[bgKey]))
           expect(
             ratio,
-            `${name}.${mode}.${fgKey} (${tokens[fgKey]}) on ${name}.${mode}.${bgKey} (${tokens[bgKey]}) = ${ratio.toFixed(2)}:1`,
+            `${name}.${mode}.${fgKey} (${tokens[fgKey]}) on ${name}.${mode}.${bgKey} (${tokens[bgKey]}) = ${ratio.toFixed(2)}:1`
           ).toBeGreaterThanOrEqual(WCAG_AA)
         }
       })
@@ -44,9 +41,7 @@ describe('theme presets contrast (WCAG AA regression guard)', () => {
   it('ring always equals primary (focus ring matches brand color)', () => {
     for (const [name, preset] of Object.entries(themePresets)) {
       for (const mode of ['light', 'dark'] as const) {
-        expect(preset[mode].ring, `${name}.${mode}.ring`).toBe(
-          preset[mode].primary,
-        )
+        expect(preset[mode].ring, `${name}.${mode}.ring`).toBe(preset[mode].primary)
       }
     }
   })

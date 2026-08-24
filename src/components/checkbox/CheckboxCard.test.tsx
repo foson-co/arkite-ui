@@ -5,9 +5,7 @@ import { CheckboxCard } from './CheckboxCard'
 
 describe('CheckboxCard', () => {
   it('renders label and description', () => {
-    render(
-      <CheckboxCard label="Enable notifications" description="Receive email alerts" />
-    )
+    render(<CheckboxCard label="Enable notifications" description="Receive email alerts" />)
     expect(screen.getByText('Enable notifications')).toBeInTheDocument()
     expect(screen.getByText('Receive email alerts')).toBeInTheDocument()
   })

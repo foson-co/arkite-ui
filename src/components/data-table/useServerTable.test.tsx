@@ -82,9 +82,7 @@ describe('useServerTable', () => {
     name: string
   }
 
-  const columns: Column<Row>[] = [
-    { key: 'name', header: 'Name', sortable: true },
-  ]
+  const columns: Column<Row>[] = [{ key: 'name', header: 'Name', sortable: true }]
 
   function ServerTableHarness() {
     const table = useServerTable()

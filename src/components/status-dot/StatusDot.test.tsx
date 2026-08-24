@@ -42,7 +42,7 @@ describe('StatusDot', () => {
   })
 
   it('accepts custom className', () => {
-    render(<StatusDot status="online" className="ring-2 ring-background" />)
+    render(<StatusDot status="online" className="ring-background ring-2" />)
     expect(screen.getByRole('status').className).toContain('ring-2')
   })
 })

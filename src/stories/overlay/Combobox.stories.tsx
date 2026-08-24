@@ -5,7 +5,11 @@ import { Combobox } from '../../components/combobox'
 const frameworks = [
   { value: 'react', label: 'React', description: 'A JavaScript library for building UIs' },
   { value: 'vue', label: 'Vue', description: 'The progressive JavaScript framework' },
-  { value: 'angular', label: 'Angular', description: 'Platform for building mobile & desktop apps' },
+  {
+    value: 'angular',
+    label: 'Angular',
+    description: 'Platform for building mobile & desktop apps',
+  },
   { value: 'svelte', label: 'Svelte', description: 'Cybernetically enhanced web apps' },
   { value: 'next', label: 'Next.js', description: 'The React framework for the web' },
   { value: 'nuxt', label: 'Nuxt', description: 'The intuitive Vue framework' },

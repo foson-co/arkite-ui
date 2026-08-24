@@ -121,14 +121,8 @@ describe('Modal', () => {
     expect(dialog).toHaveAttribute('aria-modal', 'true')
     // ids are generated with useId so multiple modals on the same page don't
     // collide — assert the linkage, not a hardcoded id value
-    expect(dialog).toHaveAttribute(
-      'aria-labelledby',
-      screen.getByText('Dialog Title').id
-    )
-    expect(dialog).toHaveAttribute(
-      'aria-describedby',
-      screen.getByText('Dialog Description').id
-    )
+    expect(dialog).toHaveAttribute('aria-labelledby', screen.getByText('Dialog Title').id)
+    expect(dialog).toHaveAttribute('aria-describedby', screen.getByText('Dialog Description').id)
   })
 
   // ark-finance feedback ①: without a height cap + scrollable body, long

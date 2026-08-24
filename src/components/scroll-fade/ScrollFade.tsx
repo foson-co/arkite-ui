@@ -106,7 +106,7 @@ export const ScrollFade = forwardRef<HTMLDivElement, ScrollFadeProps>(
           <span
             aria-hidden="true"
             data-scroll-fade="start"
-            className="pointer-events-none absolute inset-y-0 left-0 bg-gradient-to-r from-foreground/15 to-transparent"
+            className="from-foreground/15 pointer-events-none absolute inset-y-0 left-0 bg-gradient-to-r to-transparent"
             style={{ width: FADE_WIDTH }}
           />
         )}
@@ -114,7 +114,7 @@ export const ScrollFade = forwardRef<HTMLDivElement, ScrollFadeProps>(
           <span
             aria-hidden="true"
             data-scroll-fade="end"
-            className="pointer-events-none absolute inset-y-0 right-0 bg-gradient-to-l from-foreground/15 to-transparent"
+            className="from-foreground/15 pointer-events-none absolute inset-y-0 right-0 bg-gradient-to-l to-transparent"
             style={{ width: FADE_WIDTH }}
           />
         )}

@@ -3,8 +3,7 @@ import { cn } from '../../utils/cn'
 
 export type ToggleSize = 'sm' | 'md' | 'lg'
 
-export interface ToggleProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> {
+export interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> {
   /** Toggle size */
   size?: ToggleSize
   /** Label text */
@@ -60,11 +59,11 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
         <label
           htmlFor={toggleId}
           className={cn(
-            'cursor-pointer rounded-full bg-input transition-colors duration-200',
+            'bg-input cursor-pointer rounded-full transition-colors duration-200',
             'has-[:checked]:bg-primary',
-            'has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-ring/40 has-[:focus-visible]:ring-offset-0',
+            'has-[:focus-visible]:ring-ring/40 has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-offset-0',
             'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50',
-            error && 'ring-1 ring-destructive',
+            error && 'ring-destructive ring-1',
             styles.track
           )}
         >
@@ -79,7 +78,7 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
           />
           <div
             className={cn(
-              'pointer-events-none rounded-full bg-background shadow-sm transition-transform duration-200',
+              'bg-background pointer-events-none rounded-full shadow-sm transition-transform duration-200',
               'translate-x-0.5',
               styles.checkedTranslate,
               styles.thumb,
@@ -102,19 +101,15 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
             <label
               htmlFor={toggleId}
               className={cn(
-                'text-sm font-medium leading-none cursor-pointer',
+                'cursor-pointer text-sm leading-none font-medium',
                 disabled && 'cursor-not-allowed opacity-50'
               )}
             >
               {label}
             </label>
           )}
-          {description && (
-            <p className="text-xs text-muted-foreground">{description}</p>
-          )}
-          {errorMessage && (
-            <p className="text-xs text-destructive">{errorMessage}</p>
-          )}
+          {description && <p className="text-muted-foreground text-xs">{description}</p>}
+          {errorMessage && <p className="text-destructive text-xs">{errorMessage}</p>}
         </div>
       </div>
     )

@@ -70,8 +70,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
     if (variant === 'error') {
       warnDeprecated('Progress', 'variant="error"', 'variant="destructive"')
     }
-    const resolvedVariant: ResolvedProgressVariant =
-      variant === 'error' ? 'destructive' : variant
+    const resolvedVariant: ResolvedProgressVariant = variant === 'error' ? 'destructive' : variant
     const percentage = Math.min(100, Math.max(0, (value / max) * 100))
 
     return (
@@ -89,10 +88,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
           aria-valuemin={0}
           aria-valuemax={max}
           aria-label={ariaLabel ?? locale.progress.label}
-          className={cn(
-            'w-full overflow-hidden rounded-full bg-muted',
-            sizeStyles[size]
-          )}
+          className={cn('bg-muted w-full overflow-hidden rounded-full', sizeStyles[size])}
           {...props}
         >
           <div
@@ -162,8 +158,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
     if (size !== undefined) {
       warnDeprecated('CircularProgress', 'size', 'diameter')
     }
-    const resolvedVariant: ResolvedProgressVariant =
-      variant === 'error' ? 'destructive' : variant
+    const resolvedVariant: ResolvedProgressVariant = variant === 'error' ? 'destructive' : variant
     const resolvedDiameter = diameter ?? size ?? 48
     const percentage = Math.min(100, Math.max(0, (value / max) * 100))
     const radius = (resolvedDiameter - strokeWidth) / 2
@@ -190,10 +185,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
         {...props}
       >
         <svg
-          className={cn(
-            'transform -rotate-90',
-            indeterminate && 'animate-spin'
-          )}
+          className={cn('-rotate-90 transform', indeterminate && 'animate-spin')}
           width={resolvedDiameter}
           height={resolvedDiameter}
         >
@@ -222,9 +214,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
           />
         </svg>
         {showLabel && !indeterminate && (
-          <span className="absolute text-xs font-medium">
-            {Math.round(percentage)}%
-          </span>
+          <span className="absolute text-xs font-medium">{Math.round(percentage)}%</span>
         )}
       </div>
     )

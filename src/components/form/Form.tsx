@@ -92,7 +92,10 @@ export interface FormFieldProps extends HTMLAttributes<HTMLDivElement> {
 
 /** Form field container that provides id, name, and error context to its children. */
 export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
-  ({ className, name, label, required, errorMessage, error, disabled, children, ...props }, ref) => {
+  (
+    { className, name, label, required, errorMessage, error, disabled, children, ...props },
+    ref
+  ) => {
     const id = useId()
     const formContext = useFormContext()
     const isDisabled = disabled || formContext.disabled
@@ -104,7 +107,13 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
 
     return (
       <FormFieldContext.Provider
-        value={{ id, name, error: resolvedError, errorMessage: resolvedError, disabled: isDisabled }}
+        value={{
+          id,
+          name,
+          error: resolvedError,
+          errorMessage: resolvedError,
+          disabled: isDisabled,
+        }}
       >
         <div ref={ref} className={cn('space-y-2', className)} {...props}>
           {label != null && <FormLabel required={required}>{label}</FormLabel>}
@@ -182,11 +191,7 @@ export type FormDescriptionProps = HTMLAttributes<HTMLParagraphElement>
 /** Helper text displayed below a form field. */
 export const FormDescription = forwardRef<HTMLParagraphElement, FormDescriptionProps>(
   ({ className, ...props }, ref) => (
-    <p
-      ref={ref}
-      className={cn('text-sm text-muted-foreground', className)}
-      {...props}
-    />
+    <p ref={ref} className={cn('text-muted-foreground text-sm', className)} {...props} />
   )
 )
 
@@ -213,11 +218,7 @@ export const FormMessage = forwardRef<HTMLParagraphElement, FormMessageProps>(
     if (!error && !children) return null
 
     return (
-      <p
-        ref={ref}
-        className={cn('text-sm text-destructive', className)}
-        {...props}
-      >
+      <p ref={ref} className={cn('text-destructive text-sm', className)} {...props}>
         {error || children}
       </p>
     )
@@ -237,19 +238,11 @@ export interface FormSectionProps extends Omit<HTMLAttributes<HTMLFieldSetElemen
 /** Fieldset grouping related form fields under an optional title and description. */
 export const FormSection = forwardRef<HTMLFieldSetElement, FormSectionProps>(
   ({ className, title, description, children, ...props }, ref) => (
-    <fieldset
-      ref={ref}
-      className={cn('space-y-4', className)}
-      {...props}
-    >
+    <fieldset ref={ref} className={cn('space-y-4', className)} {...props}>
       {(title || description) && (
         <div className="space-y-1">
-          {title && (
-            <legend className="text-base font-medium">{title}</legend>
-          )}
-          {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
-          )}
+          {title && <legend className="text-base font-medium">{title}</legend>}
+          {description && <p className="text-muted-foreground text-sm">{description}</p>}
         </div>
       )}
       {children}

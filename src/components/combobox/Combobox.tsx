@@ -80,9 +80,7 @@ const filterOptions = (options: ComboboxOption[], query: string) => {
   if (!query) return options
   const q = query.toLowerCase()
   return options.filter(
-    (o) =>
-      o.label.toLowerCase().includes(q) ||
-      o.description?.toLowerCase().includes(q)
+    (o) => o.label.toLowerCase().includes(q) || o.description?.toLowerCase().includes(q)
   )
 }
 
@@ -118,9 +116,7 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
     const listboxId = `${baseId}-listbox`
     const valueId = `${baseId}-value`
     const isValueControlled = value !== undefined
-    const [internalValue, setInternalValue] = useState<string | string[] | undefined>(
-      defaultValue
-    )
+    const [internalValue, setInternalValue] = useState<string | string[] | undefined>(defaultValue)
     const currentValue = isValueControlled ? value : internalValue
     const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false)
     const open = openProp ?? internalOpen
@@ -144,8 +140,7 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
     }, [options, search, onSearch])
 
     const showOptions = !loading && filtered.length > 0
-    const highlightedOption: ComboboxOption | undefined =
-      filtered[highlightedIndex]
+    const highlightedOption: ComboboxOption | undefined = filtered[highlightedIndex]
 
     useEffect(() => {
       if (highlightedIndex < 0) return
@@ -157,19 +152,14 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
     const handleOpenChange = (nextOpen: boolean) => {
       setOpen(nextOpen)
       if (nextOpen) {
-        setHighlightedIndex(
-          filtered.findIndex((o) => !o.disabled && selectedValues.has(o.value))
-        )
+        setHighlightedIndex(filtered.findIndex((o) => !o.disabled && selectedValues.has(o.value)))
       }
     }
 
     const moveHighlight = (direction: 1 | -1) => {
       if (filtered.length === 0) return
       setHighlightedIndex((current) => {
-        let next =
-          current === -1 && direction === -1
-            ? filtered.length - 1
-            : current + direction
+        let next = current === -1 && direction === -1 ? filtered.length - 1 : current + direction
         while (next >= 0 && next < filtered.length && filtered[next].disabled) {
           next += direction
         }
@@ -222,9 +212,7 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
     const displayLabel = useMemo(() => {
       if (selectedValues.size === 0) return null
       if (multiple) {
-        const labels = options
-          .filter((o) => selectedValues.has(o.value))
-          .map((o) => o.label)
+        const labels = options.filter((o) => selectedValues.has(o.value)).map((o) => o.label)
         return labels.length > 0 ? labels : null
       }
       const selected = options.find((o) => selectedValues.has(o.value))
@@ -249,10 +237,10 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
               }
             }}
             className={cn(
-              'flex items-center justify-between rounded-md border bg-background py-2',
+              'bg-background flex items-center justify-between rounded-md border py-2',
               fullWidth ? 'w-full' : 'w-fit',
               triggerSizeStyles[size],
-              'ring-offset-background focus:outline-none focus:ring-1 focus:ring-ring/40 focus:ring-offset-0',
+              'ring-offset-background focus:ring-ring/40 focus:ring-1 focus:ring-offset-0 focus:outline-none',
               'disabled:cursor-not-allowed disabled:opacity-50',
               error && 'border-destructive focus:ring-destructive',
               !error && 'border-input',
@@ -265,7 +253,7 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
                   displayLabel.map((label) => (
                     <span
                       key={label}
-                      className="inline-flex items-center rounded-full bg-secondary px-2 py-0.5 text-xs font-medium"
+                      className="bg-secondary inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
                     >
                       {label}
                     </span>
@@ -274,11 +262,16 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
                   <span>{displayLabel[0]}</span>
                 )
               ) : (
-                <span className="text-muted-foreground">{placeholder ?? locale.combobox.placeholder}</span>
+                <span className="text-muted-foreground">
+                  {placeholder ?? locale.combobox.placeholder}
+                </span>
               )}
             </span>
             <svg
-              width="15" height="15" viewBox="0 0 15 15" fill="none"
+              width="15"
+              height="15"
+              viewBox="0 0 15 15"
+              fill="none"
               className="ml-2 h-4 w-4 shrink-0 opacity-50"
             >
               <path
@@ -294,10 +287,10 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content
             className={cn(
-              'z-50 w-[var(--radix-popover-trigger-width)] rounded-lg border bg-card p-0 shadow-lg',
+              'bg-card z-50 w-[var(--radix-popover-trigger-width)] rounded-lg border p-0 shadow-lg',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
               'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-              'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+              'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95'
             )}
             sideOffset={4}
             onOpenAutoFocus={(e) => {
@@ -313,7 +306,10 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
             {/* Search input */}
             <div className="flex items-center border-b px-3">
               <svg
-                width="15" height="15" viewBox="0 0 15 15" fill="none"
+                width="15"
+                height="15"
+                viewBox="0 0 15 15"
+                fill="none"
                 className="mr-2 h-4 w-4 shrink-0 opacity-50"
               >
                 <path
@@ -330,13 +326,14 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
                 onKeyDown={handleInputKeyDown}
                 aria-controls={showOptions ? listboxId : undefined}
                 aria-activedescendant={
-                  highlightedOption
-                    ? `${baseId}-option-${highlightedIndex}`
-                    : undefined
+                  highlightedOption ? `${baseId}-option-${highlightedIndex}` : undefined
                 }
                 aria-autocomplete="list"
                 placeholder={searchPlaceholder ?? locale.combobox.searchPlaceholder}
-                className={cn('flex w-full bg-transparent py-3 outline-none placeholder:text-muted-foreground', searchSizeStyles[size])}
+                className={cn(
+                  'placeholder:text-muted-foreground flex w-full bg-transparent py-3 outline-none',
+                  searchSizeStyles[size]
+                )}
               />
             </div>
 
@@ -348,11 +345,11 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
               className="max-h-60 overflow-y-auto p-1"
             >
               {loading ? (
-                <div className="py-6 text-center text-sm text-muted-foreground">
+                <div className="text-muted-foreground py-6 text-center text-sm">
                   {locale.combobox.loading}
                 </div>
               ) : filtered.length === 0 ? (
-                <div className="py-6 text-center text-sm text-muted-foreground">
+                <div className="text-muted-foreground py-6 text-center text-sm">
                   {emptyMessage ?? locale.combobox.emptyMessage}
                 </div>
               ) : (
@@ -372,7 +369,7 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
                         if (!option.disabled) setHighlightedIndex(index)
                       }}
                       className={cn(
-                        'relative flex w-full cursor-pointer select-none items-center rounded-md px-2 py-1.5 text-sm outline-none',
+                        'relative flex w-full cursor-pointer items-center rounded-md px-2 py-1.5 text-sm outline-none select-none',
                         'hover:bg-secondary hover:text-secondary-foreground',
                         'disabled:pointer-events-none disabled:opacity-50',
                         isSelected && 'bg-primary/5',
@@ -385,7 +382,13 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
                         <>
                           <span className="mr-2 flex h-4 w-4 items-center justify-center">
                             {isSelected && (
-                              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="h-4 w-4">
+                              <svg
+                                width="15"
+                                height="15"
+                                viewBox="0 0 15 15"
+                                fill="none"
+                                className="h-4 w-4"
+                              >
                                 <path
                                   d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3354 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.5553 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z"
                                   fill="currentColor"
@@ -401,7 +404,7 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
                               {option.label}
                             </span>
                             {option.description && (
-                              <span className="text-xs text-muted-foreground">
+                              <span className="text-muted-foreground text-xs">
                                 {option.description}
                               </span>
                             )}
@@ -425,7 +428,7 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
     return (
       <div className={fullWidth ? 'w-full' : 'w-fit'}>
         {combobox}
-        <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
+        <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>
       </div>
     )
   }

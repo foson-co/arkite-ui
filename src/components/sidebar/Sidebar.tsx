@@ -74,10 +74,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(
       <SidebarContext.Provider value={{ collapsed, setCollapsed, collapsible }}>
         <aside
           ref={ref}
-          className={cn(
-            'flex flex-col border-r bg-card transition-all duration-300',
-            className
-          )}
+          className={cn('bg-card flex flex-col border-r transition-all duration-300', className)}
           style={{
             width: collapsed ? collapsedWidth : width,
             minWidth: collapsed ? collapsedWidth : width,
@@ -124,11 +121,7 @@ export type SidebarContentProps = HTMLAttributes<HTMLDivElement>
 /** Scrollable main content area of the sidebar. */
 export const SidebarContent = forwardRef<HTMLDivElement, SidebarContentProps>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('flex-1 overflow-auto py-2', className)}
-      {...props}
-    />
+    <div ref={ref} className={cn('flex-1 overflow-auto py-2', className)} {...props} />
   )
 )
 
@@ -143,15 +136,7 @@ export const SidebarFooter = forwardRef<HTMLDivElement, SidebarFooterProps>(
     const { collapsed } = useSidebar()
 
     return (
-      <div
-        ref={ref}
-        className={cn(
-          'border-t p-4',
-          collapsed && 'px-2',
-          className
-        )}
-        {...props}
-      />
+      <div ref={ref} className={cn('border-t p-4', collapsed && 'px-2', className)} {...props} />
     )
   }
 )
@@ -172,7 +157,7 @@ export const SidebarGroup = forwardRef<HTMLDivElement, SidebarGroupProps>(
     return (
       <div ref={ref} className={cn('px-2 py-2', className)} {...props}>
         {label && !collapsed && (
-          <div className="mb-2 px-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <div className="text-muted-foreground mb-2 px-2 text-xs font-medium tracking-wider uppercase">
             {label}
           </div>
         )}
@@ -197,32 +182,13 @@ export interface SidebarItemProps extends HTMLAttributes<HTMLButtonElement> {
 }
 
 /** Clickable navigation item within the sidebar, rendered as a button or link. */
-export const SidebarItem = forwardRef<
-  HTMLButtonElement | HTMLAnchorElement,
-  SidebarItemProps
->(
-  (
-    {
-      className,
-      icon,
-      active,
-      disabled,
-      href,
-      children,
-      onClick,
-      ...props
-    },
-    ref
-  ) => {
+export const SidebarItem = forwardRef<HTMLButtonElement | HTMLAnchorElement, SidebarItemProps>(
+  ({ className, icon, active, disabled, href, children, onClick, ...props }, ref) => {
     const { collapsed } = useSidebar()
 
     const content = (
       <>
-        {icon && (
-          <span className={cn('shrink-0', collapsed ? '' : 'mr-3')}>
-            {icon}
-          </span>
-        )}
+        {icon && <span className={cn('shrink-0', collapsed ? '' : 'mr-3')}>{icon}</span>}
         {!collapsed && <span className="truncate">{children}</span>}
       </>
     )
@@ -285,18 +251,14 @@ export const SidebarToggle = forwardRef<HTMLButtonElement, SidebarToggleProps>(
         type="button"
         onClick={() => setCollapsed(!collapsed)}
         className={cn(
-          'flex h-8 w-8 items-center justify-center rounded-md border bg-background text-muted-foreground',
+          'bg-background text-muted-foreground flex h-8 w-8 items-center justify-center rounded-md border',
           'hover:text-foreground hover:bg-muted',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+          'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
           className
         )}
         {...props}
       >
-        {collapsed ? (
-          <ChevronRight className="h-4 w-4" />
-        ) : (
-          <ChevronLeft className="h-4 w-4" />
-        )}
+        {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         <span className="sr-only">{locale.sidebar.toggle}</span>
       </button>
     )

@@ -14,7 +14,7 @@ export default meta
 // ── Default (Customer Info) ──
 
 export const Default: StoryFn = () => (
-  <div className="max-w-md rounded-lg border bg-card p-6">
+  <div className="bg-card max-w-md rounded-lg border p-6">
     <h3 className="mb-2 text-lg font-semibold">Customer Info</h3>
     <DescriptionList>
       <DescriptionItem label="Full Name" value="Jane Smith" />
@@ -29,7 +29,7 @@ export const Default: StoryFn = () => (
 // ── No Divider ──
 
 export const NoDivider: StoryFn = () => (
-  <div className="max-w-md rounded-lg border bg-card p-6">
+  <div className="bg-card max-w-md rounded-lg border p-6">
     <h3 className="mb-2 text-lg font-semibold">Order Summary</h3>
     <DescriptionList divider={false}>
       <DescriptionItem label="Order ID" value="#ORD-20240315" />
@@ -43,7 +43,7 @@ export const NoDivider: StoryFn = () => (
 // ── With Custom Content (Badge / StatusDot) ──
 
 export const WithCustomContent: StoryFn = () => (
-  <div className="max-w-md rounded-lg border bg-card p-6">
+  <div className="bg-card max-w-md rounded-lg border p-6">
     <h3 className="mb-2 text-lg font-semibold">Project Details</h3>
     <DescriptionList>
       <DescriptionItem label="Project" value="Arkite UI" />
@@ -69,7 +69,7 @@ export const WithCustomContent: StoryFn = () => (
 // ── Single Item ──
 
 export const SingleItem: StoryFn = () => (
-  <div className="max-w-md rounded-lg border bg-card p-6">
+  <div className="bg-card max-w-md rounded-lg border p-6">
     <DescriptionList>
       <DescriptionItem label="Status">
         <Badge variant="success">Active</Badge>

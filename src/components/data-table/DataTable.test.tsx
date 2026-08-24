@@ -125,9 +125,7 @@ describe('DataTable', () => {
   })
 
   it('does not render checkboxes when not selectable', () => {
-    render(
-      <DataTable columns={columns} data={data} getRowKey={(r) => r.id} pagination={false} />
-    )
+    render(<DataTable columns={columns} data={data} getRowKey={(r) => r.id} pagination={false} />)
     expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
   })
 
@@ -244,7 +242,9 @@ describe('DataTable', () => {
       name: `User ${i}`,
       age: 20 + i,
     }))
-    render(<DataTable columns={columns} data={largeData} defaultPageSize={10} getRowKey={(r) => r.id} />)
+    render(
+      <DataTable columns={columns} data={largeData} defaultPageSize={10} getRowKey={(r) => r.id} />
+    )
     // Should show 10 data rows + 1 header row
     const rows = screen.getAllByRole('row')
     expect(rows).toHaveLength(11)
@@ -315,9 +315,7 @@ describe('DataTable', () => {
   })
 
   it('does not render expand buttons when expandable is not provided', () => {
-    render(
-      <DataTable columns={columns} data={data} getRowKey={(r) => r.id} pagination={false} />
-    )
+    render(<DataTable columns={columns} data={data} getRowKey={(r) => r.id} pagination={false} />)
     expect(screen.queryByLabelText('Expand row')).not.toBeInTheDocument()
   })
 
@@ -350,9 +348,7 @@ describe('DataTable', () => {
 
     await user.click(screen.getAllByLabelText('Expand row')[0])
     expect(screen.getByText('Details for Alice')).toBeInTheDocument()
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('`expandable(fn)` is deprecated')
-    )
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('`expandable(fn)` is deprecated'))
     warnSpy.mockRestore()
   })
 
@@ -757,7 +753,6 @@ describe('DataTable', () => {
     expect(onPageSizeChange).toHaveBeenCalledWith(20)
   })
 
-
   // ─── Round-2 feedback: incremental selection, per-row disable, hoverable ───
 
   it('onRowSelect fires per changed row (single toggle and select-all)', async () => {
@@ -806,18 +801,14 @@ describe('DataTable', () => {
   })
 
   it('hoverable={false} passes through to the underlying Table', () => {
-    render(
-      <DataTable columns={columns} data={data} getRowKey={(r) => r.id} hoverable={false} />
-    )
+    render(<DataTable columns={columns} data={data} getRowKey={(r) => r.id} hoverable={false} />)
     expect(screen.getByRole('table')).not.toHaveAttribute('data-hoverable')
   })
 
   // ─── Density / row styling (ark-finance feedback 3.1, 3.3) ───
 
   it('passes hoverable and compact through to the underlying Table', () => {
-    render(
-      <DataTable columns={columns} data={data} getRowKey={(r) => r.id} compact />
-    )
+    render(<DataTable columns={columns} data={data} getRowKey={(r) => r.id} compact />)
     const table = screen.getByRole('table')
     expect(table).toHaveAttribute('data-hoverable', 'true')
     expect(table).toHaveAttribute('data-compact', 'true')
@@ -839,12 +830,7 @@ describe('DataTable', () => {
 
   it('rowClassName as string applies to every body row', () => {
     render(
-      <DataTable
-        columns={columns}
-        data={data}
-        getRowKey={(r) => r.id}
-        rowClassName="text-xs"
-      />
+      <DataTable columns={columns} data={data} getRowKey={(r) => r.id} rowClassName="text-xs" />
     )
     const rows = screen.getAllByRole('row').slice(1)
     expect(rows.every((r) => r.classList.contains('text-xs'))).toBe(true)
@@ -906,7 +892,9 @@ describe('DataTable', () => {
         data={data}
         getRowKey={(r) => r.id}
         pagination={false}
-        columns={[{ key: 'name', header: 'Name', width: 80, headerStyle: { writingMode: 'vertical-rl' } }]}
+        columns={[
+          { key: 'name', header: 'Name', width: 80, headerStyle: { writingMode: 'vertical-rl' } },
+        ]}
       />
     )
     const head = screen.getByRole('columnheader', { name: 'Name' })
@@ -964,9 +952,7 @@ describe('DataTable', () => {
       { key: 'name', header: 'Name', pinned: 'left' },
       { key: 'age', header: 'Age', pinned: 'right' },
     ]
-    render(
-      <DataTable columns={pinnedColumns} data={data} getRowKey={(r) => r.id} />
-    )
+    render(<DataTable columns={pinnedColumns} data={data} getRowKey={(r) => r.id} />)
     const [nameHead, ageHead] = screen.getAllByRole('columnheader')
     expect(nameHead).toHaveClass('sticky', 'left-0')
     expect(ageHead).toHaveClass('sticky', 'right-0')
@@ -1068,9 +1054,9 @@ describe('DataTable', () => {
 
     // The dropdown has two items: Name and Age. Find the one that contains 'Age' text
     // and is a button inside the dropdown (not the table header button)
-    const dropdownButtons = screen.getAllByRole('button').filter(
-      (btn) => btn.textContent?.trim() === 'Age' && !btn.closest('thead')
-    )
+    const dropdownButtons = screen
+      .getAllByRole('button')
+      .filter((btn) => btn.textContent?.trim() === 'Age' && !btn.closest('thead'))
     await user.click(dropdownButtons[0])
 
     // Age column should be hidden — age values should not appear
@@ -1081,9 +1067,7 @@ describe('DataTable', () => {
   })
 
   it('does not render column toggle when columnToggle is false', () => {
-    render(
-      <DataTable columns={columns} data={data} getRowKey={(r) => r.id} pagination={false} />
-    )
+    render(<DataTable columns={columns} data={data} getRowKey={(r) => r.id} pagination={false} />)
     expect(screen.queryByLabelText('Toggle columns')).not.toBeInTheDocument()
   })
 
@@ -1156,12 +1140,7 @@ describe('DataTable', () => {
 
   it('does not apply sticky styles when stickyHeader is false', () => {
     const { container } = render(
-      <DataTable
-        columns={columns}
-        data={data}
-        getRowKey={(r) => r.id}
-        pagination={false}
-      />
+      <DataTable columns={columns} data={data} getRowKey={(r) => r.id} pagination={false} />
     )
     const table = container.querySelector('table')
     expect(table).not.toHaveAttribute('data-sticky-header')
@@ -1411,7 +1390,9 @@ describe('DataTable pinned guard', () => {
 
   it('warns when pinned columns have no minWidth to overflow against', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    render(<DataTable columns={pinnedColumns} data={data} getRowKey={(r) => r.id} pagination={false} />)
+    render(
+      <DataTable columns={pinnedColumns} data={data} getRowKey={(r) => r.id} pagination={false} />
+    )
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('frozen columns never engage'))
     warn.mockRestore()
   })
@@ -1419,7 +1400,13 @@ describe('DataTable pinned guard', () => {
   it('stays quiet once minWidth is set', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     render(
-      <DataTable columns={pinnedColumns} data={data} getRowKey={(r) => r.id} pagination={false} minWidth={900} />
+      <DataTable
+        columns={pinnedColumns}
+        data={data}
+        getRowKey={(r) => r.id}
+        pagination={false}
+        minWidth={900}
+      />
     )
     expect(warn).not.toHaveBeenCalled()
     warn.mockRestore()

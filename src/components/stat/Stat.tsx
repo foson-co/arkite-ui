@@ -35,41 +35,20 @@ const trendIcons: Record<StatTrend, typeof TrendingUp> = {
 
 /** Displays a key metric with optional trend indicator and help text. */
 export const Stat = forwardRef<HTMLDivElement, StatProps>(
-  (
-    {
-      className,
-      label,
-      value,
-      change,
-      trend,
-      helpText,
-      icon,
-      loading = false,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, label, value, change, trend, helpText, icon, loading = false, ...props }, ref) => {
     const TrendIcon = trend ? trendIcons[trend] : null
 
     return (
-      <div
-        ref={ref}
-        className={cn('space-y-2', className)}
-        {...props}
-      >
+      <div ref={ref} className={cn('space-y-2', className)} {...props}>
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-muted-foreground">
-            {label}
-          </span>
-          {icon && (
-            <div className="text-muted-foreground">{icon}</div>
-          )}
+          <span className="text-muted-foreground text-sm font-medium">{label}</span>
+          {icon && <div className="text-muted-foreground">{icon}</div>}
         </div>
 
         {loading ? (
           <div className="space-y-2">
-            <div className="h-8 w-24 animate-pulse rounded bg-muted" />
-            <div className="h-4 w-16 animate-pulse rounded bg-muted" />
+            <div className="bg-muted h-8 w-24 animate-pulse rounded" />
+            <div className="bg-muted h-4 w-16 animate-pulse rounded" />
           </div>
         ) : (
           <>
@@ -83,12 +62,8 @@ export const Stat = forwardRef<HTMLDivElement, StatProps>(
                     {change}
                   </span>
                 )}
-                {change && !trend && (
-                  <span className="text-muted-foreground">{change}</span>
-                )}
-                {helpText && (
-                  <span className="text-muted-foreground">{helpText}</span>
-                )}
+                {change && !trend && <span className="text-muted-foreground">{change}</span>}
+                {helpText && <span className="text-muted-foreground">{helpText}</span>}
               </div>
             )}
           </>
@@ -116,14 +91,7 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
     }
 
     return (
-      <div
-        ref={ref}
-        className={cn(
-          'rounded-lg p-6',
-          variantStyles[variant],
-          className
-        )}
-      >
+      <div ref={ref} className={cn('rounded-lg p-6', variantStyles[variant], className)}>
         <Stat {...props} />
       </div>
     )
@@ -148,11 +116,7 @@ export const StatGroup = forwardRef<HTMLDivElement, StatGroupProps>(
     }
 
     return (
-      <div
-        ref={ref}
-        className={cn('grid gap-4', columnStyles[columns], className)}
-        {...props}
-      >
+      <div ref={ref} className={cn('grid gap-4', columnStyles[columns], className)} {...props}>
         {children}
       </div>
     )

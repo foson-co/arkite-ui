@@ -89,9 +89,7 @@ function VirtualListInner<T>(
     estimateSize: () => estimateSize,
     overscan,
     gap,
-    getItemKey: getItemKey
-      ? (index) => getItemKey(items[index], index)
-      : undefined,
+    getItemKey: getItemKey ? (index) => getItemKey(items[index], index) : undefined,
   })
 
   const virtualItems = virtualizer.getVirtualItems()
@@ -112,7 +110,7 @@ function VirtualListInner<T>(
     return (
       <div
         ref={ref}
-        className={cn('flex items-center justify-center text-muted-foreground text-sm', className)}
+        className={cn('text-muted-foreground flex items-center justify-center text-sm', className)}
         style={{ height }}
       >
         {emptyContent ?? locale.virtualList.empty}
@@ -210,9 +208,7 @@ function InfiniteScrollInner<T>(
     estimateSize: () => estimateSize,
     overscan,
     gap,
-    getItemKey: getItemKey
-      ? (index) => getItemKey(items[index], index)
-      : undefined,
+    getItemKey: getItemKey ? (index) => getItemKey(items[index], index) : undefined,
   })
 
   const handleScroll = useCallback(() => {
@@ -248,7 +244,7 @@ function InfiniteScrollInner<T>(
     return (
       <div
         ref={ref}
-        className={cn('flex items-center justify-center text-muted-foreground text-sm', className)}
+        className={cn('text-muted-foreground flex items-center justify-center text-sm', className)}
         style={{ height }}
       >
         {emptyContent ?? locale.virtualList.empty}
@@ -261,7 +257,7 @@ function InfiniteScrollInner<T>(
   const loadingIndicator = loadingMore && (
     <div className="flex items-center justify-center py-4">
       {loadingMoreContent ?? (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-2 text-sm">
           <Spinner size="sm" />
           <span>{locale.virtualList.loadingMore}</span>
         </div>

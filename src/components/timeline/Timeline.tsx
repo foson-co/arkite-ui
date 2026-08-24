@@ -54,7 +54,7 @@ export const Timeline = forwardRef<HTMLDivElement, TimelineProps>(
           if (item.variant === 'default') {
             warnDeprecated('Timeline', 'variant="default"', 'variant="muted"')
           }
-          const variant = item.variant === 'default' ? 'muted' : item.variant ?? 'muted'
+          const variant = item.variant === 'default' ? 'muted' : (item.variant ?? 'muted')
 
           return (
             <div key={index} className="flex gap-4">
@@ -63,7 +63,7 @@ export const Timeline = forwardRef<HTMLDivElement, TimelineProps>(
                 {item.icon ? (
                   <div
                     className={cn(
-                      'flex shrink-0 items-center justify-center rounded-full text-primary-foreground',
+                      'text-primary-foreground flex shrink-0 items-center justify-center rounded-full',
                       iconSize,
                       variantStyles[variant]
                     )}
@@ -72,28 +72,25 @@ export const Timeline = forwardRef<HTMLDivElement, TimelineProps>(
                   </div>
                 ) : (
                   <div
-                    className={cn(
-                      'shrink-0 rounded-full mt-1.5',
-                      dotSize,
-                      variantStyles[variant]
-                    )}
+                    className={cn('mt-1.5 shrink-0 rounded-full', dotSize, variantStyles[variant])}
                   />
                 )}
-                {!isLast && (
-                  <div className="w-px flex-1 bg-border min-h-[16px]" />
-                )}
+                {!isLast && <div className="bg-border min-h-[16px] w-px flex-1" />}
               </div>
 
               {/* Right: content */}
               <div className={cn('pb-6', isLast && 'pb-0')}>
-                {item.date && (
-                  <p className="text-xs text-muted-foreground mb-0.5">{item.date}</p>
-                )}
-                <p className={cn('font-medium leading-tight', size === 'sm' ? 'text-sm' : 'text-base')}>
+                {item.date && <p className="text-muted-foreground mb-0.5 text-xs">{item.date}</p>}
+                <p
+                  className={cn(
+                    'leading-tight font-medium',
+                    size === 'sm' ? 'text-sm' : 'text-base'
+                  )}
+                >
                   {item.title}
                 </p>
                 {item.description && (
-                  <div className="text-sm text-muted-foreground mt-1">{item.description}</div>
+                  <div className="text-muted-foreground mt-1 text-sm">{item.description}</div>
                 )}
               </div>
             </div>

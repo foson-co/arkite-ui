@@ -29,16 +29,18 @@ export const Default: Story = {
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="analytics">Analytics</TabsTrigger>
         <TabsTrigger value="settings">Settings</TabsTrigger>
-        <TabsTrigger value="disabled" disabled>Disabled</TabsTrigger>
+        <TabsTrigger value="disabled" disabled>
+          Disabled
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="overview">
-        <p className="text-sm text-muted-foreground mt-4">Overview content</p>
+        <p className="text-muted-foreground mt-4 text-sm">Overview content</p>
       </TabsContent>
       <TabsContent value="analytics">
-        <p className="text-sm text-muted-foreground mt-4">Analytics content</p>
+        <p className="text-muted-foreground mt-4 text-sm">Analytics content</p>
       </TabsContent>
       <TabsContent value="settings">
-        <p className="text-sm text-muted-foreground mt-4">Settings content</p>
+        <p className="text-muted-foreground mt-4 text-sm">Settings content</p>
       </TabsContent>
     </Tabs>
   ),
@@ -90,7 +92,7 @@ export const VerticalOnLandscapePhone: Story = {
           <TabsTrigger value="holdings">Holdings</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
-          <div className="h-[320px] overflow-auto rounded-md bg-muted/40 p-3 text-sm">
+          <div className="bg-muted/40 h-[320px] overflow-auto rounded-md p-3 text-sm">
             The panel scrolls on its own; the strip stays put.
           </div>
         </TabsContent>

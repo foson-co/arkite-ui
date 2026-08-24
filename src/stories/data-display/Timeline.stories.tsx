@@ -32,8 +32,8 @@ const auditItems: TimelineItem[] = [
     date: '2024-01-15 14:40',
     title: 'API key created',
     description: (
-      <div className="flex items-center gap-2 mt-1">
-        <code className="text-xs bg-muted px-1.5 py-0.5 rounded">sk-prod-***</code>
+      <div className="mt-1 flex items-center gap-2">
+        <code className="bg-muted rounded px-1.5 py-0.5 text-xs">sk-prod-***</code>
         <Badge variant="success">Active</Badge>
       </div>
     ),
@@ -53,13 +53,9 @@ const auditItems: TimelineItem[] = [
   },
 ]
 
-export const AuditLog: StoryFn = () => (
-  <Timeline items={auditItems} />
-)
+export const AuditLog: StoryFn = () => <Timeline items={auditItems} />
 
-export const Small: StoryFn = () => (
-  <Timeline items={auditItems} size="sm" />
-)
+export const Small: StoryFn = () => <Timeline items={auditItems} size="sm" />
 
 const simpleItems: TimelineItem[] = [
   { title: 'Order placed', date: 'Jan 10' },
@@ -68,6 +64,4 @@ const simpleItems: TimelineItem[] = [
   { title: 'Shipped', date: 'Jan 12', variant: 'success' },
 ]
 
-export const Simple: StoryFn = () => (
-  <Timeline items={simpleItems} />
-)
+export const Simple: StoryFn = () => <Timeline items={simpleItems} />
