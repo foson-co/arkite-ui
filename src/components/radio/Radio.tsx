@@ -65,6 +65,11 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
             className="peer sr-only"
             {...props}
           />
+          {/* 這個 label 是**視覺上的那顆圓**，本身刻意不含文字：它的存在是為了
+              讓點圓圈也能選取（htmlFor 指向 sr-only 的 input），而 input 的
+              accessible name 由下面帶 {label} 的第二個 label 提供。
+              硬塞文字進來只會讓 accessible name 被串接兩次。 */}
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label
             htmlFor={radioId}
             className={cn(

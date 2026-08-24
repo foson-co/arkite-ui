@@ -105,6 +105,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     return (
       <CardDensityContext.Provider value={density}>
         <CardSurfaceContext.Provider value={true}>
+          {/* role / tabIndex / Enter-Space 三者是跟著 isInteractive 一起上的，
+              規則看不出這個連動（它只看到 onClick 掛在 div 上）。
+              ⚠️ 已知缺口，非本次 lint 整理的範圍：只傳 onClick 而不傳
+              `interactive` 時，點擊仍會觸發但沒有鍵盤路徑。那個組合沒有文件、
+              沒有測試（prop 說明寫的是「with onClick present, adds button
+              semantics」），要不要收斂成「無 interactive 就不掛 onClick」是
+              公開 API 的行為決定，應另案處理。 */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
             ref={ref}
             role={isInteractive ? 'button' : undefined}

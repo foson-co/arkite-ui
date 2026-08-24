@@ -695,6 +695,10 @@ export function DataTable<T>({
     >
       {columnToggle && (
         <div className="flex items-center justify-end border-b px-4 py-2">
+          {/* 這個 div 不是互動元素，是 Escape 的捕捉容器：真正可聚焦的控制項在
+              它裡面（下方的 toggle button），關閉行為靠事件冒泡收。照規則加
+              role/tabIndex 會多出一個沒有語意的 tab stop，對鍵盤使用者是退步。 */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
             ref={columnToggleRef}
             className="relative"
@@ -818,6 +822,8 @@ export function DataTable<T>({
                         column.header
                       )}
                       {canRenderFilter(column) && (
+                        /* 同上：Escape 捕捉容器，非互動元素 */
+                        /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
                         <div
                           ref={(el) => {
                             filterDropdownRefs.current[column.key] = el

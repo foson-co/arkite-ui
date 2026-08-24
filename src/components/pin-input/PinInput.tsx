@@ -151,6 +151,10 @@ export const PinInput = forwardRef<HTMLDivElement, PinInputProps>(
             value={value[i] ?? ''}
             aria-label={locale.pinInput.charLabel(i + 1, length)}
             disabled={disabled}
+            // 這是把元件對外的 `autoFocus` prop 轉給第一格，不是寫死自動聚焦。
+            // 要不要自動聚焦由呼叫端決定（OTP 欄位是這個 prop 的主要用途），
+            // 元件無權替它拿掉。
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={autoFocus && i === 0}
             // Editing is fully handled in onKeyDown/onPaste; the controlled
             // value silences the React warning
