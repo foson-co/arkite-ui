@@ -1,4 +1,11 @@
-import { createContext, forwardRef, useContext, type HTMLAttributes, type MouseEvent, type ReactNode } from 'react'
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  type HTMLAttributes,
+  type MouseEvent,
+  type ReactNode,
+} from 'react'
 import { cn } from '../../utils/cn'
 
 export type CardDensity = 'default' | 'compact'
@@ -98,39 +105,39 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     return (
       <CardDensityContext.Provider value={density}>
         <CardSurfaceContext.Provider value={true}>
-        <div
-          ref={ref}
-          role={isInteractive ? 'button' : undefined}
-          tabIndex={isInteractive ? 0 : undefined}
-          onClick={onClick}
-          onKeyDown={
-            isInteractive
-              ? (e) => {
-                  onKeyDown?.(e)
-                  // Only when the card itself is focused — Enter/Space on
-                  // inner interactive children must not double-activate.
-                  if (e.target !== e.currentTarget || e.defaultPrevented) return
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    onClick?.(e as unknown as MouseEvent<HTMLDivElement>)
+          <div
+            ref={ref}
+            role={isInteractive ? 'button' : undefined}
+            tabIndex={isInteractive ? 0 : undefined}
+            onClick={onClick}
+            onKeyDown={
+              isInteractive
+                ? (e) => {
+                    onKeyDown?.(e)
+                    // Only when the card itself is focused — Enter/Space on
+                    // inner interactive children must not double-activate.
+                    if (e.target !== e.currentTarget || e.defaultPrevented) return
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      onClick?.(e as unknown as MouseEvent<HTMLDivElement>)
+                    }
                   }
-                }
-              : onKeyDown
-          }
-          className={cn(
-            'rounded-lg bg-card text-card-foreground',
-            bordered && 'border',
-            paddingStyles[padding],
-            shadowStyles[shadow],
-            hoverable && 'transition-shadow hover:shadow-md cursor-pointer',
-            isInteractive &&
-              'cursor-pointer transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40',
-            className
-          )}
-          {...props}
-        >
-          {children}
-        </div>
+                : onKeyDown
+            }
+            className={cn(
+              'bg-card text-card-foreground rounded-lg',
+              bordered && 'border',
+              paddingStyles[padding],
+              shadowStyles[shadow],
+              hoverable && 'cursor-pointer transition-shadow hover:shadow-md',
+              isInteractive &&
+                'focus-visible:ring-ring/40 cursor-pointer transition-shadow hover:shadow-md focus-visible:ring-1 focus-visible:outline-none',
+              className
+            )}
+            {...props}
+          >
+            {children}
+          </div>
         </CardSurfaceContext.Provider>
       </CardDensityContext.Provider>
     )
@@ -141,7 +148,20 @@ Card.displayName = 'Card'
 
 /** Card header section with title, description, and optional action slots. */
 export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
-  ({ className, title, description, action, actions, density, headingLevel = 3, children, ...props }, ref) => {
+  (
+    {
+      className,
+      title,
+      description,
+      action,
+      actions,
+      density,
+      headingLevel = 3,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const contextDensity = useContext(CardDensityContext)
     const compact = (density ?? contextDensity) === 'compact'
     const Heading = `h${headingLevel}` as const
@@ -159,7 +179,7 @@ export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
           {title && (
             <Heading
               className={cn(
-                'font-semibold leading-none tracking-tight',
+                'leading-none font-semibold tracking-tight',
                 compact ? 'text-sm' : 'text-lg'
               )}
             >
@@ -174,9 +194,7 @@ export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
           {children}
         </div>
         {action && <div className="shrink-0">{action}</div>}
-        {actions && (
-          <div className="flex shrink-0 items-center gap-1">{actions}</div>
-        )}
+        {actions && <div className="flex shrink-0 items-center gap-1">{actions}</div>}
       </div>
     )
   }

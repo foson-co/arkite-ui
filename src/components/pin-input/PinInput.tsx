@@ -11,8 +11,10 @@ import { useLocale } from '../../locale'
 
 export type PinInputSize = 'sm' | 'md' | 'lg'
 
-export interface PinInputProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface PinInputProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   /** Number of characters @default 6 */
   length?: number
   /** Value (controlled) */
@@ -157,8 +159,8 @@ export const PinInput = forwardRef<HTMLDivElement, PinInputProps>(
             onPaste={handlePaste}
             onFocus={(e) => e.target.select()}
             className={cn(
-              'border border-input bg-background text-center font-medium transition-colors',
-              'focus:outline-none focus:ring-1 focus:ring-ring/40 focus:border-ring',
+              'border-input bg-background border text-center font-medium transition-colors',
+              'focus:ring-ring/40 focus:border-ring focus:ring-1 focus:outline-none',
               'disabled:cursor-not-allowed disabled:opacity-50',
               error && 'border-destructive focus:border-destructive focus:ring-destructive/40',
               sizeStyles[size]

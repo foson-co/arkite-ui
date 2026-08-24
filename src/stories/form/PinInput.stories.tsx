@@ -16,7 +16,7 @@ export const Default: StoryFn = () => {
   return (
     <div className="flex flex-col items-center gap-2">
       <PinInput value={value} onChange={setValue} onComplete={setDone} autoFocus />
-      <p className="text-xs text-muted-foreground">
+      <p className="text-muted-foreground text-xs">
         {done ? `Completed: ${done}` : `Value: ${value || '(empty)'}`}
       </p>
     </div>
@@ -25,9 +25,7 @@ export const Default: StoryFn = () => {
 
 export const FourDigits: StoryFn = () => <PinInput length={4} />
 
-export const Alphanumeric: StoryFn = () => (
-  <PinInput type="alphanumeric" length={5} />
-)
+export const Alphanumeric: StoryFn = () => <PinInput type="alphanumeric" length={5} />
 
 export const Masked: StoryFn = () => <PinInput masked />
 
@@ -39,8 +37,6 @@ export const Sizes: StoryFn = () => (
   </div>
 )
 
-export const ErrorState: StoryFn = () => (
-  <PinInput error defaultValue="123456" />
-)
+export const ErrorState: StoryFn = () => <PinInput error defaultValue="123456" />
 
 export const Disabled: StoryFn = () => <PinInput disabled defaultValue="42" />

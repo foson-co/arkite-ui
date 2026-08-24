@@ -3,8 +3,7 @@ import { cn } from '../../utils/cn'
 
 export type RadioSize = 'sm' | 'md' | 'lg'
 
-export interface RadioProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> {
+export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> {
   /** Radio size */
   size?: RadioSize
   /** Label text */
@@ -70,21 +69,16 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
             htmlFor={radioId}
             className={cn(
               'flex shrink-0 cursor-pointer items-center justify-center rounded-full border',
-              'peer-focus-visible:ring-1 peer-focus-visible:ring-ring/40 peer-focus-visible:ring-offset-0',
+              'peer-focus-visible:ring-ring/40 peer-focus-visible:ring-1 peer-focus-visible:ring-offset-0',
               'peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
               'transition-colors duration-200',
               'peer-checked:[&>div]:scale-100',
               styles.outer,
-              error
-                ? 'border-destructive'
-                : 'border-input peer-checked:border-primary'
+              error ? 'border-destructive' : 'border-input peer-checked:border-primary'
             )}
           >
             <div
-              className={cn(
-                'rounded-full bg-primary scale-0 transition-transform',
-                styles.inner
-              )}
+              className={cn('bg-primary scale-0 rounded-full transition-transform', styles.inner)}
             />
           </label>
         </div>
@@ -94,7 +88,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
               <label
                 htmlFor={radioId}
                 className={cn(
-                  'font-medium leading-none cursor-pointer',
+                  'cursor-pointer leading-none font-medium',
                   styles.text,
                   disabled && 'cursor-not-allowed opacity-50'
                 )}
@@ -102,12 +96,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
                 {label}
               </label>
             )}
-            {description && (
-              <p className="text-xs text-muted-foreground">{description}</p>
-            )}
-            {errorMessage && (
-              <p className="text-xs text-destructive">{errorMessage}</p>
-            )}
+            {description && <p className="text-muted-foreground text-xs">{description}</p>}
+            {errorMessage && <p className="text-destructive text-xs">{errorMessage}</p>}
           </div>
         )}
       </div>
@@ -201,7 +191,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
     return (
       <div>
         {group}
-        <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
+        <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>
       </div>
     )
   }
