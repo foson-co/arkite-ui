@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.23.0
+### Minor Changes
+
+- f749464: `Card`: `onClick` alone now grants button semantics. `interactive` is deprecated and ignored.
+  
+  Previously the condition was `interactive && onClick != null`, so a card given only `onClick` fired on click but had no `role`, no `tabIndex`, and no keyboard activation — reachable with a mouse, unreachable with a keyboard (WCAG 2.1.1). The prop's own JSDoc described that broken combination as the supported usage, so following the documentation produced the defect. A scan of 11 fleet projects (631 `<Card>`, 27 with `onClick`) found 11 sites in that state; the 15 sites that already pass `interactive` are unaffected, since the condition was only relaxed.
+  
+  **Action needed for cards that contain their own control.** Granting the card button semantics means a card wrapping its own button or link now yields **two tab stops**. Enter on the inner control still does not double-activate the card, but the extra stop is real. Five sites have this shape and should move the card-level navigation onto an explicit link or button inside the card:
+  
+  - `ark-shield` — `app/AssessmentListPage.tsx`, `admin/TenantListPage.tsx`, `admin/TemplateManagerPage.tsx`, `admin/EventTypeManagerPage.tsx`
+  - `ark-crm` — `apps/platform-admin/src/pages/CompanyListPage.tsx`
+  
+  `interactive` still type-checks and can stay in existing call sites; it will be removed in the next major.
+
+### Patch Changes
+
+- 90cbe15: `Card`: correct the `interactive` JSDoc and cover the `onClick`-without-`interactive` combination with tests. Documentation and tests only — no behavior change.
+  
+  The JSDoc said button semantics apply "with `onClick` present", but the actual condition is `interactive && onClick != null`. Following the documented usage produced a card that fires on click yet has no `role`, no `tabIndex`, and no keyboard activation. The corrected text states the requirement and flags the gap.
+- 3301ff6: Internal lint hygiene: clear the 9 standing ESLint warnings and gate on `--max-warnings 0`. No API, prop, or behavior change.
+  
+  Shipped output does change in one respect, so this is a patch rather than an empty changeset: six source files were brought up to the repo's current Prettier config, and `prettier-plugin-tailwindcss` reordered utility classes inside 30 `className` strings. Verified equivalent — every reordered string produces an identical result through `twMerge`, and no class was added, removed, or altered. Rendering is unaffected; only consumers asserting on exact `className` strings would see a difference.
+- 04c8fda: Repo-wide Prettier pass plus a CI format gate. No API, prop, or behavior change.
+  
+  Shipped output changes only in Tailwind utility-class ordering, which `prettier-plugin-tailwindcss` normalizes. Verified: across the whole bundle, every one of the 4408 string literals is identical after `twMerge` normalization with matching counts — the sole remaining difference is the chunk filename hash. No class was added, removed, or altered, so rendering is unaffected; only consumers asserting on exact `className` strings would see a difference.
+
 ## 0.22.0
 ### Minor Changes
 
