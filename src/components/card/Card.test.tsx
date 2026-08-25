@@ -211,28 +211,24 @@ describe('Card interactive', () => {
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
-  // ── `onClick` without `interactive` ────────────────────────────────────
-  // These lock in TODAY's behaviour, which is a known accessibility gap
-  // (issue #24; fleet impact measured in #26). They are not an endorsement:
-  // the point is that the combination had NO test at all, so changing it —
-  // e.g. adopting direction A, "onClick alone grants button semantics" —
-  // would have been silent. If A lands, these three must fail and be
-  // rewritten to assert the new contract. That is the intended alarm.
-  it('onClick without interactive: click fires but no button semantics', async () => {
+  // ── `onClick` alone grants button semantics (v0.23, issue #24 / #26) ──
+  // These replace three tests that locked in the previous behaviour, where a
+  // card given only `onClick` was clickable but had no keyboard path. Those
+  // tests existed precisely so this change could not happen silently — they
+  // failed when the condition was relaxed, which is what they were for.
+  it('onClick alone gives button semantics without interactive', async () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
-    render(<Card onClick={onClick}>Clickable but not reachable</Card>)
+    render(<Card onClick={onClick}>Open item</Card>)
 
-    const card = screen.getByText('Clickable but not reachable')
-    expect(screen.queryByRole('button')).not.toBeInTheDocument()
-    expect(card).not.toHaveAttribute('role')
-    expect(card).not.toHaveAttribute('tabindex')
+    const card = screen.getByRole('button', { name: 'Open item' })
+    expect(card).toHaveAttribute('tabindex', '0')
 
     await user.click(card)
     expect(onClick).toHaveBeenCalledTimes(1)
   })
 
-  it('onClick without interactive: not reachable by keyboard (WCAG 2.1.1 gap)', async () => {
+  it('onClick alone is reachable by keyboard', async () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
     render(
@@ -245,19 +241,74 @@ describe('Card interactive', () => {
 
     screen.getByRole('button', { name: 'before' }).focus()
     await user.tab()
-    // Tab skips straight past the card — there is no stop on it
-    expect(screen.getByRole('button', { name: 'after' })).toHaveFocus()
-    expect(onClick).not.toHaveBeenCalled()
+    expect(screen.getByRole('button', { name: 'Card body' })).toHaveFocus()
+
+    await user.keyboard('{Enter} ')
+    expect(onClick).toHaveBeenCalledTimes(2)
   })
 
-  it('onClick without interactive: Enter/Space on the card does nothing', async () => {
+  it('passing interactive changes nothing (deprecated, ignored)', async () => {
     const user = userEvent.setup()
-    const onClick = vi.fn()
-    render(<Card onClick={onClick}>Card body</Card>)
+    const withProp = vi.fn()
+    const withoutProp = vi.fn()
+    const { rerender } = render(
+      <Card interactive onClick={withProp}>
+        Same either way
+      </Card>
+    )
+    const a = screen.getByRole('button', { name: 'Same either way' })
+    const aAttrs = [a.getAttribute('role'), a.getAttribute('tabindex'), a.className]
+    await user.click(a)
 
-    const card = screen.getByText('Card body')
-    card.focus() // no tabIndex, so this is a no-op on a plain div
-    await user.keyboard('{Enter} ')
-    expect(onClick).not.toHaveBeenCalled()
+    rerender(<Card onClick={withoutProp}>Same either way</Card>)
+    const b = screen.getByRole('button', { name: 'Same either way' })
+    expect([b.getAttribute('role'), b.getAttribute('tabindex'), b.className]).toEqual(aAttrs)
+    await user.click(b)
+
+    expect(withProp).toHaveBeenCalledTimes(1)
+    expect(withoutProp).toHaveBeenCalledTimes(1)
+  })
+
+  it('interactive without onClick still stays a plain div', () => {
+    render(<Card interactive>Static</Card>)
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  // The one regression risk of granting semantics from `onClick`: a card that
+  // already contains its own control now yields TWO tab stops. Four ark-shield
+  // sites and one ark-crm site have this shape (issue #26). Enter still does
+  // not double-activate — that is covered above — but the extra stop is real,
+  // and consumers whose card wraps a control should move the navigation onto
+  // an explicit link/button inside the card instead.
+  it('a card containing its own control yields two tab stops', async () => {
+    const user = userEvent.setup()
+    const onCard = vi.fn()
+    const onInner = vi.fn()
+    render(
+      <>
+        <button type="button">before</button>
+        <Card aria-label="Item card" onClick={onCard}>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onInner()
+            }}
+          >
+            Inner
+          </button>
+        </Card>
+      </>
+    )
+
+    screen.getByRole('button', { name: 'before' }).focus()
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Item card' })).toHaveFocus()
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Inner' })).toHaveFocus()
+
+    await user.keyboard('{Enter}')
+    expect(onInner).toHaveBeenCalledTimes(1)
+    expect(onCard).not.toHaveBeenCalled()
   })
 })
