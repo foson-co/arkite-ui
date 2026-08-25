@@ -131,7 +131,7 @@ export const Interactive: Story = {
   render: () => (
     <div className="flex gap-4">
       {['Project A', 'Project B'].map((name) => (
-        <Card key={name} interactive onClick={() => alert(`Open ${name}`)} className="w-56">
+        <Card key={name} onClick={() => alert(`Open ${name}`)} className="w-56">
           <CardContent>
             <p className="font-medium">{name}</p>
             <p className="text-muted-foreground text-sm">

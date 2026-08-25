@@ -20,19 +20,18 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   /** Card border */
   bordered?: boolean
   /**
-   * Whole-card clickable. **Required alongside `onClick`** to get button
-   * semantics (`role="button"`, `tabIndex`, Enter/Space activation) plus
-   * hover/focus styling — the condition is `interactive && onClick != null`.
+   * @deprecated No longer read — `onClick` alone now grants button semantics.
    *
-   * ⚠️ **`onClick` on its own is not enough.** Without `interactive` the card
-   * stays a plain `<div>`: it still fires on click, but has no `role`, no
-   * `tabIndex`, and no keyboard activation — mouse users can reach it and
-   * keyboard users cannot (WCAG 2.1.1). See issue #24 / #26; a fleet scan
-   * found 11 such sites. Always pass both.
+   * Until v0.23 the condition was `interactive && onClick != null`, so a card
+   * given only `onClick` fired on click yet had no `role`, no `tabIndex`, and
+   * no keyboard activation: reachable with a mouse, unreachable with a
+   * keyboard (WCAG 2.1.1). A fleet scan found 11 such sites, and the prop's
+   * own documentation described the broken combination as the supported one.
+   * Rather than keep a footgun that the docs actively recommended, the
+   * keyboard path now follows `onClick`.
    *
-   * Stays a `<div>` so the card can contain its own interactive children —
-   * Enter/Space only activates when the card itself is focused. This is the
-   * supported alternative to wrapping a card in a raw `<button>`.
+   * Passing it is harmless and changes nothing. It is kept so existing call
+   * sites keep compiling and will be removed in the next major.
    */
   interactive?: boolean
   /** Content density — `compact` tightens header/content/footer padding and typography for dashboard widgets. Inherited by CardHeader/CardContent/CardFooter. */
@@ -100,7 +99,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       shadow = 'sm',
       hoverable = false,
       bordered = true,
-      interactive = false,
+      // 仍要解構，否則會落進 ...props 被灑到 <div> 上（React 會對未知的
+      // interactive="false" 屬性告警）。`_` 前綴標明刻意不使用。
+      interactive: _interactive,
       density = 'default',
       children,
       onClick,
@@ -109,17 +110,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
-    const isInteractive = interactive && onClick != null
+    const isInteractive = onClick != null
     return (
       <CardDensityContext.Provider value={density}>
         <CardSurfaceContext.Provider value={true}>
           {/* role / tabIndex / Enter-Space 三者是跟著 isInteractive 一起上的，
-              規則看不出這個連動（它只看到 onClick 掛在 div 上）。
-              ⚠️ 已知缺口，非本次 lint 整理的範圍：只傳 onClick 而不傳
-              `interactive` 時，點擊仍會觸發但沒有鍵盤路徑。那個組合沒有文件、
-              沒有測試（prop 說明寫的是「with onClick present, adds button
-              semantics」），要不要收斂成「無 interactive 就不掛 onClick」是
-              公開 API 的行為決定，應另案處理。 */}
+              而 isInteractive 現在就是「有沒有 onClick」。規則看不出這個連動
+              ——它只看到 onClick 掛在 div 上，看不到同一個條件也決定了 role
+              與鍵盤處理。 */}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
             ref={ref}
