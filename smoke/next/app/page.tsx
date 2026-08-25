@@ -10,8 +10,7 @@ export default function Page() {
     <main className="mx-auto max-w-2xl p-8">
       <h1 className="text-2xl font-semibold">arkite-ui Next.js smoke</h1>
       <p className="mt-2 text-sm">
-        Server-rendered token value:{' '}
-        <code data-testid="server-token">{colors.light.primary}</code>
+        Server-rendered token value: <code data-testid="server-token">{colors.light.primary}</code>
       </p>
       <Demo />
     </main>

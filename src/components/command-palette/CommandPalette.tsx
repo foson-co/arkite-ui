@@ -22,7 +22,7 @@ export const Command = forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      'flex h-full w-full flex-col overflow-hidden rounded-lg bg-card text-card-foreground',
+      'bg-card text-card-foreground flex h-full w-full flex-col overflow-hidden rounded-lg',
       className
     )}
     {...props}
@@ -39,7 +39,10 @@ export const CommandInput = forwardRef<
 >(({ className, ...props }, ref) => (
   <div className="flex items-center border-b px-3">
     <svg
-      width="15" height="15" viewBox="0 0 15 15" fill="none"
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
       className="mr-2 h-4 w-4 shrink-0 opacity-50"
     >
       <path
@@ -71,7 +74,7 @@ export const CommandList = forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn('max-h-[300px] overflow-y-auto overflow-x-hidden', className)}
+    className={cn('max-h-[300px] overflow-x-hidden overflow-y-auto', className)}
     {...props}
   />
 ))
@@ -86,7 +89,7 @@ export const CommandEmpty = forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Empty
     ref={ref}
-    className={cn('py-6 text-center text-sm text-muted-foreground', className)}
+    className={cn('text-muted-foreground py-6 text-center text-sm', className)}
     {...props}
   />
 ))
@@ -102,7 +105,7 @@ export const CommandGroup = forwardRef<
   <CommandPrimitive.Group
     ref={ref}
     className={cn(
-      'overflow-hidden p-1 text-foreground',
+      'text-foreground overflow-hidden p-1',
       '[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5',
       '[&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-semibold',
       '[&_[cmdk-group-heading]]:text-muted-foreground',
@@ -123,7 +126,7 @@ export const CommandSeparator = forwardRef<
   <CommandPrimitive.Separator
     ref={ref}
     role="none"
-    className={cn('-mx-1 h-px bg-border', className)}
+    className={cn('bg-border -mx-1 h-px', className)}
     {...props}
   />
 ))
@@ -139,7 +142,7 @@ export const CommandItem = forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none',
+      'relative flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none select-none',
       'data-[selected=true]:bg-secondary data-[selected=true]:text-secondary-foreground',
       'data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50',
       className
@@ -163,7 +166,7 @@ export function CommandShortcut({
         ? children.split('+').map((key, i) => (
             <kbd
               key={i}
-              className="inline-flex min-w-5 items-center justify-center rounded border border-border bg-muted px-1 py-0.5 font-sans text-2xs font-medium leading-none text-muted-foreground shadow-xs select-none"
+              className="border-border bg-muted text-2xs text-muted-foreground inline-flex min-w-5 items-center justify-center rounded border px-1 py-0.5 font-sans leading-none font-medium shadow-xs select-none"
             >
               {key.trim()}
             </kbd>
@@ -241,26 +244,24 @@ export const CommandDialog = forwardRef<HTMLDivElement, CommandDialogProps>(
         {/* Backdrop */}
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events -- backdrop dismiss handled by Escape key listener */}
         <div
-          className="fixed inset-0 bg-black/50 animate-in fade-in-0"
+          className="animate-in fade-in-0 fixed inset-0 bg-black/50"
           onClick={closeOnBackdropClick ? requestClose : undefined}
         />
         {/* Dialog */}
         <div
           ref={(node) => {
-            (dialogRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+            ;(dialogRef as React.MutableRefObject<HTMLDivElement | null>).current = node
             if (typeof ref === 'function') ref(node)
             else if (ref) ref.current = node
           }}
           role="dialog"
           aria-label={locale.commandPalette.label}
           className={cn(
-            'fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 animate-in fade-in-0 zoom-in-95',
+            'animate-in fade-in-0 zoom-in-95 fixed top-1/2 left-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2',
             className
           )}
         >
-          <Command className="rounded-lg border shadow-2xl">
-            {children}
-          </Command>
+          <Command className="rounded-lg border shadow-2xl">{children}</Command>
         </div>
       </div>
     )

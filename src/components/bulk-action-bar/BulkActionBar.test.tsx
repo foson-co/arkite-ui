@@ -48,24 +48,17 @@ describe('BulkActionBar', () => {
   })
 
   it('renders custom left slot', () => {
-    render(
-      <BulkActionBar selectedCount={7} left={<span>Custom: 7 users</span>} />
-    )
+    render(<BulkActionBar selectedCount={7} left={<span>Custom: 7 users</span>} />)
     expect(screen.getByText('Custom: 7 users')).toBeInTheDocument()
   })
 
   it('renders custom right slot', () => {
-    render(
-      <BulkActionBar selectedCount={2} right={<button>Clear All</button>} />
-    )
+    render(<BulkActionBar selectedCount={2} right={<button>Clear All</button>} />)
     expect(screen.getByText('Clear All')).toBeInTheDocument()
   })
 
   it('has correct aria-label', () => {
     render(<BulkActionBar selectedCount={4} />)
-    expect(screen.getByRole('toolbar')).toHaveAttribute(
-      'aria-label',
-      '4 items selected'
-    )
+    expect(screen.getByRole('toolbar')).toHaveAttribute('aria-label', '4 items selected')
   })
 })

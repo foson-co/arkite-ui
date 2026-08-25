@@ -33,7 +33,7 @@ stages:
 
 default:
   tags:
-    - openhands-box  # check/test/build 走共享算力機；deploy 各自覆寫 Ark-Stage
+    - openhands-box # check/test/build 走共享算力機；deploy 各自覆寫 Ark-Stage
 
 # -------------------------------------------------------------------
 # Shared Templates
@@ -85,6 +85,26 @@ test:
       coverage_report:
         coverage_format: cobertura
         path: coverage/cobertura-coverage.xml
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: on_success
+
+# 格式閘門（issue #25）
+#
+# 為什麼需要它：本 repo 曾累積 238 個不合格式的檔案，而 .prettierrc.json
+# 五個月沒變過——**不是設定漂移**。成因是既有的兩層都只看得到「被碰過的
+# 檔案」：lint-staged 只跑 staged 的，format script 只在有人手動執行時跑。
+# 沒被碰過的檔案永遠不會被發現，所以會無聲累積。
+#
+# 刻意跑 `prettier --check .`（全 repo）而不列舉 glob：列舉會與 lint-staged
+# 和 format script 各自漂開——那正是原本的病因之一（lint-staged 沒有 .json
+# 而 format script 有）。涵蓋範圍的單一事實來源是 .prettierignore。
+format:
+  stage: check
+  <<: *node-setup
+  script:
+    - pnpm run format:check
   rules:
     - if: $CI_COMMIT_TAG
       when: never
@@ -328,11 +348,11 @@ size:
 # allow_failure 遮掉**。若是上游誤報，先開 arkite-frontend issue。
 frontend-compliance:
   stage: check
-  image: node:22  # 腳本需要 node + git
+  image: node:22 # 腳本需要 node + git
   variables:
-    ARKITE_FRONTEND_TAG: "scanner-2026-08-24-2"  # 只為可讀
+    ARKITE_FRONTEND_TAG: 'scanner-2026-08-24-2' # 只為可讀
     # 這是 git commit SHA、不是密鑰；detect-secrets 只看得到 40 位 hex 高熵字串
-    ARKITE_FRONTEND_SHA: "a3783f6b63bfbeea72f8b0ca6547914751e18688"  # pragma: allowlist secret
+    ARKITE_FRONTEND_SHA: 'a3783f6b63bfbeea72f8b0ca6547914751e18688' # pragma: allowlist secret
   script:
     # 按 SHA 淺層抓取（GitLab 支援 fetch 任意 commit）；不用 clone --branch <tag>，
     # 那只釘得住 tag 名、釘不住內容。
@@ -399,7 +419,7 @@ publish:gitlab:
   dependencies:
     - build
   variables:
-    HUSKY: "0"
+    HUSKY: '0'
   before_script:
     - corepack enable && corepack prepare --activate
   script:
@@ -434,7 +454,7 @@ publish:npm:
   dependencies:
     - build
   variables:
-    HUSKY: "0"
+    HUSKY: '0'
   before_script:
     - corepack enable && corepack prepare --activate
   script:

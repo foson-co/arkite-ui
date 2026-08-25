@@ -15,31 +15,47 @@ const fileTree: TreeNode[] = [
   {
     key: 'src',
     label: 'src',
-    icon: <FolderOpen className="h-4 w-4 text-muted-foreground" />,
+    icon: <FolderOpen className="text-muted-foreground h-4 w-4" />,
     children: [
       {
         key: 'components',
         label: 'components',
-        icon: <FolderOpen className="h-4 w-4 text-muted-foreground" />,
+        icon: <FolderOpen className="text-muted-foreground h-4 w-4" />,
         children: [
-          { key: 'button', label: 'Button.tsx', icon: <File className="h-4 w-4 text-muted-foreground" /> },
-          { key: 'input', label: 'Input.tsx', icon: <File className="h-4 w-4 text-muted-foreground" /> },
-          { key: 'modal', label: 'Modal.tsx', icon: <File className="h-4 w-4 text-muted-foreground" /> },
+          {
+            key: 'button',
+            label: 'Button.tsx',
+            icon: <File className="text-muted-foreground h-4 w-4" />,
+          },
+          {
+            key: 'input',
+            label: 'Input.tsx',
+            icon: <File className="text-muted-foreground h-4 w-4" />,
+          },
+          {
+            key: 'modal',
+            label: 'Modal.tsx',
+            icon: <File className="text-muted-foreground h-4 w-4" />,
+          },
         ],
       },
       {
         key: 'utils',
         label: 'utils',
-        icon: <FolderOpen className="h-4 w-4 text-muted-foreground" />,
+        icon: <FolderOpen className="text-muted-foreground h-4 w-4" />,
         children: [
-          { key: 'cn', label: 'cn.ts', icon: <File className="h-4 w-4 text-muted-foreground" /> },
+          { key: 'cn', label: 'cn.ts', icon: <File className="text-muted-foreground h-4 w-4" /> },
         ],
       },
-      { key: 'index', label: 'index.ts', icon: <File className="h-4 w-4 text-muted-foreground" /> },
+      { key: 'index', label: 'index.ts', icon: <File className="text-muted-foreground h-4 w-4" /> },
     ],
   },
-  { key: 'package', label: 'package.json', icon: <File className="h-4 w-4 text-muted-foreground" /> },
-  { key: 'readme', label: 'README.md', icon: <File className="h-4 w-4 text-muted-foreground" /> },
+  {
+    key: 'package',
+    label: 'package.json',
+    icon: <File className="text-muted-foreground h-4 w-4" />,
+  },
+  { key: 'readme', label: 'README.md', icon: <File className="text-muted-foreground h-4 w-4" /> },
 ]
 
 export const Default: StoryFn = () => (
@@ -58,7 +74,7 @@ export const WithSelection: StoryFn = () => {
         selectedKey={selected}
         onSelect={(key) => setSelected(key)}
       />
-      <p className="mt-3 text-xs text-muted-foreground">Selected: {selected ?? 'none'}</p>
+      <p className="text-muted-foreground mt-3 text-xs">Selected: {selected ?? 'none'}</p>
     </div>
   )
 }
@@ -103,7 +119,7 @@ export const Checkable: StoryFn = () => {
         onSelectionChange={setChecked}
         defaultExpandedKeys={['admin', 'users', 'settings']}
       />
-      <p className="mt-3 text-xs text-muted-foreground">
+      <p className="text-muted-foreground mt-3 text-xs">
         Checked: {checked.length > 0 ? checked.join(', ') : 'none'}
       </p>
     </div>

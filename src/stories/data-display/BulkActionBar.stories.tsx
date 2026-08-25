@@ -84,10 +84,7 @@ function WithTableDemo() {
         pagination={false}
       />
 
-      <BulkActionBar
-        selectedCount={selected.size}
-        onClose={() => setSelected(new Set())}
-      >
+      <BulkActionBar selectedCount={selected.size} onClose={() => setSelected(new Set())}>
         <Button size="sm" variant="secondary">
           Export
         </Button>

@@ -1,12 +1,7 @@
 import type { Preview } from '@storybook/react-vite'
 import { create } from 'storybook/theming'
 import '../src/styles/index.css'
-import {
-  themePresets,
-  applyTheme,
-  applyDarkTheme,
-  type ThemePresetName,
-} from '../src/theme'
+import { themePresets, applyTheme, applyDarkTheme, type ThemePresetName } from '../src/theme'
 
 const preview: Preview = {
   globalTypes: {

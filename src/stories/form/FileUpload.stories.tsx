@@ -28,11 +28,7 @@ export const MultipleFiles: Story = {
 }
 
 export const ButtonVariant: Story = {
-  render: () => (
-    <FileUploadButton accept="image/*">
-      Upload Image
-    </FileUploadButton>
-  ),
+  render: () => <FileUploadButton accept="image/*">Upload Image</FileUploadButton>,
 }
 
 export const Disabled: Story = {
@@ -65,13 +61,15 @@ const FileTriggerDemo = () => {
       <FileTrigger accept="image/*" onChange={([file]) => setName(file.name)}>
         <button
           type="button"
-          className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-dashed border-muted-foreground/40 text-xs text-muted-foreground hover:border-muted-foreground"
+          className="border-muted-foreground/40 text-muted-foreground hover:border-muted-foreground flex h-16 w-16 items-center justify-center rounded-full border-2 border-dashed text-xs"
         >
           {name ? '✓' : '照片'}
         </button>
       </FileTrigger>
-      <p className="text-sm text-muted-foreground">
-        {name ? `Picked: ${name}` : 'Click the avatar to pick an image — no dropzone chrome, no wrapper element.'}
+      <p className="text-muted-foreground text-sm">
+        {name
+          ? `Picked: ${name}`
+          : 'Click the avatar to pick an image — no dropzone chrome, no wrapper element.'}
       </p>
     </div>
   )

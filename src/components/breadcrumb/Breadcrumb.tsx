@@ -36,27 +36,19 @@ export interface BreadcrumbProps extends HTMLAttributes<HTMLElement> {
    * non-interactive rendering. Breaking change in v1.0: the old
    * `(item, isLast) => ReactNode` signature is no longer supported.
    */
-  renderLink?: (props: { href: string; children: ReactNode; className?: string; active?: boolean }) => ReactNode
+  renderLink?: (props: {
+    href: string
+    children: ReactNode
+    className?: string
+    active?: boolean
+  }) => ReactNode
 }
 
 /** Navigation breadcrumb trail with collapsible items, custom separators, and link rendering. */
 export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
-  (
-    {
-      className,
-      items,
-      separator,
-      showHomeIcon = false,
-      maxItems,
-      renderLink,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, items, separator, showHomeIcon = false, maxItems, renderLink, ...props }, ref) => {
     const locale = useLocale()
-    const separatorElement = separator || (
-      <ChevronRight className="h-4 w-4 text-muted-foreground" />
-    )
+    const separatorElement = separator || <ChevronRight className="text-muted-foreground h-4 w-4" />
 
     // Handle collapsed items
     let displayItems = items
@@ -72,9 +64,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
     const renderItem = (item: BreadcrumbItemData, index: number, isLast: boolean) => {
       const content = (
         <>
-          {index === 0 && showHomeIcon && !item.icon && (
-            <Home className="h-4 w-4" />
-          )}
+          {index === 0 && showHomeIcon && !item.icon && <Home className="h-4 w-4" />}
           {item.icon}
           <span>{item.label}</span>
         </>
@@ -99,7 +89,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
           <span
             className={cn(
               'inline-flex items-center gap-1.5',
-              isLast ? 'font-medium text-foreground' : 'text-muted-foreground'
+              isLast ? 'text-foreground font-medium' : 'text-muted-foreground'
             )}
             aria-current={isLast ? 'page' : undefined}
           >
@@ -111,7 +101,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       return (
         <a
           href={item.href}
-          className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
+          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
         >
           {content}
         </a>
@@ -155,9 +145,7 @@ export type BreadcrumbRootProps = HTMLAttributes<HTMLElement>
 export const BreadcrumbRoot = forwardRef<HTMLElement, BreadcrumbRootProps>(
   ({ className, ...props }, ref) => {
     const locale = useLocale()
-    return (
-      <nav ref={ref} aria-label={locale.breadcrumb.label} className={className} {...props} />
-    )
+    return <nav ref={ref} aria-label={locale.breadcrumb.label} className={className} {...props} />
   }
 )
 
@@ -168,11 +156,7 @@ export type BreadcrumbListProps = HTMLAttributes<HTMLOListElement>
 /** Ordered list container for breadcrumb items. */
 export const BreadcrumbList = forwardRef<HTMLOListElement, BreadcrumbListProps>(
   ({ className, ...props }, ref) => (
-    <ol
-      ref={ref}
-      className={cn('flex items-center gap-2 text-sm', className)}
-      {...props}
-    />
+    <ol ref={ref} className={cn('flex items-center gap-2 text-sm', className)} {...props} />
   )
 )
 
@@ -188,11 +172,7 @@ export type BreadcrumbItemProps = HTMLAttributes<HTMLLIElement>
  */
 export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
   ({ className, ...props }, ref) => (
-    <li
-      ref={ref}
-      className={cn('flex items-center gap-2', className)}
-      {...props}
-    />
+    <li ref={ref} className={cn('flex items-center gap-2', className)} {...props} />
   )
 )
 
@@ -219,10 +199,7 @@ export const BreadcrumbLink = forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>
     <a
       ref={ref}
       href={href}
-      className={cn(
-        'text-muted-foreground hover:text-foreground transition-colors',
-        className
-      )}
+      className={cn('text-muted-foreground hover:text-foreground transition-colors', className)}
       {...props}
     >
       {children}
@@ -242,7 +219,7 @@ export const BreadcrumbPage = forwardRef<HTMLSpanElement, BreadcrumbPageProps>(
       role="link"
       aria-current="page"
       aria-disabled="true"
-      className={cn('font-medium text-foreground', className)}
+      className={cn('text-foreground font-medium', className)}
       {...props}
     />
   )

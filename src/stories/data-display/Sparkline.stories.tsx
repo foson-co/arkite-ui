@@ -49,7 +49,7 @@ export const InContext: Story = {
         <div key={row.name} className="flex items-center justify-between p-3">
           <span className="text-sm font-medium">{row.name}</span>
           <Sparkline data={row.data} aria-label={`${row.name} trend`} />
-          <span className="text-sm text-muted-foreground">{row.price}</span>
+          <span className="text-muted-foreground text-sm">{row.price}</span>
         </div>
       ))}
     </div>
@@ -72,7 +72,7 @@ export const Placeholder: Story = {
       <div className="space-y-1 text-center">
         <Sparkline
           data={[]}
-          placeholder={<span className="text-xs text-muted-foreground">N/A</span>}
+          placeholder={<span className="text-muted-foreground text-xs">N/A</span>}
         />
         <p className="text-2xs text-muted-foreground">custom node</p>
       </div>

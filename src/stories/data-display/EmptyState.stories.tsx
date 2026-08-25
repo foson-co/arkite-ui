@@ -70,7 +70,11 @@ export const Page403: Story = {
       icon={<ShieldX className="h-16 w-16" />}
       title="403 — 沒有權限"
       description="你沒有存取此頁面的權限，請聯繫管理員。"
-      action={<Button variant="secondary" onClick={() => window.history.back()}>返回</Button>}
+      action={
+        <Button variant="secondary" onClick={() => window.history.back()}>
+          返回
+        </Button>
+      }
     />
   ),
 }

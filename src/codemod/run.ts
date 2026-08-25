@@ -16,13 +16,7 @@ import { fileURLToPath } from 'node:url'
 
 import { Project, ts } from 'ts-morph'
 
-import {
-  applyRulesToSourceFile,
-  fromErrorRules,
-  rules,
-  TODO_MARKER,
-  type RuleHit,
-} from './rules'
+import { applyRulesToSourceFile, fromErrorRules, rules, TODO_MARKER, type RuleHit } from './rules'
 
 /** 具名規則集:v1(破壞性遷移,預設)、from-error(選用的 toast.fromError 採用) */
 export const RULE_SETS = {
@@ -67,11 +61,7 @@ function collectSourceFilePaths(dir: string, acc: string[]): void {
     if (entry.isDirectory()) {
       if (entry.name.startsWith('.') || IGNORED_DIRS.has(entry.name)) continue
       collectSourceFilePaths(path.join(dir, entry.name), acc)
-    } else if (
-      entry.isFile() &&
-      /\.(ts|tsx)$/.test(entry.name) &&
-      !entry.name.endsWith('.d.ts')
-    ) {
+    } else if (entry.isFile() && /\.(ts|tsx)$/.test(entry.name) && !entry.name.endsWith('.d.ts')) {
       acc.push(path.join(dir, entry.name))
     }
   }
@@ -85,9 +75,7 @@ function createProject(target: string): Project {
         tsConfigFilePath: tsconfigPath,
         skipFileDependencyResolution: true,
       })
-      const hasFiles = project
-        .getSourceFiles()
-        .some((sf) => !sf.getFilePath().endsWith('.d.ts'))
+      const hasFiles = project.getSourceFiles().some((sf) => !sf.getFilePath().endsWith('.d.ts'))
       if (hasFiles) return project
     } catch {
       // tsconfig 壞掉或載入失敗 → 改走 glob
@@ -151,7 +139,10 @@ export function runCodemod(
         if (!dryRun) sf.saveSync()
       }
     } catch (err) {
-      errors.push({ filePath: sf.getFilePath(), message: err instanceof Error ? err.message : String(err) })
+      errors.push({
+        filePath: sf.getFilePath(),
+        message: err instanceof Error ? err.message : String(err),
+      })
     }
   }
 
@@ -238,7 +229,7 @@ function main(): void {
     formatReport(report)
     if (ruleSetName === 'from-error' && report.totalChanges > 0) {
       write('提醒:toast.fromError 需要 app 啟動處註冊解析器(一次):')
-      write("  toast.configure({ formatError: getErrorMessage })")
+      write('  toast.configure({ formatError: getErrorMessage })')
       write()
     }
   } catch (err) {

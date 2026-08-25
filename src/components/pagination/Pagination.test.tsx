@@ -11,7 +11,13 @@ describe('Pagination', () => {
 
   it('renders item range when totalItems and pageSize provided', () => {
     render(
-      <Pagination currentPage={2} totalPages={10} onPageChange={vi.fn()} totalItems={100} pageSize={10} />
+      <Pagination
+        currentPage={2}
+        totalPages={10}
+        onPageChange={vi.fn()}
+        totalItems={100}
+        pageSize={10}
+      />
     )
     expect(screen.getByText('11-20 of 100')).toBeInTheDocument()
   })
@@ -67,9 +73,7 @@ describe('Pagination', () => {
     render(<Pagination currentPage={1} totalPages={5} onPageChange={vi.fn()} mode="compact" />)
     expect(screen.queryByLabelText('First page')).not.toBeInTheDocument()
     expect(screen.queryByLabelText('Last page')).not.toBeInTheDocument()
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('`mode` is deprecated')
-    )
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('`mode` is deprecated'))
     warnSpy.mockRestore()
   })
 

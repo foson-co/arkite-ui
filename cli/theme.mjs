@@ -88,7 +88,10 @@ export async function runTheme(args, cwd = process.cwd()) {
   // from a checkout — and without needing react on the resolution path.
   const entry = join(here, '../dist/theme.js')
   if (!existsSync(entry)) {
-    fail('The package build is missing (dist/theme.js).', 'Run `pnpm build` first if you are working in the repo.')
+    fail(
+      'The package build is missing (dist/theme.js).',
+      'Run `pnpm build` first if you are working in the repo.'
+    )
   }
   const { parseThemeFile, themeFileToCSS, ThemeFileError } = await import(entry)
 

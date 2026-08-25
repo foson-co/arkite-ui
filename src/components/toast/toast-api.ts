@@ -4,10 +4,7 @@ import type { ToastData } from './Toast'
 
 export type ToastOptions = Partial<Omit<ToastData, 'id' | 'title' | 'variant'>>
 
-function show(
-  title: ReactNode,
-  options?: Partial<Omit<ToastData, 'id' | 'title'>>
-): string {
+function show(title: ReactNode, options?: Partial<Omit<ToastData, 'id' | 'title'>>): string {
   return useToastStore.getState().addToast({
     variant: 'default',
     title,

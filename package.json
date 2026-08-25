@@ -86,7 +86,8 @@
     "test:coverage": "vitest run --project unit --coverage",
     "lint": "eslint src/ --max-warnings 0",
     "lint:fix": "eslint src/ --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "codemod:v1": "tsx src/codemod/run.ts",
     "codemod:from-error": "tsx src/codemod/run.ts --rules=from-error",
@@ -245,10 +246,9 @@
   "homepage": "https://ui.foson.co",
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
-      "eslint --fix --max-warnings 0",
-      "prettier --write"
+      "eslint --fix --max-warnings 0"
     ],
-    "src/**/*.css": [
+    "*.{ts,tsx,js,jsx,mjs,cjs,css,json,md,mdx,html,yml,yaml}": [
       "prettier --write"
     ]
   },

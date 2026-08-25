@@ -19,7 +19,7 @@ changes triggers a confirmation, and a successful save lands as a toast.
 - **Drawer, not Modal**: editing happens next to the detail view, so the user
   keeps the record in sight for reference. Reach for `Modal` when the task
   should interrupt and take over (confirmations, short one-shot forms).
-- **One close gate**: the drawer's `onClose` fires for X, Escape, *and*
+- **One close gate**: the drawer's `onClose` fires for X, Escape, _and_
   backdrop clicks, and Cancel calls the same function — so a single
   `requestClose` implements the dirty guard and no close path can bypass it.
   Because the guard makes closing safe, `closeOnBackdropClick` can stay on;

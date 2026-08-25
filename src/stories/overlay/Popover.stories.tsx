@@ -19,10 +19,8 @@ export const Default: StoryFn = () => (
     <PopoverContent className="w-80">
       <div className="grid gap-4">
         <div className="space-y-2">
-          <h4 className="font-medium leading-none">Dimensions</h4>
-          <p className="text-sm text-muted-foreground">
-            Set the dimensions for the layer.
-          </p>
+          <h4 className="leading-none font-medium">Dimensions</h4>
+          <p className="text-muted-foreground text-sm">Set the dimensions for the layer.</p>
         </div>
         <div className="grid gap-2">
           <div className="grid grid-cols-3 items-center gap-4">
@@ -57,13 +55,13 @@ export const WithClose: StoryFn = () => (
     </PopoverTrigger>
     <PopoverContent className="w-72">
       <div className="space-y-3">
-        <h4 className="font-medium text-sm">Notifications</h4>
-        <p className="text-xs text-muted-foreground">
-          Choose what you want to be notified about.
-        </p>
+        <h4 className="text-sm font-medium">Notifications</h4>
+        <p className="text-muted-foreground text-xs">Choose what you want to be notified about.</p>
         <div className="flex justify-end">
           <PopoverClose asChild>
-            <Button size="sm" variant="primary">Done</Button>
+            <Button size="sm" variant="primary">
+              Done
+            </Button>
           </PopoverClose>
         </div>
       </div>

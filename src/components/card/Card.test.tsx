@@ -68,7 +68,9 @@ describe('Card density', () => {
   it('subcomponent density prop overrides the Card context', () => {
     render(
       <Card density="compact">
-        <CardContent density="default" data-testid="content">Body</CardContent>
+        <CardContent density="default" data-testid="content">
+          Body
+        </CardContent>
       </Card>
     )
     expect(screen.getByTestId('content')).toHaveClass('p-4', '[&:not(:first-child)]:pt-0')
@@ -172,7 +174,11 @@ describe('Card interactive', () => {
   it('adds button semantics and activates on click and Enter/Space', async () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
-    render(<Card interactive onClick={onClick}>Open item</Card>)
+    render(
+      <Card interactive onClick={onClick}>
+        Open item
+      </Card>
+    )
     const card = screen.getByRole('button', { name: 'Open item' })
     expect(card).toHaveAttribute('tabindex', '0')
     await user.click(card)
@@ -187,7 +193,9 @@ describe('Card interactive', () => {
     const onInnerClick = vi.fn()
     render(
       <Card interactive aria-label="Item card" onClick={onCardClick}>
-        <button type="button" onClick={onInnerClick}>Inner</button>
+        <button type="button" onClick={onInnerClick}>
+          Inner
+        </button>
       </Card>
     )
     screen.getByRole('button', { name: 'Inner' }).focus()
@@ -195,9 +203,7 @@ describe('Card interactive', () => {
     expect(onInnerClick).toHaveBeenCalled()
     // Click bubbling from the inner button is the consumer's stopPropagation
     // call to make; Enter must not synthesize an extra card activation
-    expect(onCardClick).not.toHaveBeenCalledWith(
-      expect.objectContaining({ key: 'Enter' })
-    )
+    expect(onCardClick).not.toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter' }))
   })
 
   it('without onClick stays a plain div (no role/tabindex)', () => {

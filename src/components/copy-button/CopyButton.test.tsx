@@ -74,9 +74,7 @@ describe('CopyInput', () => {
     render(<CopyInput value="https://example.com" />)
     const copyBtn = screen.getByLabelText('Copy to clipboard')
     await userEvent.click(copyBtn)
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      'https://example.com'
-    )
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('https://example.com')
   })
 
   it('shows feedback state after copy', async () => {

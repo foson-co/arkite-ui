@@ -12,12 +12,7 @@ import { cn } from '../../utils/cn'
 import { useLocale } from '../../locale'
 import { warnUsage } from '../../utils/deprecate'
 import { FilterToolbarContext } from '../filter-bar/FilterBar'
-import {
-  Calendar as CalendarIcon,
-  ChevronLeft,
-  ChevronRight,
-  X,
-} from 'lucide-react'
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, X } from 'lucide-react'
 
 function getDaysInMonth(year: number, month: number): number {
   return new Date(year, month + 1, 0).getDate()
@@ -32,10 +27,7 @@ function formatDate(date: Date, format: string): string {
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
 
-  return format
-    .replace('yyyy', String(year))
-    .replace('MM', month)
-    .replace('dd', day)
+  return format.replace('yyyy', String(year)).replace('MM', month).replace('dd', day)
 }
 
 function parseDate(dateStr: string, format: string): Date | null {
@@ -66,8 +58,10 @@ export interface DateRangeValue {
   end: Date | null
 }
 
-export interface DateRangePickerProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface DateRangePickerProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   /** Selected range (controlled). Takes precedence over `startDate`/`endDate`. */
   value?: DateRangeValue
   /** Initial range for uncontrolled usage */
@@ -211,17 +205,9 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     // `value` (range object) wins over the legacy startDate/endDate pair,
     // which in turn wins over the internal uncontrolled state.
     const currentStart =
-      value !== undefined
-        ? value.start
-        : startDate !== undefined
-          ? startDate
-          : internalRange.start
+      value !== undefined ? value.start : startDate !== undefined ? startDate : internalRange.start
     const currentEnd =
-      value !== undefined
-        ? value.end
-        : endDate !== undefined
-          ? endDate
-          : internalRange.end
+      value !== undefined ? value.end : endDate !== undefined ? endDate : internalRange.end
 
     const [activeField, setActiveFieldRaw] = useState<ActiveField>(
       defaultOpen && variant !== 'calendar' ? 'start' : null
@@ -232,9 +218,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     const [endInputValue, setEndInputValue] = useState(
       currentEnd ? formatDate(currentEnd, format) : ''
     )
-    const [viewDate, setViewDate] = useState(
-      currentStart || currentEnd || new Date()
-    )
+    const [viewDate, setViewDate] = useState(currentStart || currentEnd || new Date())
     const containerRef = useRef<HTMLDivElement>(null)
 
     // Which field the input-variant dropdown targets; a controlled `open`
@@ -253,9 +237,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     )
 
     // Calendar variant state
-    const [internalCalendarOpen, setInternalCalendarOpen] = useState(
-      defaultOpen ?? false
-    )
+    const [internalCalendarOpen, setInternalCalendarOpen] = useState(defaultOpen ?? false)
     const calendarOpen = openProp ?? internalCalendarOpen
     const setCalendarOpen = useCallback(
       (next: boolean) => {
@@ -264,9 +246,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       },
       [calendarOpen, onOpenChange]
     )
-    const [calendarViewDate, setCalendarViewDate] = useState(
-      currentStart || new Date()
-    )
+    const [calendarViewDate, setCalendarViewDate] = useState(currentStart || new Date())
     const [calendarSelectionPhase, setCalendarSelectionPhase] = useState<'start' | 'end'>('start')
     const [calendarPendingStart, setCalendarPendingStart] = useState<Date | null>(null)
     const [calendarHoverDate, setCalendarHoverDate] = useState<Date | null>(null)
@@ -301,10 +281,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     // Close on click outside
     useEffect(() => {
       const handleClickOutside = (e: MouseEvent) => {
-        if (
-          containerRef.current &&
-          !containerRef.current.contains(e.target as Node)
-        ) {
+        if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
           if (effectiveActiveField !== null) setActiveField(null)
           if (calendarOpen) setCalendarOpen(false)
         }
@@ -321,8 +298,8 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
      */
     const updateRange = (next: { start?: Date | null; end?: Date | null }) => {
       const nextRange: DateRangeValue = {
-        start: next.start !== undefined ? next.start : currentStart ?? null,
-        end: next.end !== undefined ? next.end : currentEnd ?? null,
+        start: next.start !== undefined ? next.start : (currentStart ?? null),
+        end: next.end !== undefined ? next.end : (currentEnd ?? null),
       }
       setInternalRange(nextRange)
       if (next.start !== undefined) onStartChange?.(nextRange.start)
@@ -330,20 +307,21 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       onChange?.(nextRange)
     }
 
-    const isDateDisabled = useCallback((date: Date, field: ActiveField): boolean => {
-      const d = stripTime(date)
-      if (minDate && d < stripTime(minDate)) return true
-      if (maxDate && d > stripTime(maxDate)) return true
-      // End date cannot be before start date
-      if (field === 'end' && currentStart && d < stripTime(currentStart)) return true
-      return false
-    }, [minDate, maxDate, currentStart])
+    const isDateDisabled = useCallback(
+      (date: Date, field: ActiveField): boolean => {
+        const d = stripTime(date)
+        if (minDate && d < stripTime(minDate)) return true
+        if (maxDate && d > stripTime(maxDate)) return true
+        // End date cannot be before start date
+        if (field === 'end' && currentStart && d < stripTime(currentStart)) return true
+        return false
+      },
+      [minDate, maxDate, currentStart]
+    )
 
     // --- Input variant handlers ---
 
-    const handleStartInputChange = (
-      e: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleStartInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value
       setStartInputValue(val)
 
@@ -368,11 +346,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     }
 
     const handleDateSelect = (day: number) => {
-      const newDate = new Date(
-        viewDate.getFullYear(),
-        viewDate.getMonth(),
-        day
-      )
+      const newDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), day)
 
       if (effectiveActiveField === 'start') {
         if (!isDateDisabled(newDate, 'start')) {
@@ -390,15 +364,11 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     }
 
     const handlePrevMonth = () => {
-      setViewDate(
-        new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1)
-      )
+      setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))
     }
 
     const handleNextMonth = () => {
-      setViewDate(
-        new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1)
-      )
+      setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))
     }
 
     const handleClear = () => {
@@ -426,36 +396,39 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       }
 
       return (
-        <div className="p-3 w-64">
+        <div className="w-64 p-3">
           {/* Header */}
-          <div className="flex items-center justify-between mb-3">
+          <div className="mb-3 flex items-center justify-between">
             <button
               type="button"
               onClick={handlePrevMonth}
               aria-label={locale.calendar.previousMonth}
-              className="p-1 rounded hover:bg-muted"
+              className="hover:bg-muted rounded p-1"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <span className="text-sm font-medium">
-              {new Date(year, month).toLocaleDateString(locale.dateLocale, { month: 'long', year: 'numeric' })}
+              {new Date(year, month).toLocaleDateString(locale.dateLocale, {
+                month: 'long',
+                year: 'numeric',
+              })}
             </span>
             <button
               type="button"
               onClick={handleNextMonth}
               aria-label={locale.calendar.nextMonth}
-              className="p-1 rounded hover:bg-muted"
+              className="hover:bg-muted rounded p-1"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
 
           {/* Day names */}
-          <div className="grid grid-cols-7 gap-1 mb-2">
+          <div className="mb-2 grid grid-cols-7 gap-1">
             {locale.calendar.weekdaysShort.map((day) => (
               <div
                 key={day}
-                className="h-8 flex items-center justify-center text-xs text-muted-foreground"
+                className="text-muted-foreground flex h-8 items-center justify-center text-xs"
               >
                 {day}
               </div>
@@ -472,10 +445,8 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
               const date = new Date(year, month, day)
               const dateStr = date.toDateString()
               const isDisabledDay = isDateDisabled(date, effectiveActiveField)
-              const isStartSelected =
-                currentStart?.toDateString() === dateStr
-              const isEndSelected =
-                currentEnd?.toDateString() === dateStr
+              const isStartSelected = currentStart?.toDateString() === dateStr
+              const isEndSelected = currentEnd?.toDateString() === dateStr
               const isSelected = isStartSelected || isEndSelected
               const isInRange =
                 currentStart &&
@@ -492,13 +463,11 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                   onClick={() => handleDateSelect(day)}
                   className={cn(
                     'h-8 w-8 rounded-md text-sm transition-colors',
-                    'hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring',
-                    isSelected &&
-                      'bg-primary text-primary-foreground hover:bg-primary',
+                    'hover:bg-muted focus:ring-ring focus:ring-2 focus:outline-none',
+                    isSelected && 'bg-primary text-primary-foreground hover:bg-primary',
                     isInRange && 'bg-primary/10',
                     isToday && !isSelected && 'bg-muted',
-                    isDisabledDay &&
-                      'opacity-50 cursor-not-allowed hover:bg-transparent'
+                    isDisabledDay && 'cursor-not-allowed opacity-50 hover:bg-transparent'
                   )}
                 >
                   {day}
@@ -508,7 +477,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
           </div>
 
           {/* Today button */}
-          <div className="mt-3 pt-3 border-t">
+          <div className="mt-3 border-t pt-3">
             <button
               type="button"
               onClick={() => {
@@ -518,7 +487,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                   setViewDate(today)
                 }
               }}
-              className="w-full text-sm text-primary hover:underline"
+              className="text-primary w-full text-sm hover:underline"
             >
               {locale.datePicker.today}
             </button>
@@ -529,14 +498,22 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
     // --- Calendar variant handlers ---
 
-    const isCalendarDateDisabled = useCallback((date: Date): boolean => {
-      const d = stripTime(date)
-      if (minDate && d < stripTime(minDate)) return true
-      if (maxDate && d > stripTime(maxDate)) return true
-      // When selecting end date, cannot be before pending start
-      if (calendarSelectionPhase === 'end' && calendarPendingStart && d < stripTime(calendarPendingStart)) return true
-      return false
-    }, [minDate, maxDate, calendarSelectionPhase, calendarPendingStart])
+    const isCalendarDateDisabled = useCallback(
+      (date: Date): boolean => {
+        const d = stripTime(date)
+        if (minDate && d < stripTime(minDate)) return true
+        if (maxDate && d > stripTime(maxDate)) return true
+        // When selecting end date, cannot be before pending start
+        if (
+          calendarSelectionPhase === 'end' &&
+          calendarPendingStart &&
+          d < stripTime(calendarPendingStart)
+        )
+          return true
+        return false
+      },
+      [minDate, maxDate, calendarSelectionPhase, calendarPendingStart]
+    )
 
     const handleCalendarToggle = () => {
       if (disabled) return
@@ -620,25 +597,27 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
         // Determine effective start/end for highlight
         const effectiveStart = calendarPendingStart || currentStart
-        const effectiveEnd = calendarSelectionPhase === 'end' && calendarHoverDate
-          ? calendarHoverDate
-          : currentEnd
+        const effectiveEnd =
+          calendarSelectionPhase === 'end' && calendarHoverDate ? calendarHoverDate : currentEnd
 
         return (
-          <div className="p-3 w-64">
+          <div className="w-64 p-3">
             {/* Month title (no nav arrows, arrows are in the outer header) */}
-            <div className="flex items-center justify-center mb-3">
+            <div className="mb-3 flex items-center justify-center">
               <span className="text-sm font-medium">
-                {new Date(year, month).toLocaleDateString(locale.dateLocale, { month: 'long', year: 'numeric' })}
+                {new Date(year, month).toLocaleDateString(locale.dateLocale, {
+                  month: 'long',
+                  year: 'numeric',
+                })}
               </span>
             </div>
 
             {/* Day names */}
-            <div className="grid grid-cols-7 gap-1 mb-2">
+            <div className="mb-2 grid grid-cols-7 gap-1">
               {locale.calendar.weekdaysShort.map((day) => (
                 <div
                   key={day}
-                  className="h-8 flex items-center justify-center text-xs text-muted-foreground"
+                  className="text-muted-foreground flex h-8 items-center justify-center text-xs"
                 >
                   {day}
                 </div>
@@ -682,13 +661,11 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
                     }}
                     className={cn(
                       'h-8 w-8 rounded-md text-sm transition-colors',
-                      'hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring',
-                      isSelected &&
-                        'bg-primary text-primary-foreground hover:bg-primary',
+                      'hover:bg-muted focus:ring-ring focus:ring-2 focus:outline-none',
+                      isSelected && 'bg-primary text-primary-foreground hover:bg-primary',
                       isInRange && 'bg-primary/10',
                       isToday && !isSelected && 'bg-muted',
-                      isDisabledDay &&
-                        'opacity-50 cursor-not-allowed hover:bg-transparent'
+                      isDisabledDay && 'cursor-not-allowed opacity-50 hover:bg-transparent'
                     )}
                   >
                     {day}
@@ -702,7 +679,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
       return (
         <div
-          className="absolute top-full left-0 z-50 mt-1 rounded-lg border bg-card shadow-lg min-w-[540px]"
+          className="bg-card absolute top-full left-0 z-50 mt-1 min-w-[540px] rounded-lg border shadow-lg"
           data-testid="calendar-popover"
         >
           {/* Navigation header */}
@@ -710,18 +687,20 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             <button
               type="button"
               onClick={handleCalendarPrevMonth}
-              className="p-1 rounded hover:bg-muted"
+              className="hover:bg-muted rounded p-1"
               aria-label={locale.calendar.previousMonth}
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
-            <span className="text-sm font-medium text-muted-foreground">
-              {calendarSelectionPhase === 'start' ? locale.dateRangePicker.selectStart : locale.dateRangePicker.selectEnd}
+            <span className="text-muted-foreground text-sm font-medium">
+              {calendarSelectionPhase === 'start'
+                ? locale.dateRangePicker.selectStart
+                : locale.dateRangePicker.selectEnd}
             </span>
             <button
               type="button"
               onClick={handleCalendarNextMonth}
-              className="p-1 rounded hover:bg-muted"
+              className="hover:bg-muted rounded p-1"
               aria-label={locale.calendar.nextMonth}
             >
               <ChevronRight className="h-4 w-4" />
@@ -731,23 +710,23 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
           {/* Two calendars side by side */}
           <div className="flex">
             {renderMonthGrid(leftYear, leftMonth)}
-            <div className="w-px bg-border my-3" />
+            <div className="bg-border my-3 w-px" />
             {renderMonthGrid(rightYear, rightMonth)}
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between px-3 pb-3 pt-1 border-t mx-3">
+          <div className="mx-3 flex items-center justify-between border-t px-3 pt-1 pb-3">
             <button
               type="button"
               onClick={handleCalendarToday}
-              className="text-sm text-primary hover:underline"
+              className="text-primary text-sm hover:underline"
             >
               {locale.datePicker.today}
             </button>
             <button
               type="button"
               onClick={handleCalendarClear}
-              className="text-sm text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground text-sm"
               aria-label={locale.dateRangePicker.clearDates}
             >
               {locale.dateRangePicker.clear}
@@ -786,13 +765,13 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             disabled={disabled}
             data-testid="calendar-trigger"
             className={cn(
-              'inline-flex items-center gap-2 rounded-md border border-input bg-background',
+              'border-input bg-background inline-flex items-center gap-2 rounded-md border',
               triggerSizeStyles[size],
               'ring-offset-background',
-              'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+              'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
               'disabled:cursor-not-allowed disabled:opacity-50',
               error && 'border-destructive',
-              calendarOpen && 'ring-1 ring-ring/40 ring-offset-0',
+              calendarOpen && 'ring-ring/40 ring-1 ring-offset-0',
               !(currentStart && currentEnd) && 'text-muted-foreground'
             )}
           >
@@ -802,9 +781,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
           {calendarOpen && renderDualMonthCalendar()}
 
-          {errorMessage && (
-            <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
-          )}
+          {errorMessage && <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>}
         </div>
       )
     }
@@ -836,10 +813,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
           {labelPlacement === 'top' && (
             <label
               htmlFor={`${fieldId}-start`}
-              className={cn(
-                'font-medium text-foreground',
-                labelSizeStyles[size]
-              )}
+              className={cn('text-foreground font-medium', labelSizeStyles[size])}
             >
               {resolvedStartLabel}
             </label>
@@ -858,21 +832,23 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
               aria-label={labelPlacement === 'top' ? undefined : resolvedStartLabel}
               disabled={disabled}
               className={cn(
-                'flex w-full rounded-md border border-input bg-background',
+                'border-input bg-background flex w-full rounded-md border',
                 inputSizeStyles[size],
                 'ring-offset-background placeholder:text-muted-foreground',
-                'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+                'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
                 'disabled:cursor-not-allowed disabled:opacity-50',
                 error && 'border-destructive focus-visible:ring-destructive',
-                effectiveActiveField === 'start' && 'ring-1 ring-ring/40 ring-offset-0'
+                effectiveActiveField === 'start' && 'ring-ring/40 ring-1 ring-offset-0'
               )}
             />
             <button
               type="button"
               aria-label={locale.datePicker.openCalendar}
-              onClick={() => !disabled && setActiveField(effectiveActiveField === 'start' ? null : 'start')}
+              onClick={() =>
+                !disabled && setActiveField(effectiveActiveField === 'start' ? null : 'start')
+              }
               className={cn(
-                'absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground',
+                'text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2',
                 disabled && 'cursor-not-allowed'
               )}
             >
@@ -884,7 +860,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
         {/* Separator */}
         <div
           className={cn(
-            'flex items-center text-muted-foreground shrink-0',
+            'text-muted-foreground flex shrink-0 items-center',
             size === 'sm' && 'h-8',
             size === 'md' && 'h-10',
             size === 'lg' && 'h-12'
@@ -898,10 +874,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
           {labelPlacement === 'top' && (
             <label
               htmlFor={`${fieldId}-end`}
-              className={cn(
-                'font-medium text-foreground',
-                labelSizeStyles[size]
-              )}
+              className={cn('text-foreground font-medium', labelSizeStyles[size])}
             >
               {resolvedEndLabel}
             </label>
@@ -918,21 +891,23 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
               aria-label={labelPlacement === 'top' ? undefined : resolvedEndLabel}
               disabled={disabled}
               className={cn(
-                'flex w-full rounded-md border border-input bg-background',
+                'border-input bg-background flex w-full rounded-md border',
                 inputSizeStyles[size],
                 'ring-offset-background placeholder:text-muted-foreground',
-                'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+                'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
                 'disabled:cursor-not-allowed disabled:opacity-50',
                 error && 'border-destructive focus-visible:ring-destructive',
-                effectiveActiveField === 'end' && 'ring-1 ring-ring/40 ring-offset-0'
+                effectiveActiveField === 'end' && 'ring-ring/40 ring-1 ring-offset-0'
               )}
             />
             <button
               type="button"
               aria-label={locale.datePicker.openCalendar}
-              onClick={() => !disabled && setActiveField(effectiveActiveField === 'end' ? null : 'end')}
+              onClick={() =>
+                !disabled && setActiveField(effectiveActiveField === 'end' ? null : 'end')
+              }
               className={cn(
-                'absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground',
+                'text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2',
                 disabled && 'cursor-not-allowed'
               )}
             >
@@ -947,7 +922,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             type="button"
             onClick={handleClear}
             className={cn(
-              'flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0',
+              'text-muted-foreground hover:text-foreground hover:bg-muted flex shrink-0 items-center justify-center rounded-md transition-colors',
               size === 'sm' && 'h-8 w-8',
               size === 'md' && 'h-10 w-10',
               size === 'lg' && 'h-12 w-12'
@@ -960,7 +935,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
 
         {/* Calendar dropdown */}
         {effectiveActiveField && (
-          <div className="absolute top-full left-0 z-50 mt-1 rounded-md border bg-card shadow-lg">
+          <div className="bg-card absolute top-full left-0 z-50 mt-1 rounded-md border shadow-lg">
             {renderCalendar()}
           </div>
         )}
@@ -974,7 +949,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
     return (
       <div className="inline-block">
         {inputVariant}
-        <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
+        <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>
       </div>
     )
   }

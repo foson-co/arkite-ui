@@ -53,9 +53,7 @@ describe('SearchInput', () => {
     const handleClear = vi.fn()
     const handleChange = vi.fn()
 
-    render(
-      <SearchInput value="test" onChange={handleChange} onClear={handleClear} />
-    )
+    render(<SearchInput value="test" onChange={handleChange} onClear={handleClear} />)
 
     const clearButton = screen.getByRole('button', { name: /clear search/i })
     await user.click(clearButton)

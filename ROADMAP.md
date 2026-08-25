@@ -9,17 +9,17 @@
 
 ## 現況快照（2026-08-12）
 
-| 指標 | 數據 |
-|------|------|
-| 版本 | v0.19.2 已發布；3 個 changeset 待發（registry / theme apply / add） |
-| 元件數 | 71 個目錄、184 個元件匯出 |
-| 測試 | 97 檔、1381 cases、100% 通過 |
-| Stories | 88 檔 + 6 個 recipe（整頁組合） |
-| a11y | 零 violation（WCAG AA，CI 強制擋 merge） |
-| Bundle | index < 300 KB、motion < 10 KB、tailwind-preset < 10 KB、tokens < 5 KB、theme < 10 KB |
-| 對外 entry | 5 個（`.`、`/motion`、`/tailwind`、`/tokens`、`/theme`） |
-| CLI | `init`、`add <recipe>`、`theme apply` |
-| 消費端 | 8 個實際安裝（chronoark-one 已脫離，仍指改名前的 `@arkite/ui`） |
+| 指標       | 數據                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------- |
+| 版本       | v0.19.2 已發布；3 個 changeset 待發（registry / theme apply / add）                   |
+| 元件數     | 71 個目錄、184 個元件匯出                                                             |
+| 測試       | 97 檔、1381 cases、100% 通過                                                          |
+| Stories    | 88 檔 + 6 個 recipe（整頁組合）                                                       |
+| a11y       | 零 violation（WCAG AA，CI 強制擋 merge）                                              |
+| Bundle     | index < 300 KB、motion < 10 KB、tailwind-preset < 10 KB、tokens < 5 KB、theme < 10 KB |
+| 對外 entry | 5 個（`.`、`/motion`、`/tailwind`、`/tokens`、`/theme`）                              |
+| CLI        | `init`、`add <recipe>`、`theme apply`                                                 |
+| 消費端     | 8 個實際安裝（chronoark-one 已脫離，仍指改名前的 `@arkite/ui`）                       |
 
 > 採用數據現況見 [docs/DX_AUDIT.md §回測（2026-08-12）](docs/DX_AUDIT.md)，
 > 可用 `./scripts/audit-consumers.sh` 隨時重跑。
@@ -68,12 +68,12 @@
 - [x] 修正 `package.json` metadata（author、description 移除 shadcn/ui）
 - [x] 補 `MIGRATION.md` — motion import 路徑 + Radix peer deps 變更
 - [ ] ~~Chromatic token 設好，CI 視覺回歸跑通~~ → **未採用，2026-08-15 移除接線**。這條當初勾錯了：
-  job、devDeps、addon 都接好了，但 `CHROMATIC_PROJECT_TOKEN` 從未設定，而 job 的 rules 帶著
-  `&& $CHROMATIC_PROJECT_TOKEN`，所以 job 從來沒有被建立過——CI 不會報錯，只是靜默不跑，
-  因此沒人發現。決定不補 token：416 個 story × 每次 build = 416 snapshots，免費額度 5,000/月
-  ≈ 每月 12 次 build，而 MR + main 各跑一次等於每個 MR 吃 2 次。視覺確認改由 ui.foson.co 的
-  Storybook 站與發版後的 starter 金絲雀承接；真要自動化，既有的 playwright image + vitest
-  browser project 已足夠做 `toHaveScreenshot()`，挑代表性 story 即可，不需外部服務。
+      job、devDeps、addon 都接好了，但 `CHROMATIC_PROJECT_TOKEN` 從未設定，而 job 的 rules 帶著
+      `&& $CHROMATIC_PROJECT_TOKEN`，所以 job 從來沒有被建立過——CI 不會報錯，只是靜默不跑，
+      因此沒人發現。決定不補 token：416 個 story × 每次 build = 416 snapshots，免費額度 5,000/月
+      ≈ 每月 12 次 build，而 MR + main 各跑一次等於每個 MR 吃 2 次。視覺確認改由 ui.foson.co 的
+      Storybook 站與發版後的 starter 金絲雀承接；真要自動化，既有的 playwright image + vitest
+      browser project 已足夠做 `toHaveScreenshot()`，挑代表性 story 即可，不需外部服務。
 - [x] Changesets 首次發布驗證，確認 npm publish 流程正確
 - [x] bump v0.4.0 → 後續以 `@arkite-ui/core@0.5.0` 發布 npm public（2026-04-22）
 
@@ -136,16 +136,16 @@
 
 **✅ 我們已有、而且是他們的高票許願(行銷彈藥,寫進文章/landing)**
 
-| 他們的許願 | 票數 | 我們 |
-|---|---|---|
-| shadcn: Multi select | 306 | `Combobox multiple`(shadcn 第一高票,我們內建) |
-| MUI: Zero-runtime CSS | 291 | Tailwind v4,本來就零 runtime |
-| MUI: Improve Next.js support | 255 | RSC smoke test in CI + server-safe tokens |
-| AntD: 表單無障礙(盲人無法使用) | 68+26 | WCAG AA CI 強制 + APG 鍵盤真瀏覽器測試 |
-| MUI: cascading/nested menu | 124 | `DropdownMenuSub`(Radix) |
-| AntD: prefers-color-scheme 自動暗色 | 36 | token 層自動 |
-| shadcn: Stepper | 36 | `Steps` |
-| AntD: v5 太慢 | 53 | size-limit 預算 + 無 runtime style 引擎 |
+| 他們的許願                          | 票數  | 我們                                          |
+| ----------------------------------- | ----- | --------------------------------------------- |
+| shadcn: Multi select                | 306   | `Combobox multiple`(shadcn 第一高票,我們內建) |
+| MUI: Zero-runtime CSS               | 291   | Tailwind v4,本來就零 runtime                  |
+| MUI: Improve Next.js support        | 255   | RSC smoke test in CI + server-safe tokens     |
+| AntD: 表單無障礙(盲人無法使用)      | 68+26 | WCAG AA CI 強制 + APG 鍵盤真瀏覽器測試        |
+| MUI: cascading/nested menu          | 124   | `DropdownMenuSub`(Radix)                      |
+| AntD: prefers-color-scheme 自動暗色 | 36    | token 層自動                                  |
+| shadcn: Stepper                     | 36    | `Steps`                                       |
+| AntD: v5 太慢                       | 53    | size-limit 預算 + 無 runtime style 引擎       |
 
 **⬆️ 缺口且被大廠高票驗證(候選排期,依票數)**
 
@@ -186,14 +186,14 @@
 「幾百個設計師 × 幾百條產品線 × 多品牌一致性」的組織問題。我們是 1 人 × 8 個消費專案 ×
 同一個品牌 —— 照抄整條平台會直接壓垮維護量。**可移植的只有三件：主題可產物化、物料可安裝、消費端可自助。**
 
-| 支柱 | Fusion | 我們 | 處置 |
-|---|---|---|---|
-| 元件庫 | `@alifd/next` ~60 個 + 「業務組件」 | 71 個目錄，admin 場景更聚焦 | 無差距（業務組件違反 Pure UI，不做） |
-| 主題 | 線上編輯器 → npm 主題包 | Theme Playground → `arkite.theme.json` → `theme apply` | ✅ 已補齊 |
-| 物料市場 | `/mc` block/template + Iceworks 一鍵注入 | `registry.json` + `arkite-ui add` | ✅ 已補齊 |
-| 站點（多品牌 fork） | `/sites/new` 線上平台 | 單一 Storybook | 🚫 我們沒有多品牌，建了就是純維護債 |
-| 設計工具鏈 | FusionCool、Figma/Sketch 外掛 | `llms.txt` + `registry.json` | 🚫 方向相反：他們 design→code，我們 code-first、上游是 AI agent |
-| 治理 | 幫助中心、版本切換 | DESIGN.md + dev guards + a11y CI + Chromatic | 我們反而領先 |
+| 支柱                | Fusion                                   | 我們                                                   | 處置                                                            |
+| ------------------- | ---------------------------------------- | ------------------------------------------------------ | --------------------------------------------------------------- |
+| 元件庫              | `@alifd/next` ~60 個 + 「業務組件」      | 71 個目錄，admin 場景更聚焦                            | 無差距（業務組件違反 Pure UI，不做）                            |
+| 主題                | 線上編輯器 → npm 主題包                  | Theme Playground → `arkite.theme.json` → `theme apply` | ✅ 已補齊                                                       |
+| 物料市場            | `/mc` block/template + Iceworks 一鍵注入 | `registry.json` + `arkite-ui add`                      | ✅ 已補齊                                                       |
+| 站點（多品牌 fork） | `/sites/new` 線上平台                    | 單一 Storybook                                         | 🚫 我們沒有多品牌，建了就是純維護債                             |
+| 設計工具鏈          | FusionCool、Figma/Sketch 外掛            | `llms.txt` + `registry.json`                           | 🚫 方向相反：他們 design→code，我們 code-first、上游是 AI agent |
+| 治理                | 幫助中心、版本切換                       | DESIGN.md + dev guards + a11y CI + Chromatic           | 我們反而領先                                                    |
 
 **我們已經贏的地方**（別因為對方是阿里就自我矮化）：a11y WCAG AA 進 CI 強制、零 runtime CSS
 （Tailwind v4 vs 他們 SASS 變數覆蓋）、size-limit 預算、視覺回歸、RSC/Next smoke、AI-ready 文件。
@@ -202,6 +202,7 @@
 業務組件分類、版本化文件站（1.0 前沒意義）。
 
 **還沒做的**：
+
 - [ ] ark-museum 接上 `arkite.theme.json`（它已手刻一套 brand config → runtime 注入，是唯一真有需求的對象）
 - [ ] ark-harvest / ark-rendoc-web 刪掉各自複製的 40 行預設 token（兩份位元組相同，且 dark primary 已 drift 到舊值）
 - [ ] 三個落後專案（0.10 / 0.12）升版 —— 剩下 11 個手刻 `<table>` 全在那裡，是版本落後不是能力缺口
@@ -211,6 +212,7 @@
 **3 個專案已穩定使用 ✅，等 API 半年沒有 breaking change 即可。**
 
 預估時間線：
+
 - v0.4.0 發布後開始計算 API 穩定期
 - 最快 2026 Q4，不趕
 
@@ -220,30 +222,30 @@
 
 > 以下是「被動觸發」的事項 — 不主動規劃，出現訊號時再做。
 
-| 訊號 | 動作 |
-|------|------|
-| 有人開 Issue 問怎麼用 | 把回答整理進 README FAQ |
-| 有人提 PR | 寫個簡單的 CONTRIBUTING 引導（已有），review 合進去 |
-| 累計 5+ 外部 Issue | 補 Issue template（bug / feature request） |
-| 有人問能不能商用 | 確認 LICENSE (MIT) 夠清楚，README 加一行說明 |
-| npm 週下載 > 100 | 考慮補 SECURITY.md、CODE_OF_CONDUCT |
-| 有公司正式採用 | 考慮寫一篇 blog post 或 case study |
-| 有人要求 Figma 同步 | 評估投入產出比，可能只給 design token JSON |
+| 訊號                  | 動作                                                |
+| --------------------- | --------------------------------------------------- |
+| 有人開 Issue 問怎麼用 | 把回答整理進 README FAQ                             |
+| 有人提 PR             | 寫個簡單的 CONTRIBUTING 引導（已有），review 合進去 |
+| 累計 5+ 外部 Issue    | 補 Issue template（bug / feature request）          |
+| 有人問能不能商用      | 確認 LICENSE (MIT) 夠清楚，README 加一行說明        |
+| npm 週下載 > 100      | 考慮補 SECURITY.md、CODE_OF_CONDUCT                 |
+| 有公司正式採用        | 考慮寫一篇 blog post 或 case study                  |
+| 有人要求 Figma 同步   | 評估投入產出比，可能只給 design token JSON          |
 
 ---
 
 ## 版本規劃
 
-| 版本 | 觸發條件 | 內容 |
-|------|---------|------|
-| **v0.4.0** ✅ | — | metadata 修正 + Chromatic CI + tokens entry point |
-| **v0.5.0** ✅ | 2026-04-22 | 改名 `@arkite-ui/core` 發布 npm、rail sidebar、subNav slot |
-| **v0.6.1** ✅ | 2026-07-03 | 移除業務邏輯（breadcrumb config、stores、hooks）— breaking（0.6.0 tag 因 CI 故障未發成，由 0.6.1 補發） |
-| **v0.7.0** ✅ | 2026-07-03 | prop naming 統一（依 docs/API_CONSISTENCY.md）— 舊名保留為 deprecated 別名，v1.0 移除 |
-| **v0.8.0 – v0.19.2** ✅ | 2026-07 ~ 08 | DX 稽核驅動的一連串補洞：`useServerTable`、`stickyLead`、`toast.fromError`、`FileTrigger`、`PinInput`、Tier A 組合守衛、llms.txt |
-| **待發（3 changeset）** | — | `registry.json` + llms.txt Recipes、`theme apply` + `/theme` entry、`add <recipe>` |
-| **v0.x.x** | 內部專案需求驅動 | 持續迭代，不設時間表 |
-| **v1.0.0** | API 穩定半年 + 消費端驗證 | API 凍結、semver 承諾（最快 2026 Q4） |
+| 版本                    | 觸發條件                  | 內容                                                                                                                             |
+| ----------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **v0.4.0** ✅           | —                         | metadata 修正 + Chromatic CI + tokens entry point                                                                                |
+| **v0.5.0** ✅           | 2026-04-22                | 改名 `@arkite-ui/core` 發布 npm、rail sidebar、subNav slot                                                                       |
+| **v0.6.1** ✅           | 2026-07-03                | 移除業務邏輯（breadcrumb config、stores、hooks）— breaking（0.6.0 tag 因 CI 故障未發成，由 0.6.1 補發）                          |
+| **v0.7.0** ✅           | 2026-07-03                | prop naming 統一（依 docs/API_CONSISTENCY.md）— 舊名保留為 deprecated 別名，v1.0 移除                                            |
+| **v0.8.0 – v0.19.2** ✅ | 2026-07 ~ 08              | DX 稽核驅動的一連串補洞：`useServerTable`、`stickyLead`、`toast.fromError`、`FileTrigger`、`PinInput`、Tier A 組合守衛、llms.txt |
+| **待發（3 changeset）** | —                         | `registry.json` + llms.txt Recipes、`theme apply` + `/theme` entry、`add <recipe>`                                               |
+| **v0.x.x**              | 內部專案需求驅動          | 持續迭代，不設時間表                                                                                                             |
+| **v1.0.0**              | API 穩定半年 + 消費端驗證 | API 凍結、semver 承諾（最快 2026 Q4）                                                                                            |
 
 ---
 

@@ -135,7 +135,9 @@ export const FrozenColumns: Story = {
           <TableRow>
             <TableHead stickyLead>Ticker</TableHead>
             {['Open', 'High', 'Low', 'Close', 'Volume', 'MA5', 'MA20', 'RSI'].map((h) => (
-              <TableHead key={h} align="right" className="min-w-24">{h}</TableHead>
+              <TableHead key={h} align="right" className="min-w-24">
+                {h}
+              </TableHead>
             ))}
             <TableHead stickyAction>Actions</TableHead>
           </TableRow>
@@ -143,9 +145,13 @@ export const FrozenColumns: Story = {
         <TableBody>
           {['AAPL', 'MSFT', 'NVDA'].map((t, r) => (
             <TableRow key={t}>
-              <TableCell stickyLead className="font-medium">{t}</TableCell>
+              <TableCell stickyLead className="font-medium">
+                {t}
+              </TableCell>
               {Array.from({ length: 8 }, (_, i) => (
-                <TableCell key={i} numeric>{(100 + r * 7 + i * 3.14).toFixed(2)}</TableCell>
+                <TableCell key={i} numeric>
+                  {(100 + r * 7 + i * 3.14).toFixed(2)}
+                </TableCell>
               ))}
               <TableCell stickyAction>…</TableCell>
             </TableRow>

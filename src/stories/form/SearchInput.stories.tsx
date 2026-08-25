@@ -34,7 +34,7 @@ export const WithDebounce: Story = {
 
 export const AllSizes: Story = {
   render: () => (
-    <div className="flex flex-col gap-3 w-72">
+    <div className="flex w-72 flex-col gap-3">
       <SearchInput size="sm" placeholder="Small" />
       <SearchInput size="md" placeholder="Medium" />
       <SearchInput size="lg" placeholder="Large" />

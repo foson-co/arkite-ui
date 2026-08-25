@@ -33,7 +33,11 @@ describe('Badge', () => {
   })
 
   it('count variant composes with max truncation', () => {
-    render(<Badge variant="count" max={99}>{150}</Badge>)
+    render(
+      <Badge variant="count" max={99}>
+        {150}
+      </Badge>
+    )
     const el = screen.getByText('99+')
     expect(el.className).toContain('bg-muted')
   })

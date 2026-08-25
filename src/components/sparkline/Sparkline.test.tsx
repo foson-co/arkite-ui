@@ -23,9 +23,7 @@ describe('Sparkline', () => {
   })
 
   it('renders a flat centered line when all values are equal', () => {
-    const { container } = render(
-      <Sparkline data={[3, 3, 3]} width={80} height={24} />
-    )
+    const { container } = render(<Sparkline data={[3, 3, 3]} width={80} height={24} />)
     const points = container.querySelector('polyline')?.getAttribute('points')
     const ys = points?.split(' ').map((p) => p.split(',')[1])
     expect(new Set(ys).size).toBe(1)
@@ -53,15 +51,10 @@ describe('Sparkline', () => {
   })
 
   it('explicit color overrides trend coloring', () => {
-    const { container } = render(
-      <Sparkline data={[1, 2, 3]} color="#ff00ff" />
-    )
+    const { container } = render(<Sparkline data={[1, 2, 3]} color="#ff00ff" />)
     const svg = container.querySelector('svg')
     expect(svg).not.toHaveClass('text-success')
-    expect(container.querySelector('polyline')).toHaveAttribute(
-      'stroke',
-      '#ff00ff'
-    )
+    expect(container.querySelector('polyline')).toHaveAttribute('stroke', '#ff00ff')
   })
 
   it('uses custom dimensions and stroke width', () => {
@@ -71,10 +64,7 @@ describe('Sparkline', () => {
     const svg = container.querySelector('svg')
     expect(svg).toHaveAttribute('width', '120')
     expect(svg).toHaveAttribute('height', '40')
-    expect(container.querySelector('polyline')).toHaveAttribute(
-      'stroke-width',
-      '2'
-    )
+    expect(container.querySelector('polyline')).toHaveAttribute('stroke-width', '2')
   })
 
   it('exposes role img with aria-label when provided', () => {
@@ -84,16 +74,11 @@ describe('Sparkline', () => {
 
   it('is aria-hidden when no aria-label is provided', () => {
     const { container } = render(<Sparkline data={[1, 2, 3]} />)
-    expect(container.querySelector('svg')).toHaveAttribute(
-      'aria-hidden',
-      'true'
-    )
+    expect(container.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
   })
 
   it('applies custom className', () => {
-    const { container } = render(
-      <Sparkline data={[1, 2]} className="custom-class" />
-    )
+    const { container } = render(<Sparkline data={[1, 2]} className="custom-class" />)
     expect(container.querySelector('svg')).toHaveClass('custom-class')
   })
 
@@ -103,9 +88,7 @@ describe('Sparkline', () => {
   })
 
   it('renders built-in dashed placeholder for null data when placeholder is true', () => {
-    const { container } = render(
-      <Sparkline data={null} placeholder width={60} height={18} />
-    )
+    const { container } = render(<Sparkline data={null} placeholder width={60} height={18} />)
     const svg = container.querySelector('svg')
     expect(svg).toHaveClass('text-border')
     expect(svg).toHaveAttribute('aria-hidden', 'true')
@@ -120,9 +103,7 @@ describe('Sparkline', () => {
   })
 
   it('renders a custom placeholder node', () => {
-    render(
-      <Sparkline data={[]} placeholder={<span data-testid="empty">–</span>} />
-    )
+    render(<Sparkline data={[]} placeholder={<span data-testid="empty">–</span>} />)
     expect(screen.getByTestId('empty')).toBeInTheDocument()
   })
 

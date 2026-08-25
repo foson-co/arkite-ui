@@ -22,14 +22,20 @@ const DefaultDemo = () => {
         <Button variant="destructive" onClick={() => toast.error('Error', 'Something went wrong')}>
           Error Toast
         </Button>
-        <Button variant="outline" onClick={() => toast.warning('Warning', 'Please check your input')}>
+        <Button
+          variant="outline"
+          onClick={() => toast.warning('Warning', 'Please check your input')}
+        >
           Warning Toast
         </Button>
-        <Button variant="secondary" onClick={() => toast.info('Info', 'A new version is available')}>
+        <Button
+          variant="secondary"
+          onClick={() => toast.info('Info', 'A new version is available')}
+        >
           Info Toast
         </Button>
       </div>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         Toasts slide in from the edge with Framer Motion and animate out when dismissed or expired.
       </p>
       <AnimatedToastContainer position="top-right" />
@@ -44,8 +50,12 @@ const PositionsDemo = () => {
   const [position, setPosition] = useState<ToastPosition>('top-right')
 
   const positions: ToastPosition[] = [
-    'top-right', 'top-left', 'top-center',
-    'bottom-right', 'bottom-left', 'bottom-center',
+    'top-right',
+    'top-left',
+    'top-center',
+    'bottom-right',
+    'bottom-left',
+    'bottom-center',
   ]
 
   return (
@@ -62,9 +72,7 @@ const PositionsDemo = () => {
           </Button>
         ))}
       </div>
-      <Button onClick={() => toast.success('Toast', `Position: ${position}`)}>
-        Show Toast
-      </Button>
+      <Button onClick={() => toast.success('Toast', `Position: ${position}`)}>Show Toast</Button>
       <AnimatedToastContainer position={position} />
     </div>
   )

@@ -13,14 +13,12 @@ export default meta
 
 // ── Single Field ──
 
-export const SingleField: StoryFn = () => (
-  <CardField label="Full Name" value="John Doe" />
-)
+export const SingleField: StoryFn = () => <CardField label="Full Name" value="John Doe" />
 
 // ── Grid Layout (user detail page pattern) ──
 
 export const GridLayout: StoryFn = () => (
-  <div className="max-w-2xl rounded-lg border bg-card p-6">
+  <div className="bg-card max-w-2xl rounded-lg border p-6">
     <h3 className="mb-4 text-lg font-semibold">User Details</h3>
     <CardGrid columns={2}>
       <CardField label="Full Name" value="Jane Smith" />
@@ -38,7 +36,7 @@ export const GridLayout: StoryFn = () => (
 // ── Three Columns ──
 
 export const ThreeColumns: StoryFn = () => (
-  <div className="max-w-3xl rounded-lg border bg-card p-6">
+  <div className="bg-card max-w-3xl rounded-lg border p-6">
     <h3 className="mb-4 text-lg font-semibold">Order Summary</h3>
     <CardGrid columns={3}>
       <CardField label="Order ID" value="#ORD-20240315" />
@@ -54,7 +52,7 @@ export const ThreeColumns: StoryFn = () => (
 // ── Custom Content (with Badge / StatusDot as value) ──
 
 export const CustomContent: StoryFn = () => (
-  <div className="max-w-2xl rounded-lg border bg-card p-6">
+  <div className="bg-card max-w-2xl rounded-lg border p-6">
     <h3 className="mb-4 text-lg font-semibold">Project Overview</h3>
     <CardGrid columns={2}>
       <CardField label="Project Name" value="Arkite UI" />

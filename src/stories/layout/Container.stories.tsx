@@ -26,7 +26,7 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   render: (args) => (
     <Container {...args}>
-      <div className="bg-muted p-8 rounded-lg text-center">
+      <div className="bg-muted rounded-lg p-8 text-center">
         <p className="text-muted-foreground">Container content (size: {args.size})</p>
       </div>
     </Container>
@@ -38,7 +38,7 @@ export const AllSizes: Story = {
     <div className="space-y-4">
       {(['sm', 'md', 'lg', 'xl', '2xl'] as const).map((size) => (
         <Container key={size} size={size}>
-          <div className="bg-muted p-4 rounded text-center text-sm text-muted-foreground">
+          <div className="bg-muted text-muted-foreground rounded p-4 text-center text-sm">
             {size}
           </div>
         </Container>

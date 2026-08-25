@@ -25,7 +25,7 @@ function ColorSwatch({ label, className }: { label: string; className: string })
   return (
     <div className="flex items-center gap-3">
       <div className={`h-10 w-10 rounded-md border ${className}`} />
-      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="text-muted-foreground text-sm">{label}</span>
     </div>
   )
 }
@@ -71,7 +71,7 @@ function ThemeDemo({ name }: { name: string }) {
           <h4 className="font-semibold">Card Title</h4>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">Card content with muted text.</p>
+          <p className="text-muted-foreground text-sm">Card content with muted text.</p>
         </CardContent>
       </Card>
 
@@ -148,8 +148,10 @@ const CreateThemeDemo = () => {
     <div className="space-y-6">
       <div className="flex items-end gap-4">
         <div>
-          <label htmlFor="primary-color" className="text-sm font-medium">Primary Color</label>
-          <div className="flex items-center gap-2 mt-1">
+          <label htmlFor="primary-color" className="text-sm font-medium">
+            Primary Color
+          </label>
+          <div className="mt-1 flex items-center gap-2">
             <input
               id="primary-color"
               type="color"
@@ -157,12 +159,19 @@ const CreateThemeDemo = () => {
               onChange={(e) => setPrimary(e.target.value)}
               className="h-10 w-10 cursor-pointer rounded border"
             />
-            <Input value={primary} onChange={(e) => setPrimary(e.target.value)} className="w-28" aria-label="Primary hex" />
+            <Input
+              value={primary}
+              onChange={(e) => setPrimary(e.target.value)}
+              className="w-28"
+              aria-label="Primary hex"
+            />
           </div>
         </div>
         <div>
-          <label htmlFor="accent-color" className="text-sm font-medium">Accent Color</label>
-          <div className="flex items-center gap-2 mt-1">
+          <label htmlFor="accent-color" className="text-sm font-medium">
+            Accent Color
+          </label>
+          <div className="mt-1 flex items-center gap-2">
             <input
               id="accent-color"
               type="color"
@@ -170,7 +179,12 @@ const CreateThemeDemo = () => {
               onChange={(e) => setAccent(e.target.value)}
               className="h-10 w-10 cursor-pointer rounded border"
             />
-            <Input value={accent} onChange={(e) => setAccent(e.target.value)} className="w-28" aria-label="Accent hex" />
+            <Input
+              value={accent}
+              onChange={(e) => setAccent(e.target.value)}
+              className="w-28"
+              aria-label="Accent hex"
+            />
           </div>
         </div>
         <Button onClick={handleApply}>Apply Theme</Button>

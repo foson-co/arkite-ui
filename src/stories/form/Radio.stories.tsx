@@ -24,13 +24,8 @@ export const Controlled: StoryFn = () => {
   const [value, setValue] = useState('free')
   return (
     <div>
-      <RadioGroup
-        name="plan-controlled"
-        options={planOptions}
-        value={value}
-        onChange={setValue}
-      />
-      <p className="mt-3 text-xs text-muted-foreground">Selected: {value}</p>
+      <RadioGroup name="plan-controlled" options={planOptions} value={value} onChange={setValue} />
+      <p className="text-muted-foreground mt-3 text-xs">Selected: {value}</p>
     </div>
   )
 }

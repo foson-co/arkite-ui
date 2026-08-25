@@ -93,7 +93,9 @@ describe('DataTable keyboard interaction', () => {
 
   it('opens the column filter dropdown with Enter and toggles options', async () => {
     const user = userEvent.setup()
-    render(<DataTable columns={filterColumns} data={data} getRowKey={(r) => r.id} pagination={false} />)
+    render(
+      <DataTable columns={filterColumns} data={data} getRowKey={(r) => r.id} pagination={false} />
+    )
 
     const filterButton = screen.getByRole('button', { name: 'Filter Name' })
     filterButton.focus()
@@ -107,7 +109,9 @@ describe('DataTable keyboard interaction', () => {
 
   it('closes the filter dropdown with Escape', async () => {
     const user = userEvent.setup()
-    render(<DataTable columns={filterColumns} data={data} getRowKey={(r) => r.id} pagination={false} />)
+    render(
+      <DataTable columns={filterColumns} data={data} getRowKey={(r) => r.id} pagination={false} />
+    )
 
     const filterButton = screen.getByRole('button', { name: 'Filter Name' })
     filterButton.focus()
@@ -121,7 +125,13 @@ describe('DataTable keyboard interaction', () => {
   it('closes the column toggle dropdown with Escape', async () => {
     const user = userEvent.setup()
     render(
-      <DataTable columns={columns} data={data} getRowKey={(r) => r.id} columnToggle pagination={false} />
+      <DataTable
+        columns={columns}
+        data={data}
+        getRowKey={(r) => r.id}
+        columnToggle
+        pagination={false}
+      />
     )
 
     const toggle = screen.getByRole('button', { name: 'Toggle columns' })

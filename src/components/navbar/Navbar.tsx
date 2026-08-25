@@ -13,21 +13,13 @@ export interface NavbarProps extends HTMLAttributes<HTMLElement> {
 /** Top navigation bar with optional sticky positioning and bottom border. */
 export const Navbar = forwardRef<HTMLElement, NavbarProps>(
   (
-    {
-      className,
-      sticky = false,
-      bordered = true,
-      height = '64px',
-      style,
-      children,
-      ...props
-    },
+    { className, sticky = false, bordered = true, height = '64px', style, children, ...props },
     ref
   ) => (
     <header
       ref={ref}
       className={cn(
-        'flex items-center bg-background px-4',
+        'bg-background flex items-center px-4',
         sticky && 'sticky top-0 z-40',
         bordered && 'border-b',
         className
@@ -51,7 +43,12 @@ export interface NavbarBrandProps extends HTMLAttributes<HTMLDivElement> {
   /** Link href */
   href?: string
   /** Custom link renderer for framework integration (React Router, Next.js). Only used when `href` is set; defaults to a native `<a>`. */
-  renderLink?: (props: { href: string; children: ReactNode; className?: string; active?: boolean }) => ReactNode
+  renderLink?: (props: {
+    href: string
+    children: ReactNode
+    className?: string
+    active?: boolean
+  }) => ReactNode
 }
 
 /** Brand section of the navbar displaying a logo and/or name. */
@@ -131,11 +128,7 @@ export const NavbarItem = forwardRef<HTMLDivElement, NavbarItemProps>(
   ({ className, active, children, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn(
-        'flex items-center',
-        active && 'text-primary',
-        className
-      )}
+      className={cn('flex items-center', active && 'text-primary', className)}
       {...props}
     >
       {children}
@@ -152,7 +145,12 @@ export interface NavbarLinkProps extends HTMLAttributes<HTMLAnchorElement> {
   /** Active state */
   active?: boolean
   /** Custom link renderer for framework integration (React Router, Next.js). Only used when `href` is set; defaults to a native `<a>` (ref and extra DOM props are not forwarded to a custom link). */
-  renderLink?: (props: { href: string; children: ReactNode; className?: string; active?: boolean }) => ReactNode
+  renderLink?: (props: {
+    href: string
+    children: ReactNode
+    className?: string
+    active?: boolean
+  }) => ReactNode
 }
 
 /** Styled anchor link for use within the navbar. */
@@ -184,11 +182,7 @@ export type NavbarDividerProps = HTMLAttributes<HTMLDivElement>
 /** Vertical divider line between navbar items. */
 export const NavbarDivider = forwardRef<HTMLDivElement, NavbarDividerProps>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('h-6 w-px bg-border', className)}
-      {...props}
-    />
+    <div ref={ref} className={cn('bg-border h-6 w-px', className)} {...props} />
   )
 )
 
@@ -199,9 +193,7 @@ export type NavbarSpacerProps = HTMLAttributes<HTMLDivElement>
 
 /** Flexible spacer that pushes adjacent navbar items apart. */
 export const NavbarSpacer = forwardRef<HTMLDivElement, NavbarSpacerProps>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex-1', className)} {...props} />
-  )
+  ({ className, ...props }, ref) => <div ref={ref} className={cn('flex-1', className)} {...props} />
 )
 
 NavbarSpacer.displayName = 'NavbarSpacer'

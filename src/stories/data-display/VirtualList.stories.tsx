@@ -25,22 +25,30 @@ const BasicDemo = () => {
   const items = generateItems(10000)
   return (
     <div className="space-y-2">
-      <p className="text-sm text-muted-foreground">Rendering 10,000 items with virtual scrolling</p>
+      <p className="text-muted-foreground text-sm">Rendering 10,000 items with virtual scrolling</p>
       <VirtualList
         items={items}
         getItemKey={(item) => item.id}
         estimateSize={48}
         height={400}
-        className="border rounded-lg"
+        className="rounded-lg border"
         renderItem={(item) => (
-          <div className="flex items-center justify-between px-4 py-3 border-b hover:bg-muted/50 transition-colors">
+          <div className="hover:bg-muted/50 flex items-center justify-between border-b px-4 py-3 transition-colors">
             <div className="flex items-center gap-3">
               <span className="text-sm font-medium">{item.name}</span>
-              <Badge variant={item.status === 'active' ? 'success' : item.status === 'pending' ? 'warning' : 'secondary'}>
+              <Badge
+                variant={
+                  item.status === 'active'
+                    ? 'success'
+                    : item.status === 'pending'
+                      ? 'warning'
+                      : 'secondary'
+                }
+              >
                 {item.status}
               </Badge>
             </div>
-            <span className="text-sm text-muted-foreground">{item.value}</span>
+            <span className="text-muted-foreground text-sm">{item.value}</span>
           </div>
         )}
       />
@@ -54,16 +62,17 @@ const DynamicHeightDemo = () => {
   const items = Array.from({ length: 5000 }, (_, i) => ({
     id: i,
     title: `Item ${i + 1}`,
-    description: i % 3 === 0
-      ? 'Short description.'
-      : i % 3 === 1
-        ? 'This is a medium length description that takes a bit more space to display properly.'
-        : 'This is a longer description that demonstrates dynamic height virtual scrolling. Each item can have a different height and the virtualizer will measure them correctly.',
+    description:
+      i % 3 === 0
+        ? 'Short description.'
+        : i % 3 === 1
+          ? 'This is a medium length description that takes a bit more space to display properly.'
+          : 'This is a longer description that demonstrates dynamic height virtual scrolling. Each item can have a different height and the virtualizer will measure them correctly.',
   }))
 
   return (
     <div className="space-y-2">
-      <p className="text-sm text-muted-foreground">Dynamic item heights (measured after render)</p>
+      <p className="text-muted-foreground text-sm">Dynamic item heights (measured after render)</p>
       <VirtualList
         items={items}
         getItemKey={(item) => item.id}
@@ -71,11 +80,11 @@ const DynamicHeightDemo = () => {
         height={400}
         dynamicSize
         gap={1}
-        className="border rounded-lg"
+        className="rounded-lg border"
         renderItem={(item) => (
-          <div className="px-4 py-3 border-b">
-            <p className="font-medium text-sm">{item.title}</p>
-            <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
+          <div className="border-b px-4 py-3">
+            <p className="text-sm font-medium">{item.title}</p>
+            <p className="text-muted-foreground mt-1 text-sm">{item.description}</p>
           </div>
         )}
       />
@@ -106,7 +115,7 @@ const InfiniteScrollDemo = () => {
 
   return (
     <div className="space-y-2">
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         Loaded: {items.length} items {hasMore ? '(scroll for more)' : '(all loaded)'}
       </p>
       <InfiniteScroll
@@ -118,9 +127,9 @@ const InfiniteScrollDemo = () => {
         estimateSize={48}
         height={400}
         threshold={300}
-        className="border rounded-lg"
+        className="rounded-lg border"
         renderItem={(item) => (
-          <div className="flex items-center justify-between px-4 py-3 border-b hover:bg-muted/50 transition-colors">
+          <div className="hover:bg-muted/50 flex items-center justify-between border-b px-4 py-3 transition-colors">
             <span className="text-sm font-medium">{item.name}</span>
             <Badge variant="secondary">{item.value}</Badge>
           </div>
@@ -137,7 +146,7 @@ const EmptyStateDemo = () => (
     items={[]}
     renderItem={() => null}
     height={200}
-    className="border rounded-lg"
+    className="rounded-lg border"
     emptyContent="No items to display"
   />
 )
@@ -150,7 +159,7 @@ const LoadingDemo = () => (
     renderItem={() => null}
     loading
     height={200}
-    className="border rounded-lg"
+    className="rounded-lg border"
   />
 )
 

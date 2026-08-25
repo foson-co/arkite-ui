@@ -1,8 +1,4 @@
-import {
-  forwardRef,
-  type SelectHTMLAttributes,
-  type ReactNode,
-} from 'react'
+import { forwardRef, type SelectHTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../../utils/cn'
 import { ChevronDown } from 'lucide-react'
 
@@ -14,8 +10,7 @@ export interface SelectOption {
   disabled?: boolean
 }
 
-export interface SelectProps
-  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
+export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
   /** Select size */
   size?: SelectSize
   /** Placeholder text */
@@ -66,7 +61,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <div className={cn('relative', fullWidth ? 'w-full' : 'w-fit')}>
         <div className="relative">
           {leftIcon && (
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
+            <div className="text-muted-foreground pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               {leftIcon}
             </div>
           )}
@@ -74,14 +69,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             disabled={disabled}
             className={cn(
-              'flex w-full appearance-none rounded-md border bg-background',
-              'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+              'bg-background flex w-full appearance-none rounded-md border',
+              'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
               'disabled:cursor-not-allowed disabled:opacity-50',
               'transition-colors duration-200',
               sizeStyles[size],
-              error
-                ? 'border-destructive focus-visible:ring-destructive'
-                : 'border-input',
+              error ? 'border-destructive focus-visible:ring-destructive' : 'border-input',
               leftIcon && 'pl-10',
               className
             )}
@@ -93,11 +86,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               </option>
             )}
             {options.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
-                disabled={option.disabled}
-              >
+              <option key={option.value} value={option.value} disabled={option.disabled}>
                 {option.label}
               </option>
             ))}
@@ -105,14 +94,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </select>
           <ChevronDown
             className={cn(
-              'pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted-foreground',
+              'text-muted-foreground pointer-events-none absolute top-1/2 -translate-y-1/2',
               iconSizeStyles[size]
             )}
           />
         </div>
-        {errorMessage && (
-          <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>}
       </div>
     )
   }

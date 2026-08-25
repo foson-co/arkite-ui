@@ -22,7 +22,20 @@ export interface LoadingOverlayProps extends HTMLAttributes<HTMLDivElement> {
 
 /** Semi-transparent overlay with a centered spinner. Wrap around any element to indicate loading. */
 export const LoadingOverlay = forwardRef<HTMLDivElement, LoadingOverlayProps>(
-  ({ className, open, visible, blur = false, fullscreen = false, size = 'md', label, children, ...props }, ref) => {
+  (
+    {
+      className,
+      open,
+      visible,
+      blur = false,
+      fullscreen = false,
+      size = 'md',
+      label,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     if (open === undefined && visible !== undefined) {
       warnDeprecated('LoadingOverlay', 'visible', 'open')
     }
@@ -33,9 +46,7 @@ export const LoadingOverlay = forwardRef<HTMLDivElement, LoadingOverlayProps>(
       <>
         <Spinner size={size} />
         {label && (
-          <p className={cn('text-sm text-muted-foreground', !fullscreen && 'mt-2')}>
-            {label}
-          </p>
+          <p className={cn('text-muted-foreground text-sm', !fullscreen && 'mt-2')}>{label}</p>
         )}
       </>
     )
@@ -53,7 +64,7 @@ export const LoadingOverlay = forwardRef<HTMLDivElement, LoadingOverlayProps>(
         {...props}
       >
         {fullscreen ? (
-          <div className="flex flex-col items-center gap-3 rounded-lg border bg-background px-6 py-5 shadow-lg">
+          <div className="bg-background flex flex-col items-center gap-3 rounded-lg border px-6 py-5 shadow-lg">
             {content}
           </div>
         ) : (

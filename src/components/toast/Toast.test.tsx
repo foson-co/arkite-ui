@@ -42,9 +42,7 @@ describe('useToast', () => {
     const toasts = useToastStore.getState().toasts
     expect(toasts[0].variant).toBe('warning')
     expect(toasts[0].description).toBe('Legacy description')
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('warning(title, description)')
-    )
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('warning(title, description)'))
     warnSpy.mockRestore()
   })
 
@@ -143,9 +141,7 @@ describe('useToast', () => {
 
 describe('Toast component variants', () => {
   it('renders destructive variant with red styles', () => {
-    render(
-      <Toast id="t1" title="Boom" variant="destructive" onClose={() => {}} />
-    )
+    render(<Toast id="t1" title="Boom" variant="destructive" onClose={() => {}} />)
     const alert = screen.getByRole('alert')
     expect(alert.className).toContain('bg-destructive-soft')
     expect(alert.className).toContain('text-destructive-soft-foreground')
@@ -164,9 +160,7 @@ describe('Toast component variants', () => {
   })
 
   it('accepts a custom className', () => {
-    render(
-      <Toast id="t2" title="Styled" className="my-custom" onClose={() => {}} />
-    )
+    render(<Toast id="t2" title="Styled" className="my-custom" onClose={() => {}} />)
     expect(screen.getByRole('alert').className).toContain('my-custom')
   })
 

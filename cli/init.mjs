@@ -44,10 +44,14 @@ function detectPM() {
 function installCmd(pm, deps) {
   const d = deps.join(' ')
   switch (pm) {
-    case 'bun': return `bun add ${d}`
-    case 'pnpm': return `pnpm add ${d}`
-    case 'yarn': return `yarn add ${d}`
-    default: return `npm install ${d}`
+    case 'bun':
+      return `bun add ${d}`
+    case 'pnpm':
+      return `pnpm add ${d}`
+    case 'yarn':
+      return `yarn add ${d}`
+    default:
+      return `npm install ${d}`
   }
 }
 
@@ -95,13 +99,7 @@ log(`Detected package manager: ${pm}`)
 
 // ─── Step 1: Install dependencies ───
 
-const deps = [
-  '@arkite-ui/core',
-  'lucide-react',
-  'tailwindcss@^4',
-  'tw-animate-css',
-  'zustand',
-]
+const deps = ['@arkite-ui/core', 'lucide-react', 'tailwindcss@^4', 'tw-animate-css', 'zustand']
 
 if (dryRun) {
   log(`(dry-run) skipping install, would run: ${installCmd(pm, deps)}`)
@@ -194,8 +192,10 @@ export function setupTheme(dark = false) {
 // ─── Step 4: Check for CSS import ───
 
 const possibleEntries = [
-  'src/main.tsx', 'src/main.ts',
-  'src/index.tsx', 'src/index.ts',
+  'src/main.tsx',
+  'src/main.ts',
+  'src/index.tsx',
+  'src/index.ts',
   'src/app/layout.tsx',
 ]
 
@@ -212,7 +212,9 @@ if (entryFile) {
   const content = readFileSync(entryFile, 'utf-8')
   if (!content.includes('arkite.css') && !content.includes('@arkite-ui/core/styles')) {
     warn(`Don't forget to import the CSS in your entry file:`)
-    console.log(`  \x1b[2mimport './styles/arkite.css'\x1b[0m  \x1b[90m// add to ${entryFile}\x1b[0m`)
+    console.log(
+      `  \x1b[2mimport './styles/arkite.css'\x1b[0m  \x1b[90m// add to ${entryFile}\x1b[0m`
+    )
   }
 }
 

@@ -44,7 +44,7 @@ export const A = () => <Alert variant="destructive" onClose={close}>msg</Alert>
     expect(hit(outcome, 'alert-onclose').changes).toBe(1)
   })
 
-  it('variant={\'error\'} 表達式形式也會轉換並保留單引號', () => {
+  it("variant={'error'} 表達式形式也會轉換並保留單引號", () => {
     const { text } = apply(
       `import { Alert } from '@arkite-ui/core'
 export const A = () => <Alert variant={'error'} />
@@ -402,7 +402,9 @@ export const A = () => (
 )
 `
     )
-    expect(text).toContain('<TenantSwitcher tenants={tenants} value={tenant} onChange={setTenant} />')
+    expect(text).toContain(
+      '<TenantSwitcher tenants={tenants} value={tenant} onChange={setTenant} />'
+    )
   })
 })
 
@@ -614,9 +616,7 @@ export const f = (e: unknown) => toast.error(\`儲存失敗:\${getErrorMessage(e
       const report = runCodemod(dir, { ruleSet: 'from-error' })
       expect(Object.keys(report.totals)).toEqual(['toast-from-error'])
       expect(report.totalChanges).toBe(1)
-      expect(fs.readFileSync(file, 'utf8')).toContain(
-        "toast.fromError(e, { prefix: '儲存失敗' })"
-      )
+      expect(fs.readFileSync(file, 'utf8')).toContain("toast.fromError(e, { prefix: '儲存失敗' })")
     } finally {
       fs.rmSync(dir, { recursive: true, force: true })
     }
@@ -693,7 +693,7 @@ export const Own = () => <Alert variant="error" />
       expect(after).toContain('variant="destructive"')
       expect(after).toContain('onClose={notify}')
       expect(after).toContain('<Switch checked />')
-      expect(after).toContain("import { Alert, DataTable, TenantSwitcher, Switch, useToast }")
+      expect(after).toContain('import { Alert, DataTable, TenantSwitcher, Switch, useToast }')
       expect(after).toContain('renderExpandedRow={(row) => <p>{row}</p>}')
       expect(after).toContain('value={t} onChange={setT}')
       expect(after).toContain("toast.success('OK', { description: '完成' })")

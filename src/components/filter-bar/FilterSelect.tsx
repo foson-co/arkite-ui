@@ -3,8 +3,10 @@ import { cn } from '../../utils/cn'
 import { Select, type SelectOption, type SelectSize } from '../select'
 import { useLocale } from '../../locale'
 
-export interface FilterSelectProps
-  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size' | 'onChange'> {
+export interface FilterSelectProps extends Omit<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  'size' | 'onChange'
+> {
   /** Filter label — shown as prefix in the "all" option (e.g. "狀態: 全部") */
   label?: string
   /** Options list */
@@ -24,18 +26,7 @@ export interface FilterSelectProps
  * the value string directly instead of a change event.
  */
 export const FilterSelect = forwardRef<HTMLSelectElement, FilterSelectProps>(
-  (
-    {
-      className,
-      label,
-      options = [],
-      allLabel,
-      size = 'sm',
-      onChange,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, label, options = [], allLabel, size = 'sm', onChange, ...props }, ref) => {
     const locale = useLocale()
     const mergedOptions = useMemo(() => {
       if (allLabel === false) return options

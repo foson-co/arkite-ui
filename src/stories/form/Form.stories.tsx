@@ -100,7 +100,9 @@ export const Disabled: StoryFn = () => (
     </FormField>
 
     <FormActions>
-      <Button variant="primary" disabled>Save</Button>
+      <Button variant="primary" disabled>
+        Save
+      </Button>
     </FormActions>
   </Form>
 )
@@ -131,7 +133,9 @@ const SubmittingDemo = () => {
       </FormField>
 
       <FormActions>
-        <Button variant="outline" disabled={submitting}>Cancel</Button>
+        <Button variant="outline" disabled={submitting}>
+          Cancel
+        </Button>
         <Button variant="primary" type="submit" loading={submitting}>
           {submitting ? 'Saving...' : 'Save'}
         </Button>
@@ -210,7 +214,9 @@ const ValidationDemo = () => {
       </FormSection>
 
       <FormActions>
-        <Button variant="primary" type="submit">Register</Button>
+        <Button variant="primary" type="submit">
+          Register
+        </Button>
       </FormActions>
     </Form>
   )
@@ -223,22 +229,30 @@ export const MultiSection: StoryFn = () => (
     <FormSection title="Personal Info" description="Basic personal details">
       <FormField name="firstName">
         <FormLabel required>First Name</FormLabel>
-        <FormControl><Input placeholder="John" /></FormControl>
+        <FormControl>
+          <Input placeholder="John" />
+        </FormControl>
       </FormField>
       <FormField name="lastName">
         <FormLabel required>Last Name</FormLabel>
-        <FormControl><Input placeholder="Doe" /></FormControl>
+        <FormControl>
+          <Input placeholder="Doe" />
+        </FormControl>
       </FormField>
     </FormSection>
 
     <FormSection title="Company" description="Your organization details">
       <FormField name="company">
         <FormLabel>Company Name</FormLabel>
-        <FormControl><Input placeholder="Acme Inc." /></FormControl>
+        <FormControl>
+          <Input placeholder="Acme Inc." />
+        </FormControl>
       </FormField>
       <FormField name="role">
         <FormLabel>Job Title</FormLabel>
-        <FormControl><Input placeholder="Software Engineer" /></FormControl>
+        <FormControl>
+          <Input placeholder="Software Engineer" />
+        </FormControl>
       </FormField>
     </FormSection>
 

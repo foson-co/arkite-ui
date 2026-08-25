@@ -3,8 +3,10 @@ import { cn } from '../../utils/cn'
 import { useLocale } from '../../locale'
 import { useGridKeyboard, toDayKey } from './use-grid-keyboard'
 
-export interface CalendarProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect' | 'defaultValue'> {
+export interface CalendarProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onSelect' | 'defaultValue'
+> {
   /** Selected date */
   value?: Date | null
   /** Initial selected date for uncontrolled usage */
@@ -30,9 +32,11 @@ export interface CalendarProps
 }
 
 function isSameDay(a: Date, b: Date): boolean {
-  return a.getFullYear() === b.getFullYear() &&
+  return (
+    a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate()
+  )
 }
 
 function getDaysInMonth(year: number, month: number): number {
@@ -89,9 +93,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
     const gridRef = useRef<HTMLDivElement>(null)
     const monthLabelId = useId()
     const isValueControlled = value !== undefined
-    const [internalValue, setInternalValue] = useState<Date | null>(
-      defaultValue ?? null
-    )
+    const [internalValue, setInternalValue] = useState<Date | null>(defaultValue ?? null)
     const currentValue = isValueControlled ? (value ?? null) : internalValue
     const [uncontrolledMonth, setUncontrolledMonth] = useState(
       () => defaultMonth ?? currentValue ?? new Date()
@@ -166,15 +168,15 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
     return (
       <div
         ref={ref}
-        className={cn('w-[280px] rounded-lg border bg-card p-3', className)}
+        className={cn('bg-card w-[280px] rounded-lg border p-3', className)}
         {...props}
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3 flex items-center justify-between">
           <button
             type="button"
             onClick={goToPreviousMonth}
-            className="h-7 w-7 flex items-center justify-center rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            className="hover:bg-muted text-muted-foreground hover:text-foreground flex h-7 w-7 items-center justify-center rounded-md transition-colors"
             aria-label={locale.calendar.previousMonth}
           >
             <ChevronLeftIcon />
@@ -185,7 +187,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
           <button
             type="button"
             onClick={goToNextMonth}
-            className="h-7 w-7 flex items-center justify-center rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            className="hover:bg-muted text-muted-foreground hover:text-foreground flex h-7 w-7 items-center justify-center rounded-md transition-colors"
             aria-label={locale.calendar.nextMonth}
           >
             <ChevronRightIcon />
@@ -193,12 +195,9 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
         </div>
 
         {/* Weekday headers */}
-        <div className="grid grid-cols-7 mb-1">
+        <div className="mb-1 grid grid-cols-7">
           {weekdays.map((day) => (
-            <div
-              key={day}
-              className="text-center text-xs font-medium text-muted-foreground py-1"
-            >
+            <div key={day} className="text-muted-foreground py-1 text-center text-xs font-medium">
               {day}
             </div>
           ))}
@@ -234,12 +233,12 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
                       }}
                       onKeyDown={(event) => handleDayKeyDown(event, date)}
                       className={cn(
-                        'h-8 w-8 mx-auto flex items-center justify-center rounded-md text-sm transition-colors',
-                        'hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                        'mx-auto flex h-8 w-8 items-center justify-center rounded-md text-sm transition-colors',
+                        'hover:bg-muted focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
                         isSelected && 'bg-primary text-primary-foreground hover:bg-primary/90',
-                        !isSelected && isToday && 'border border-primary text-primary font-medium',
+                        !isSelected && isToday && 'border-primary text-primary border font-medium',
                         !isSelected && highlighted && 'bg-primary/10 text-foreground font-medium',
-                        disabled && 'opacity-30 pointer-events-none'
+                        disabled && 'pointer-events-none opacity-30'
                       )}
                     >
                       {date.getDate()}

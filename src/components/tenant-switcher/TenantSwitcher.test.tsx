@@ -4,8 +4,22 @@ import { describe, it, expect, vi } from 'vitest'
 import { TenantSwitcher, type TenantItem } from './TenantSwitcher'
 
 const tenants: TenantItem[] = [
-  { id: '1', name: 'Acme Corp', slug: 'acme', status: 'active', statusVariant: 'success', planLabel: 'Pro' },
-  { id: '2', name: 'Beta Inc', slug: 'beta', status: 'trial', statusVariant: 'warning', planLabel: 'Free' },
+  {
+    id: '1',
+    name: 'Acme Corp',
+    slug: 'acme',
+    status: 'active',
+    statusVariant: 'success',
+    planLabel: 'Pro',
+  },
+  {
+    id: '2',
+    name: 'Beta Inc',
+    slug: 'beta',
+    status: 'trial',
+    statusVariant: 'warning',
+    planLabel: 'Free',
+  },
   { id: '3', name: 'Gamma Ltd', slug: 'gamma' },
 ]
 
@@ -88,9 +102,7 @@ describe('TenantSwitcher', () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
       render(<TenantSwitcher tenants={tenants} currentTenant={tenants[0]} />)
       expect(screen.getByText('Acme Corp')).toBeInTheDocument()
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('`currentTenant` is deprecated')
-      )
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('`currentTenant` is deprecated'))
       warnSpy.mockRestore()
     })
 
@@ -98,9 +110,7 @@ describe('TenantSwitcher', () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
       const onSelect = vi.fn()
       render(<TenantSwitcher tenants={tenants} onSelect={onSelect} />)
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('`onSelect` is deprecated')
-      )
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('`onSelect` is deprecated'))
       warnSpy.mockRestore()
       await userEvent.click(getTrigger())
       await userEvent.click(screen.getByText('Beta Inc'))
@@ -108,9 +118,7 @@ describe('TenantSwitcher', () => {
     })
 
     it('prefers value over deprecated currentTenant when both provided', () => {
-      render(
-        <TenantSwitcher tenants={tenants} value={tenants[1]} currentTenant={tenants[0]} />
-      )
+      render(<TenantSwitcher tenants={tenants} value={tenants[1]} currentTenant={tenants[0]} />)
       expect(screen.getByText('Beta Inc')).toBeInTheDocument()
       expect(screen.queryByText('Acme Corp')).not.toBeInTheDocument()
     })

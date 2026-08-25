@@ -69,26 +69,14 @@ export const Disabled: StoryFn = () => {
   const nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7)
 
   return (
-    <DateRangePicker
-      startDate={today}
-      endDate={nextWeek}
-      disabled
-      aria-label="Select date range"
-    />
+    <DateRangePicker startDate={today} endDate={nextWeek} disabled aria-label="Select date range" />
   )
 }
 
 // ── With Error ──
 
 export const WithError: StoryFn = () => {
-  return (
-    <DateRangePicker
-      startDate={null}
-      endDate={null}
-      error
-      aria-label="Select date range"
-    />
-  )
+  return <DateRangePicker startDate={null} endDate={null} error aria-label="Select date range" />
 }
 
 // ── Small Size ──
@@ -182,7 +170,9 @@ function InFilterBarDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-2 text-sm font-medium">labelPlacement=&quot;top&quot; — inputs sit 10px lower than the select</p>
+        <p className="mb-2 text-sm font-medium">
+          labelPlacement=&quot;top&quot; — inputs sit 10px lower than the select
+        </p>
         <FilterBar>
           <FilterBarFilters>
             <FilterSelect
@@ -198,7 +188,9 @@ function InFilterBarDemo() {
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium">labelPlacement=&quot;inside&quot; — one aligned row</p>
+        <p className="mb-2 text-sm font-medium">
+          labelPlacement=&quot;inside&quot; — one aligned row
+        </p>
         <FilterBar>
           <FilterBarFilters>
             <FilterSelect

@@ -13,10 +13,7 @@ export const InlineCode = forwardRef<HTMLElement, InlineCodeProps>(
   ({ className, as: Tag = 'code', ...props }, ref) => (
     <Tag
       ref={ref as React.Ref<HTMLElement>}
-      className={cn(
-        'rounded bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground',
-        className
-      )}
+      className={cn('bg-muted text-foreground rounded px-1.5 py-0.5 font-mono text-xs', className)}
       {...props}
     />
   )

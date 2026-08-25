@@ -28,11 +28,13 @@ export interface ActionItem {
   /** Button variant (inline mode) / destructive styling (dropdown mode) */
   variant?: ButtonVariant
   /** Show confirmation dialog before executing */
-  confirm?: boolean | {
-    title?: string
-    description?: string
-    confirmLabel?: string
-  }
+  confirm?:
+    | boolean
+    | {
+        title?: string
+        description?: string
+        confirmLabel?: string
+      }
   /** Click handler */
   onClick: () => void | Promise<void>
   /** Disabled state */
@@ -71,15 +73,7 @@ function MoreHorizontalIcon({ className }: { className?: string }) {
 
 /** Renders a list of actions as inline buttons or a dropdown menu with optional confirmation dialogs. */
 export const ActionButtons = forwardRef<HTMLElement, ActionButtonsProps>(function ActionButtons(
-  {
-    actions,
-    mode = 'dropdown',
-    triggerLabel,
-    triggerIcon,
-    size = 'sm',
-    className,
-    ...rest
-  },
+  { actions, mode = 'dropdown', triggerLabel, triggerIcon, size = 'sm', className, ...rest },
   ref
 ) {
   const locale = useLocale()
@@ -109,7 +103,8 @@ export const ActionButtons = forwardRef<HTMLElement, ActionButtonsProps>(functio
 
   const confirmConfig = confirmAction?.confirm
   const confirmTitle = typeof confirmConfig === 'object' ? confirmConfig.title : undefined
-  const confirmDescription = typeof confirmConfig === 'object' ? confirmConfig.description : undefined
+  const confirmDescription =
+    typeof confirmConfig === 'object' ? confirmConfig.description : undefined
   const confirmLabel = typeof confirmConfig === 'object' ? confirmConfig.confirmLabel : undefined
   const isDestructiveAction = confirmAction?.variant === 'destructive'
 

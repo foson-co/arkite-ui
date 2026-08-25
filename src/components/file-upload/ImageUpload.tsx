@@ -68,16 +68,13 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
     if (typeof error === 'string' && errorMessage === undefined) {
       warnDeprecated('ImageUpload', 'error', 'errorMessage')
     }
-    const resolvedErrorMessage =
-      errorMessage ?? (typeof error === 'string' ? error : undefined)
+    const resolvedErrorMessage = errorMessage ?? (typeof error === 'string' ? error : undefined)
     const hasError = Boolean(error)
 
     const isSingle = max === 1
     const isFull = max != null && value.length >= max
 
-    const defaultPlaceholder = isSingle
-      ? locale.fileUpload.uploadImage
-      : locale.fileUpload.addImage
+    const defaultPlaceholder = isSingle ? locale.fileUpload.uploadImage : locale.fileUpload.addImage
 
     const handleFiles = (fileList: FileList | null) => {
       if (!fileList || disabled) return
@@ -128,7 +125,7 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
     const hiddenInput = (
       <input
         ref={(node) => {
-          (inputRef as React.MutableRefObject<HTMLInputElement | null>).current = node
+          ;(inputRef as React.MutableRefObject<HTMLInputElement | null>).current = node
           if (typeof ref === 'function') ref(node)
           else if (ref) ref.current = node
         }}
@@ -152,11 +149,7 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
           {hiddenInput}
           {url ? (
             <div className="group relative inline-block overflow-hidden rounded-lg border">
-              <img
-                src={url}
-                alt={locale.fileUpload.preview}
-                className="h-32 w-32 object-cover"
-              />
+              <img src={url} alt={locale.fileUpload.preview} className="h-32 w-32 object-cover" />
               {loadingUrls.includes(url) && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/40">
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
@@ -174,7 +167,7 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
                   <button
                     type="button"
                     onClick={() => onRemove?.(url)}
-                    className="rounded-md bg-white/90 px-2 py-1 text-xs font-medium text-destructive hover:bg-white"
+                    className="text-destructive rounded-md bg-white/90 px-2 py-1 text-xs font-medium hover:bg-white"
                   >
                     {locale.fileUpload.remove}
                   </button>
@@ -199,8 +192,8 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
                 disabled && 'pointer-events-none opacity-50'
               )}
             >
-              <ImageIcon className="h-6 w-6 text-muted-foreground" />
-              <span className="text-xs text-muted-foreground">
+              <ImageIcon className="text-muted-foreground h-6 w-6" />
+              <span className="text-muted-foreground text-xs">
                 {placeholder || defaultPlaceholder}
               </span>
               {maxSize && (
@@ -211,8 +204,8 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
             </button>
           )}
           {resolvedErrorMessage && (
-          <p className="text-xs text-destructive">{resolvedErrorMessage}</p>
-        )}
+            <p className="text-destructive text-xs">{resolvedErrorMessage}</p>
+          )}
         </div>
       )
     }
@@ -223,15 +216,8 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
         {hiddenInput}
         <div className="flex flex-wrap gap-3">
           {value.map((url) => (
-            <div
-              key={url}
-              className="group relative overflow-hidden rounded-lg border"
-            >
-              <img
-                src={url}
-                alt={locale.fileUpload.preview}
-                className="h-24 w-24 object-cover"
-              />
+            <div key={url} className="group relative overflow-hidden rounded-lg border">
+              <img src={url} alt={locale.fileUpload.preview} className="h-24 w-24 object-cover" />
               {loadingUrls.includes(url) && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/40">
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
@@ -241,7 +227,7 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
                 <button
                   type="button"
                   onClick={() => onRemove?.(url)}
-                  className="absolute right-1 top-1 rounded-full bg-black/60 p-0.5 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100"
+                  className="absolute top-1 right-1 rounded-full bg-black/60 p-0.5 text-white opacity-0 transition-opacity group-hover:opacity-100 hover:bg-black/80"
                   aria-label={locale.fileUpload.removeImage}
                 >
                   <X className="h-3.5 w-3.5" />
@@ -268,7 +254,7 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
                 disabled && 'pointer-events-none opacity-50'
               )}
             >
-              <Plus className="h-5 w-5 text-muted-foreground" />
+              <Plus className="text-muted-foreground h-5 w-5" />
               <span className="text-2xs text-muted-foreground">
                 {placeholder || defaultPlaceholder}
               </span>
@@ -276,13 +262,11 @@ export const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>(
           )}
         </div>
         {max && (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {value.length} / {max}
           </p>
         )}
-        {resolvedErrorMessage && (
-          <p className="text-xs text-destructive">{resolvedErrorMessage}</p>
-        )}
+        {resolvedErrorMessage && <p className="text-destructive text-xs">{resolvedErrorMessage}</p>}
       </div>
     )
   }

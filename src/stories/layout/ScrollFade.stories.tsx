@@ -18,8 +18,17 @@ export default meta
 type Story = StoryObj<typeof ScrollFade>
 
 const SECTIONS = [
-  '總覽', '技術面', '籌碼面', '財報', '月營收', '法人動向', '融資融券',
-  '同業比較', '事件與新聞', '量化評分', '回測',
+  '總覽',
+  '技術面',
+  '籌碼面',
+  '財報',
+  '月營收',
+  '法人動向',
+  '融資融券',
+  '同業比較',
+  '事件與新聞',
+  '量化評分',
+  '回測',
 ]
 
 /** Sub-navigation that outgrows narrow viewports — the common case. */
@@ -33,7 +42,7 @@ export const PillRow: Story = {
               key={s}
               variant={i === 0 ? 'primary' : 'ghost'}
               size="sm"
-              className="whitespace-nowrap rounded-full"
+              className="rounded-full whitespace-nowrap"
             >
               {s}
             </Button>
@@ -52,7 +61,7 @@ export const PillRow: Story = {
 export const FullBleed: Story = {
   render: () => (
     <div className="max-w-[420px] rounded-lg border px-6 py-4">
-      <p className="mb-3 text-sm text-muted-foreground">Padded content sits at 24px.</p>
+      <p className="text-muted-foreground mb-3 text-sm">Padded content sits at 24px.</p>
       <ScrollFade className="-mx-6" scrollClassName="px-6">
         <div className="flex w-max gap-2">
           {SECTIONS.map((s) => (

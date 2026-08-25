@@ -1,15 +1,8 @@
-import {
-  forwardRef,
-  useCallback,
-  useState,
-  type HTMLAttributes,
-  type ReactNode,
-} from 'react'
+import { forwardRef, useCallback, useState, type HTMLAttributes, type ReactNode } from 'react'
 import { ChevronRight } from 'lucide-react'
 import { cn } from '../../utils/cn'
 
-export interface CollapsibleSectionProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface CollapsibleSectionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Section title displayed in the header */
   title: ReactNode
   /** Content to show/hide when toggling */
@@ -34,10 +27,7 @@ export interface CollapsibleSectionProps
  * Supports both controlled (`open` / `onOpenChange`) and uncontrolled (`defaultOpen`) modes.
  * Unlike Accordion, each CollapsibleSection operates independently.
  */
-export const CollapsibleSection = forwardRef<
-  HTMLDivElement,
-  CollapsibleSectionProps
->(
+export const CollapsibleSection = forwardRef<HTMLDivElement, CollapsibleSectionProps>(
   (
     {
       title,
@@ -70,7 +60,7 @@ export const CollapsibleSection = forwardRef<
       <div
         ref={ref}
         className={cn(
-          'rounded-lg border bg-card text-card-foreground',
+          'bg-card text-card-foreground rounded-lg border',
           disabled && 'opacity-50',
           className
         )}
@@ -89,24 +79,20 @@ export const CollapsibleSection = forwardRef<
             disabled={disabled}
             onClick={handleToggle}
             className={cn(
-              'flex flex-1 min-w-0 items-center gap-2 text-left select-none',
-              rightSlot ? 'py-4 pl-4 pr-2' : 'p-4',
+              'flex min-w-0 flex-1 items-center gap-2 text-left select-none',
+              rightSlot ? 'py-4 pr-2 pl-4' : 'p-4',
               !disabled && 'cursor-pointer'
             )}
           >
             <ChevronRight
               className={cn(
-                'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                'text-muted-foreground h-4 w-4 shrink-0 transition-transform duration-200',
                 isOpen && 'rotate-90'
               )}
             />
-            <div className="flex-1 min-w-0">
+            <div className="min-w-0 flex-1">
               <span className="text-sm font-medium">{title}</span>
-              {description && (
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {description}
-                </p>
-              )}
+              {description && <p className="text-muted-foreground mt-0.5 text-xs">{description}</p>}
             </div>
           </button>
           {rightSlot && <div className="shrink-0 pr-4">{rightSlot}</div>}

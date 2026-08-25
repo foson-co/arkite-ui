@@ -11,11 +11,7 @@ function channelToLinear(v: number): number {
 }
 
 function luminanceFromRgb([r, g, b]: [number, number, number]): number {
-  return (
-    0.2126 * channelToLinear(r) +
-    0.7152 * channelToLinear(g) +
-    0.0722 * channelToLinear(b)
-  )
+  return 0.2126 * channelToLinear(r) + 0.7152 * channelToLinear(g) + 0.0722 * channelToLinear(b)
 }
 
 /** Luminance of a `#rrggbb` hex color. */

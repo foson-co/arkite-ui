@@ -13,7 +13,10 @@ describe('ViewToggle', () => {
   it('marks current value as checked', () => {
     render(<ViewToggle value="card" onChange={() => {}} />)
     expect(screen.getByRole('radio', { name: 'Card view' })).toHaveAttribute('aria-checked', 'true')
-    expect(screen.getByRole('radio', { name: 'Table view' })).toHaveAttribute('aria-checked', 'false')
+    expect(screen.getByRole('radio', { name: 'Table view' })).toHaveAttribute(
+      'aria-checked',
+      'false'
+    )
   })
 
   it('calls onChange when clicking a different option', async () => {
@@ -49,7 +52,10 @@ describe('ViewToggle uncontrolled', () => {
 
     expect(onChange).toHaveBeenCalledWith('card')
     expect(screen.getByRole('radio', { name: 'Card view' })).toHaveAttribute('aria-checked', 'true')
-    expect(screen.getByRole('radio', { name: 'Table view' })).toHaveAttribute('aria-checked', 'false')
+    expect(screen.getByRole('radio', { name: 'Table view' })).toHaveAttribute(
+      'aria-checked',
+      'false'
+    )
   })
 
   it('remains controlled when value is provided', async () => {
@@ -58,6 +64,9 @@ describe('ViewToggle uncontrolled', () => {
     await userEvent.click(screen.getByRole('radio', { name: 'Card view' }))
 
     expect(onChange).toHaveBeenCalledWith('card')
-    expect(screen.getByRole('radio', { name: 'Table view' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByRole('radio', { name: 'Table view' })).toHaveAttribute(
+      'aria-checked',
+      'true'
+    )
   })
 })

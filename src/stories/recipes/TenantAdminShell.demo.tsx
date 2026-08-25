@@ -58,9 +58,23 @@ const NAVIGATION: AdminNavGroup[] = [
 ]
 
 const TENANTS: TenantItem[] = [
-  { id: 't1', name: '宏達物流', slug: 'hongda', planLabel: 'Enterprise', status: '啟用', statusVariant: 'success' },
+  {
+    id: 't1',
+    name: '宏達物流',
+    slug: 'hongda',
+    planLabel: 'Enterprise',
+    status: '啟用',
+    statusVariant: 'success',
+  },
   { id: 't2', name: '晨星文創', slug: 'morningstar', planLabel: 'Pro' },
-  { id: 't3', name: '青田餐飲', slug: 'aozora', planLabel: 'Starter', status: '試用', statusVariant: 'warning' },
+  {
+    id: 't3',
+    name: '青田餐飲',
+    slug: 'aozora',
+    planLabel: 'Starter',
+    status: '試用',
+    statusVariant: 'warning',
+  },
 ]
 
 /**

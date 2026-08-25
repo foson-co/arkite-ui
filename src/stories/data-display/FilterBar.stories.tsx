@@ -39,7 +39,9 @@ export const Default: Story = {
         </Select>
       </FilterBarFilters>
       <FilterBarActions>
-        <Button size="sm" variant="outline">Export</Button>
+        <Button size="sm" variant="outline">
+          Export
+        </Button>
         <Button size="sm">Add Order</Button>
       </FilterBarActions>
     </FilterBar>
@@ -66,11 +68,7 @@ function ActiveFiltersDemo() {
   return (
     <div className="space-y-3">
       <FilterBar>
-        <FilterBarSearch
-          placeholder="Search products..."
-          value={query}
-          onChange={setQuery}
-        />
+        <FilterBarSearch placeholder="Search products..." value={query} onChange={setQuery} />
         <FilterBarFilters>
           <Select
             size="sm"
@@ -87,7 +85,10 @@ function ActiveFiltersDemo() {
             <Button
               size="sm"
               variant="ghost"
-              onClick={() => { setStatus(''); setQuery('') }}
+              onClick={() => {
+                setStatus('')
+                setQuery('')
+              }}
             >
               Clear filters
             </Button>
@@ -99,10 +100,18 @@ function ActiveFiltersDemo() {
       </FilterBar>
 
       {hasFilters && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-2 text-sm">
           Active filters:
-          {query && <Badge variant="secondary" size="sm">Search: {query}</Badge>}
-          {status && <Badge variant="secondary" size="sm">Status: {status}</Badge>}
+          {query && (
+            <Badge variant="secondary" size="sm">
+              Search: {query}
+            </Badge>
+          )}
+          {status && (
+            <Badge variant="secondary" size="sm">
+              Status: {status}
+            </Badge>
+          )}
         </div>
       )}
     </div>
@@ -132,7 +141,9 @@ export const FiltersOnly: Story = {
         </Select>
       </FilterBarFilters>
       <FilterBarActions>
-        <Button size="sm" variant="outline">Export CSV</Button>
+        <Button size="sm" variant="outline">
+          Export CSV
+        </Button>
       </FilterBarActions>
     </FilterBar>
   ),

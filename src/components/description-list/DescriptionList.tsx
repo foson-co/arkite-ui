@@ -1,10 +1,4 @@
-import {
-  createContext,
-  forwardRef,
-  useContext,
-  type HTMLAttributes,
-  type ReactNode,
-} from 'react'
+import { createContext, forwardRef, useContext, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../../utils/cn'
 
 // ---------------------------------------------------------------------------
@@ -73,15 +67,13 @@ export const DescriptionItem = forwardRef<HTMLDivElement, DescriptionItemProps>(
         ref={ref}
         className={cn(
           'flex items-baseline justify-between py-3',
-          divider && 'border-b border-border last:border-b-0',
+          divider && 'border-border border-b last:border-b-0',
           className
         )}
         {...props}
       >
-        <dt className="shrink-0 text-sm text-muted-foreground">{label}</dt>
-        <dd className="text-sm font-medium text-foreground text-right">
-          {content}
-        </dd>
+        <dt className="text-muted-foreground shrink-0 text-sm">{label}</dt>
+        <dd className="text-foreground text-right text-sm font-medium">{content}</dd>
       </div>
     )
   }

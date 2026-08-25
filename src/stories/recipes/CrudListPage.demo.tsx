@@ -24,7 +24,10 @@ interface Order {
   amount: number
 }
 
-const STATUS_META: Record<Order['status'], { label: string; variant: 'success' | 'warning' | 'secondary' }> = {
+const STATUS_META: Record<
+  Order['status'],
+  { label: string; variant: 'success' | 'warning' | 'secondary' }
+> = {
   paid: { label: 'Paid', variant: 'success' },
   pending: { label: 'Pending', variant: 'warning' },
   refunded: { label: 'Refunded', variant: 'secondary' },
@@ -73,7 +76,9 @@ export function CrudListPage() {
     {
       key: 'status',
       header: 'Status',
-      cell: (o) => <Badge variant={STATUS_META[o.status].variant}>{STATUS_META[o.status].label}</Badge>,
+      cell: (o) => (
+        <Badge variant={STATUS_META[o.status].variant}>{STATUS_META[o.status].label}</Badge>
+      ),
     },
     {
       key: 'amount',
@@ -92,12 +97,9 @@ export function CrudListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="bg-background min-h-screen p-6">
       <div className="mx-auto flex max-w-5xl flex-col gap-4">
-        <PageHeader
-          title="Orders"
-          description="Search, filter, and manage customer orders."
-        />
+        <PageHeader title="Orders" description="Search, filter, and manage customer orders." />
 
         <FilterBar>
           <FilterBarSearch placeholder="Search orders..." value={search} onChange={setSearch} />

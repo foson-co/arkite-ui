@@ -26,8 +26,7 @@ export interface TreeNode {
   icon?: ReactNode
 }
 
-export interface TreeProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
+export interface TreeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
   /** Tree data */
   data: TreeNode[]
   /** Default expanded keys (uncontrolled) */
@@ -75,9 +74,10 @@ function getDescendantKeys(node: TreeNode): string[] {
 /** Build a map from child key → parent key */
 function buildParentMap(nodes: TreeNode[]): Map<string, string> {
   const map = new Map<string, string>()
-  const stack: Array<{ node: TreeNode; parentKey: string | null }> = nodes.map(
-    (n) => ({ node: n, parentKey: null })
-  )
+  const stack: Array<{ node: TreeNode; parentKey: string | null }> = nodes.map((n) => ({
+    node: n,
+    parentKey: null,
+  }))
   while (stack.length) {
     const { node, parentKey } = stack.pop()!
     if (parentKey !== null) map.set(node.key, parentKey)
@@ -130,7 +130,7 @@ function TreeCheckbox({
       }}
       className={cn(
         'inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border transition-colors',
-        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40 focus-visible:ring-offset-0',
+        'focus-visible:ring-ring/40 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
         'disabled:cursor-not-allowed disabled:opacity-50',
         state !== 'unchecked'
           ? 'border-primary bg-primary text-primary-foreground'
@@ -183,10 +183,10 @@ function TreeNodeRow({
       tabIndex={0}
       className={cn(
         'flex h-8 items-center gap-1 px-2 text-sm select-none',
-        !node.disabled && 'cursor-pointer hover:bg-accent/50',
+        !node.disabled && 'hover:bg-accent/50 cursor-pointer',
         isSelected && 'bg-accent text-accent-foreground',
         node.disabled && 'cursor-not-allowed opacity-50',
-        showLines && 'border-l border-border'
+        showLines && 'border-border border-l'
       )}
       style={{ paddingLeft: level * 24 + 8 }}
       onClick={() => {
@@ -206,7 +206,7 @@ function TreeNodeRow({
         <button
           type="button"
           aria-label={`${expanded ? locale.tree.collapse : locale.tree.expand} ${typeof node.label === 'string' ? node.label : node.key}`}
-          className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-sm hover:bg-accent"
+          className="hover:bg-accent inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-sm"
           onClick={(e) => {
             e.stopPropagation()
             onToggleExpand(node.key)
@@ -215,7 +215,7 @@ function TreeNodeRow({
         >
           <ChevronRight
             className={cn(
-              'h-4 w-4 text-muted-foreground transition-transform duration-150',
+              'text-muted-foreground h-4 w-4 transition-transform duration-150',
               expanded && 'rotate-90'
             )}
           />
@@ -236,7 +236,7 @@ function TreeNodeRow({
 
       {/* Icon */}
       {node.icon && (
-        <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">
+        <span className="text-muted-foreground inline-flex h-4 w-4 shrink-0 items-center justify-center">
           {node.icon}
         </span>
       )}
@@ -281,10 +281,7 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(function Tree(
     () => new Set(defaultExpandedKeys)
   )
   const expandedSet = useMemo(
-    () =>
-      isExpandControlled
-        ? new Set(controlledExpandedKeys)
-        : uncontrolledExpanded,
+    () => (isExpandControlled ? new Set(controlledExpandedKeys) : uncontrolledExpanded),
     [isExpandControlled, controlledExpandedKeys, uncontrolledExpanded]
   )
 
@@ -306,8 +303,7 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(function Tree(
     () => new Set(defaultCheckedKeys)
   )
   const checkedSet = useMemo(
-    () =>
-      isCheckControlled ? new Set(controlledCheckedKeys) : uncontrolledChecked,
+    () => (isCheckControlled ? new Set(controlledCheckedKeys) : uncontrolledChecked),
     [isCheckControlled, controlledCheckedKeys, uncontrolledChecked]
   )
 
@@ -321,7 +317,8 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(function Tree(
       }
       const descendantKeys = getDescendantKeys(node)
       const checkedCount = descendantKeys.filter((k) => checkedSet.has(k)).length
-      if (checkedCount === 0) return checkedSet.has(node.key) && descendantKeys.length === 0 ? 'checked' : 'unchecked'
+      if (checkedCount === 0)
+        return checkedSet.has(node.key) && descendantKeys.length === 0 ? 'checked' : 'unchecked'
       if (checkedCount === descendantKeys.length) return 'checked'
       return 'indeterminate'
     },
@@ -370,7 +367,15 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(function Tree(
         onCheckChange(nextKeys)
       }
     },
-    [checkedSet, getCheckState, isCheckControlled, nodeMap, parentMap, onSelectionChange, onCheckChange]
+    [
+      checkedSet,
+      getCheckState,
+      isCheckControlled,
+      nodeMap,
+      parentMap,
+      onSelectionChange,
+      onCheckChange,
+    ]
   )
 
   /* ── Selected state ── */

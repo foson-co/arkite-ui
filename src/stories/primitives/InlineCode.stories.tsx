@@ -20,9 +20,9 @@ export const AsSpan: Story = {
 
 export const InParagraph: Story = {
   render: () => (
-    <p className="text-sm text-foreground">
-      Use <InlineCode>createTheme()</InlineCode> to generate a custom theme from a hex color,
-      then apply it with <InlineCode>applyTheme()</InlineCode>.
+    <p className="text-foreground text-sm">
+      Use <InlineCode>createTheme()</InlineCode> to generate a custom theme from a hex color, then
+      apply it with <InlineCode>applyTheme()</InlineCode>.
     </p>
   ),
 }
@@ -38,7 +38,7 @@ export const IdDisplay: Story = {
 
 export const KeyboardShortcut: Story = {
   render: () => (
-    <p className="text-sm text-foreground">
+    <p className="text-foreground text-sm">
       Press <InlineCode>Ctrl + K</InlineCode> to open the command palette.
     </p>
   ),

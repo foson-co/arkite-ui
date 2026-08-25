@@ -15,7 +15,7 @@ export const Default: StoryFn = () => {
   return (
     <div className="flex items-center gap-4">
       <ViewToggle value={view} onChange={setView} />
-      <span className="text-sm text-muted-foreground">Current: {view}</span>
+      <span className="text-muted-foreground text-sm">Current: {view}</span>
     </div>
   )
 }
@@ -33,7 +33,7 @@ export const WithContent: StoryFn = () => {
         <h3 className="text-lg font-semibold">Items</h3>
         <ViewToggle value={view} onChange={setView} />
       </div>
-      <div className="rounded-md border p-8 text-center text-sm text-muted-foreground">
+      <div className="text-muted-foreground rounded-md border p-8 text-center text-sm">
         {view === 'table' ? 'Table view content' : 'Card grid content'}
       </div>
     </div>

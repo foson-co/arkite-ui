@@ -74,7 +74,11 @@ describe('PinInput', () => {
     render(<PinInput length={4} onComplete={onComplete} />)
     await user.click(cells()[0])
     await user.paste('1a2b3c4d99')
-    expect(cells().map((c) => c.value).join('')).toBe('1234')
+    expect(
+      cells()
+        .map((c) => c.value)
+        .join('')
+    ).toBe('1234')
     expect(onComplete).toHaveBeenCalledWith('1234')
   })
 

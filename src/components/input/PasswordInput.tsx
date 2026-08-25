@@ -42,15 +42,11 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             onClick={toggle}
             aria-label={visible ? locale.passwordInput.hide : locale.passwordInput.show}
             className={cn(
-              'pointer-events-auto text-muted-foreground hover:text-foreground transition-colors',
+              'text-muted-foreground hover:text-foreground pointer-events-auto transition-colors',
               'disabled:pointer-events-none disabled:opacity-50'
             )}
           >
-            {visible ? (
-              <EyeOff className="h-4 w-4" />
-            ) : (
-              <Eye className="h-4 w-4" />
-            )}
+            {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
         }
         {...props}

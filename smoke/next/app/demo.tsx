@@ -1,15 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Badge,
-  Button,
-  DataTable,
-  DatePicker,
-  Modal,
-  toast,
-  type Column,
-} from '@arkite-ui/core'
+import { Badge, Button, DataTable, DatePicker, Modal, toast, type Column } from '@arkite-ui/core'
 
 interface Row {
   id: number

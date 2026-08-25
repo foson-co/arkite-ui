@@ -16,7 +16,10 @@ interface Deployment {
   duration: number
 }
 
-const STATUS_META: Record<Deployment['status'], { label: string; variant: 'success' | 'destructive' | 'info' }> = {
+const STATUS_META: Record<
+  Deployment['status'],
+  { label: string; variant: 'success' | 'destructive' | 'info' }
+> = {
   success: { label: 'Success', variant: 'success' },
   failed: { label: 'Failed', variant: 'destructive' },
   running: { label: 'Running', variant: 'info' },
@@ -103,7 +106,9 @@ export function ServerSideTable() {
     {
       key: 'status',
       header: 'Status',
-      cell: (d) => <Badge variant={STATUS_META[d.status].variant}>{STATUS_META[d.status].label}</Badge>,
+      cell: (d) => (
+        <Badge variant={STATUS_META[d.status].variant}>{STATUS_META[d.status].label}</Badge>
+      ),
     },
     {
       key: 'duration',
@@ -115,7 +120,7 @@ export function ServerSideTable() {
   ]
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="bg-background min-h-screen p-6">
       <div className="mx-auto flex max-w-4xl flex-col gap-4">
         <PageHeader
           title="Deployments"

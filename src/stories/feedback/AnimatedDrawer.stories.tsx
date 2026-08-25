@@ -23,15 +23,17 @@ const DefaultDemo = () => {
         description="Smooth slide animation powered by Framer Motion"
         footer={
           <>
-            <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
             <Button onClick={() => setOpen(false)}>Save</Button>
           </>
         }
       >
         <div className="space-y-4">
           <p className="text-muted-foreground">
-            This drawer slides in from the right with a spring-like easing curve.
-            The backdrop fades in simultaneously.
+            This drawer slides in from the right with a spring-like easing curve. The backdrop fades
+            in simultaneously.
           </p>
           <p className="text-muted-foreground">
             Try closing it — notice the smooth exit animation as well.

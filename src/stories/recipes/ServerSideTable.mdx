@@ -18,7 +18,7 @@ controlled props `page`/`onPageChange` + `sortState`/`onSortChange`, plus
 
 - **Uncontrolled vs controlled**: when all rows are already in memory, leave
   sorting/pagination uncontrolled and let the table do the work (see the
-  *CRUD List Page* recipe). The moment the server does it, the table can no
+  _CRUD List Page_ recipe). The moment the server does it, the table can no
   longer know the full ordering or the total — the query state must live
   where the fetch happens, so every one of these props becomes controlled.
 - `totalRows` tells the table "this data is already one processed page":

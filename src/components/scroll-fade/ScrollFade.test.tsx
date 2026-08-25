@@ -8,7 +8,11 @@ import { ScrollFade } from './ScrollFade'
  */
 function setMetrics(
   el: HTMLElement,
-  { scrollLeft, scrollWidth, clientWidth }: { scrollLeft: number; scrollWidth: number; clientWidth: number }
+  {
+    scrollLeft,
+    scrollWidth,
+    clientWidth,
+  }: { scrollLeft: number; scrollWidth: number; clientWidth: number }
 ) {
   Object.defineProperty(el, 'scrollWidth', { value: scrollWidth, configurable: true })
   Object.defineProperty(el, 'clientWidth', { value: clientWidth, configurable: true })
@@ -89,7 +93,14 @@ describe('ScrollFade', () => {
   it('forwards the ref to the scrolling element', () => {
     let node: HTMLDivElement | null = null
     const { container } = render(
-      <ScrollFade ref={(n) => { node = n }} data-testid="scroller">x</ScrollFade>
+      <ScrollFade
+        ref={(n) => {
+          node = n
+        }}
+        data-testid="scroller"
+      >
+        x
+      </ScrollFade>
     )
     expect(node).toBe(scrollerOf(container))
   })

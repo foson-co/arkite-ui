@@ -47,9 +47,7 @@ describe('ColorPicker', () => {
 
   it('renders preset swatches', () => {
     const presets = ['#ff0000', '#00ff00', '#0000ff']
-    render(
-      <ColorPicker value="#ff0000" onChange={vi.fn()} presets={presets} />
-    )
+    render(<ColorPicker value="#ff0000" onChange={vi.fn()} presets={presets} />)
     expect(screen.getByLabelText('Select color #ff0000')).toBeInTheDocument()
     expect(screen.getByLabelText('Select color #00ff00')).toBeInTheDocument()
     expect(screen.getByLabelText('Select color #0000ff')).toBeInTheDocument()
@@ -58,9 +56,7 @@ describe('ColorPicker', () => {
   it('calls onChange when a preset is clicked', async () => {
     const onChange = vi.fn()
     const presets = ['#ff0000', '#00ff00', '#0000ff']
-    render(
-      <ColorPicker value="#000000" onChange={onChange} presets={presets} />
-    )
+    render(<ColorPicker value="#000000" onChange={onChange} presets={presets} />)
     await userEvent.click(screen.getByLabelText('Select color #00ff00'))
     expect(onChange).toHaveBeenCalledWith('#00ff00')
   })
@@ -72,14 +68,7 @@ describe('ColorPicker', () => {
 
   it('disables all controls when disabled', () => {
     const presets = ['#ff0000']
-    render(
-      <ColorPicker
-        value="#ff0000"
-        onChange={vi.fn()}
-        disabled
-        presets={presets}
-      />
-    )
+    render(<ColorPicker value="#ff0000" onChange={vi.fn()} disabled presets={presets} />)
     expect(screen.getByLabelText('Pick a color')).toBeDisabled()
     expect(screen.getByLabelText('Hex color value')).toBeDisabled()
     expect(screen.getByLabelText('Select color #ff0000')).toBeDisabled()
@@ -93,14 +82,7 @@ describe('ColorPicker', () => {
 
   it('does not call onChange on preset click when disabled', async () => {
     const onChange = vi.fn()
-    render(
-      <ColorPicker
-        value="#000000"
-        onChange={onChange}
-        disabled
-        presets={['#ff0000']}
-      />
-    )
+    render(<ColorPicker value="#000000" onChange={onChange} disabled presets={['#ff0000']} />)
     // Button is disabled so click won't fire handler
     const presetBtn = screen.getByLabelText('Select color #ff0000')
     await userEvent.click(presetBtn)
@@ -108,14 +90,7 @@ describe('ColorPicker', () => {
   })
 
   it('renders errorMessage text', () => {
-    render(
-      <ColorPicker
-        value="#ff0000"
-        onChange={vi.fn()}
-        error
-        errorMessage="Invalid color"
-      />
-    )
+    render(<ColorPicker value="#ff0000" onChange={vi.fn()} error errorMessage="Invalid color" />)
     const message = screen.getByText('Invalid color')
     expect(message).toBeInTheDocument()
     expect(message.className).toContain('text-destructive')
@@ -135,9 +110,7 @@ describe('ColorPicker uncontrolled', () => {
 
   it('updates on preset click and still calls onChange', async () => {
     const onChange = vi.fn()
-    render(
-      <ColorPicker defaultValue="#000000" onChange={onChange} presets={['#00ff00']} />
-    )
+    render(<ColorPicker defaultValue="#000000" onChange={onChange} presets={['#00ff00']} />)
     await userEvent.click(screen.getByLabelText('Select color #00ff00'))
     expect(onChange).toHaveBeenCalledWith('#00ff00')
     expect(screen.getByLabelText('Hex color value')).toHaveValue('00ff00')

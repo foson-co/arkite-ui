@@ -102,10 +102,7 @@ function transform(source, recipe, registry, componentName) {
 
   const original = exportedComponent(source)
   if (componentName && original && componentName !== original) {
-    out = out.replace(
-      new RegExp(`\\b${original}\\b`, 'g'),
-      componentName
-    )
+    out = out.replace(new RegExp(`\\b${original}\\b`, 'g'), componentName)
   }
 
   const mocks = mockConstants(source)
@@ -138,14 +135,13 @@ export async function runAdd(args, cwd = process.cwd()) {
 
   const recipe = registry.recipes.find((r) => r.name === name)
   if (!recipe) {
-    fail(
-      `Unknown recipe: ${name}`,
-      `Available: ${registry.recipes.map((r) => r.name).join(', ')}`
-    )
+    fail(`Unknown recipe: ${name}`, `Available: ${registry.recipes.map((r) => r.name).join(', ')}`)
   }
 
   if (recipe.files.length !== 1) {
-    fail(`Recipe "${name}" has ${recipe.files.length} files; only single-file recipes are supported.`)
+    fail(
+      `Recipe "${name}" has ${recipe.files.length} files; only single-file recipes are supported.`
+    )
   }
 
   const sourcePath = join(here, '..', recipe.files[0])

@@ -33,14 +33,21 @@ describe('Button', () => {
 
   it('does not fire click when disabled', async () => {
     const onClick = vi.fn()
-    render(<Button disabled onClick={onClick}>No Click</Button>)
+    render(
+      <Button disabled onClick={onClick}>
+        No Click
+      </Button>
+    )
     await userEvent.click(screen.getByRole('button', { name: 'No Click' }))
     expect(onClick).not.toHaveBeenCalled()
   })
 
   it('renders left and right icons', () => {
     render(
-      <Button leftIcon={<span data-testid="left">L</span>} rightIcon={<span data-testid="right">R</span>}>
+      <Button
+        leftIcon={<span data-testid="left">L</span>}
+        rightIcon={<span data-testid="right">R</span>}
+      >
         Text
       </Button>
     )

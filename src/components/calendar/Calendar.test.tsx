@@ -46,11 +46,7 @@ describe('Calendar', () => {
     const disabledDates = [new Date(2025, 5, 12)]
 
     render(
-      <Calendar
-        month={new Date(2025, 5, 1)}
-        onSelect={onSelect}
-        disabledDates={disabledDates}
-      />
+      <Calendar month={new Date(2025, 5, 1)} onSelect={onSelect} disabledDates={disabledDates} />
     )
 
     const disabledButton = screen.getByText('12')
@@ -75,13 +71,7 @@ describe('Calendar', () => {
     // minDate is June 10 — days before should be disabled
     const minDate = new Date(2025, 5, 10)
 
-    render(
-      <Calendar
-        month={new Date(2025, 5, 1)}
-        onSelect={onSelect}
-        minDate={minDate}
-      />
-    )
+    render(<Calendar month={new Date(2025, 5, 1)} onSelect={onSelect} minDate={minDate} />)
 
     const dayBefore = screen.getByText('9')
     expect(dayBefore).toBeDisabled()
@@ -96,13 +86,7 @@ describe('Calendar', () => {
     // maxDate is June 20 — days after should be disabled
     const maxDate = new Date(2025, 5, 20)
 
-    render(
-      <Calendar
-        month={new Date(2025, 5, 1)}
-        onSelect={onSelect}
-        maxDate={maxDate}
-      />
-    )
+    render(<Calendar month={new Date(2025, 5, 1)} onSelect={onSelect} maxDate={maxDate} />)
 
     const dayAfter = screen.getByText('21')
     expect(dayAfter).toBeDisabled()

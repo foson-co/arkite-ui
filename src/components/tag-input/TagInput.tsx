@@ -12,11 +12,10 @@ import { useLocale } from '../../locale'
 
 export type TagInputSize = 'sm' | 'md' | 'lg'
 
-export interface TagInputProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'size' | 'value' | 'onChange'
-  > {
+export interface TagInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'value' | 'onChange'
+> {
   /** Current tag values */
   value: string[]
   /** Called when tags change */
@@ -113,11 +112,7 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
         if (e.key === 'Enter' || e.key === ',') {
           e.preventDefault()
           addTag(inputValue)
-        } else if (
-          e.key === 'Backspace' &&
-          inputValue === '' &&
-          value.length > 0
-        ) {
+        } else if (e.key === 'Backspace' && inputValue === '' && value.length > 0) {
           removeTag(value.length - 1)
         }
       },
@@ -147,12 +142,10 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
       <div
         className={cn(
-          'flex flex-wrap items-center rounded-md border bg-background',
+          'bg-background flex flex-wrap items-center rounded-md border',
           'transition-colors duration-200',
-          'has-[:focus-visible]:outline-none has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-ring/40 has-[:focus-visible]:ring-offset-0',
-          error
-            ? 'border-destructive has-[:focus-visible]:ring-destructive'
-            : 'border-input',
+          'has-[:focus-visible]:ring-ring/40 has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-offset-0 has-[:focus-visible]:outline-none',
+          error ? 'border-destructive has-[:focus-visible]:ring-destructive' : 'border-input',
           disabled && 'cursor-not-allowed',
           containerSizeStyles[size],
           className
@@ -163,7 +156,7 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
           <span
             key={`${tag}-${index}`}
             className={cn(
-              'inline-flex items-center gap-1 rounded-full bg-secondary font-medium text-secondary-foreground transition-colors',
+              'bg-secondary text-secondary-foreground inline-flex items-center gap-1 rounded-full font-medium transition-colors',
               disabled && 'cursor-not-allowed',
               tagSizeStyles[size]
             )}
@@ -173,7 +166,7 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
               <button
                 type="button"
                 aria-label={locale.tagInput.remove(tag)}
-                className="rounded-full outline-none hover:bg-secondary-foreground/20 focus-visible:ring-1 focus-visible:ring-ring"
+                className="hover:bg-secondary-foreground/20 focus-visible:ring-ring rounded-full outline-none focus-visible:ring-1"
                 onClick={(e) => {
                   e.stopPropagation()
                   removeTag(index)
@@ -213,7 +206,7 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
     return (
       <div>
         {container}
-        <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
+        <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>
       </div>
     )
   }

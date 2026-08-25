@@ -32,11 +32,56 @@ interface Holding {
 }
 
 const holdings: Holding[] = [
-  { ticker: '2330', name: '台積電', foreign: 12345, trust: -6789, dealer: 1024, total: 6580, amount: '1.23 億', close: 1085 },
-  { ticker: '2454', name: '聯發科', foreign: 8420, trust: 2130, dealer: -540, total: 10010, amount: '9.80 千萬', close: 1420 },
-  { ticker: '2317', name: '鴻海', foreign: -4210, trust: 980, dealer: 320, total: -2910, amount: '-4.55 千萬', close: 205 },
-  { ticker: '2882', name: '國泰金', foreign: 3105, trust: -220, dealer: 45, total: 2930, amount: '1.90 千萬', close: 62 },
-  { ticker: '00940', name: '元大臺灣價值高息', foreign: 15200, trust: 4300, dealer: -1200, total: 18300, amount: '2.10 億', close: 9.8 },
+  {
+    ticker: '2330',
+    name: '台積電',
+    foreign: 12345,
+    trust: -6789,
+    dealer: 1024,
+    total: 6580,
+    amount: '1.23 億',
+    close: 1085,
+  },
+  {
+    ticker: '2454',
+    name: '聯發科',
+    foreign: 8420,
+    trust: 2130,
+    dealer: -540,
+    total: 10010,
+    amount: '9.80 千萬',
+    close: 1420,
+  },
+  {
+    ticker: '2317',
+    name: '鴻海',
+    foreign: -4210,
+    trust: 980,
+    dealer: 320,
+    total: -2910,
+    amount: '-4.55 千萬',
+    close: 205,
+  },
+  {
+    ticker: '2882',
+    name: '國泰金',
+    foreign: 3105,
+    trust: -220,
+    dealer: 45,
+    total: 2930,
+    amount: '1.90 千萬',
+    close: 62,
+  },
+  {
+    ticker: '00940',
+    name: '元大臺灣價值高息',
+    foreign: 15200,
+    trust: 4300,
+    dealer: -1200,
+    total: 18300,
+    amount: '2.10 億',
+    close: 9.8,
+  },
 ]
 
 const money = (v: number) => (
@@ -46,14 +91,29 @@ const money = (v: number) => (
 )
 
 const columns: Column<Holding>[] = [
-  { key: 'ticker', header: '代號', pinned: 'left', cell: (r) => <span className="font-mono font-medium">{r.ticker}</span> },
+  {
+    key: 'ticker',
+    header: '代號',
+    pinned: 'left',
+    cell: (r) => <span className="font-mono font-medium">{r.ticker}</span>,
+  },
   { key: 'name', header: '名稱' },
   { key: 'foreign', header: '外資 (張)', align: 'right', cell: (r) => money(r.foreign) },
   { key: 'trust', header: '投信 (張)', align: 'right', cell: (r) => money(r.trust) },
   { key: 'dealer', header: '自營商 (張)', align: 'right', cell: (r) => money(r.dealer) },
   { key: 'total', header: '三大法人合計 (張)', align: 'right', cell: (r) => money(r.total) },
-  { key: 'amount', header: '外資估算金額', align: 'right', cell: (r) => <span className="font-mono">{r.amount}</span> },
-  { key: 'close', header: '最新收盤', align: 'right', cell: (r) => <span className="text-muted-foreground font-mono">{r.close}</span> },
+  {
+    key: 'amount',
+    header: '外資估算金額',
+    align: 'right',
+    cell: (r) => <span className="font-mono">{r.amount}</span>,
+  },
+  {
+    key: 'close',
+    header: '最新收盤',
+    align: 'right',
+    cell: (r) => <span className="text-muted-foreground font-mono">{r.close}</span>,
+  },
 ]
 
 /**

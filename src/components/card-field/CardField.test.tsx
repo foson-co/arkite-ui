@@ -36,9 +36,7 @@ describe('CardField', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(
-      <CardField label="Test" value="val" className="my-custom-class" />
-    )
+    const { container } = render(<CardField label="Test" value="val" className="my-custom-class" />)
     expect(container.firstElementChild?.className).toContain('my-custom-class')
   })
 

@@ -42,18 +42,10 @@
  */
 
 export { primitives } from './primitives'
-export type {
-  Primitives,
-  PrimitiveColorName,
-  PrimitiveShade,
-} from './primitives'
+export type { Primitives, PrimitiveColorName, PrimitiveShade } from './primitives'
 
 export { colors } from './colors'
-export type {
-  SemanticColors,
-  ColorScheme,
-  SemanticColorName,
-} from './colors'
+export type { SemanticColors, ColorScheme, SemanticColorName } from './colors'
 
 export { spacing } from './spacing'
 export type { SpacingKey } from './spacing'

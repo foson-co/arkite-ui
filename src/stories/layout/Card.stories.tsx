@@ -36,7 +36,7 @@ export const Default: Story = {
     <Card {...args} className="w-80">
       <CardHeader title="Card Title" description="Card description text" />
       <CardContent>
-        <p className="text-sm text-muted-foreground">Card content goes here.</p>
+        <p className="text-muted-foreground text-sm">Card content goes here.</p>
       </CardContent>
     </Card>
   ),
@@ -48,13 +48,19 @@ export const WithAction: Story = {
       <CardHeader
         title="Settings"
         description="Manage your account"
-        action={<Button size="sm" variant="outline">Edit</Button>}
+        action={
+          <Button size="sm" variant="outline">
+            Edit
+          </Button>
+        }
       />
       <CardContent>
-        <p className="text-sm text-muted-foreground">Your account settings content.</p>
+        <p className="text-muted-foreground text-sm">Your account settings content.</p>
       </CardContent>
       <CardFooter>
-        <Button variant="primary" size="sm">Save</Button>
+        <Button variant="primary" size="sm">
+          Save
+        </Button>
       </CardFooter>
     </Card>
   ),
@@ -73,14 +79,14 @@ export const DashboardWidget: Story = {
               <button
                 type="button"
                 aria-label="Refresh"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
+                className="text-muted-foreground hover:bg-secondary hover:text-foreground inline-flex h-7 w-7 items-center justify-center rounded-md"
               >
                 ↻
               </button>
               <button
                 type="button"
                 aria-label="Settings"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
+                className="text-muted-foreground hover:bg-secondary hover:text-foreground inline-flex h-7 w-7 items-center justify-center rounded-md"
               >
                 ⚙
               </button>
@@ -88,16 +94,16 @@ export const DashboardWidget: Story = {
           }
         />
         <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Compact density: tighter padding and smaller header typography for dense
-            dashboard grids.
+          <p className="text-muted-foreground text-sm">
+            Compact density: tighter padding and smaller header typography for dense dashboard
+            grids.
           </p>
         </CardContent>
       </Card>
       <Card className="w-80">
         <CardHeader title="Watchlist" description="12 symbols tracked" />
         <CardContent>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Default density for comparison — unchanged from before.
           </p>
         </CardContent>
@@ -113,7 +119,7 @@ export const Hoverable: Story = {
         <Card key={name} hoverable className="w-48 cursor-pointer">
           <CardContent>
             <p className="font-medium">{name}</p>
-            <p className="text-sm text-muted-foreground">Click to open</p>
+            <p className="text-muted-foreground text-sm">Click to open</p>
           </CardContent>
         </Card>
       ))}
@@ -125,15 +131,10 @@ export const Interactive: Story = {
   render: () => (
     <div className="flex gap-4">
       {['Project A', 'Project B'].map((name) => (
-        <Card
-          key={name}
-          interactive
-          onClick={() => alert(`Open ${name}`)}
-          className="w-56"
-        >
+        <Card key={name} interactive onClick={() => alert(`Open ${name}`)} className="w-56">
           <CardContent>
             <p className="font-medium">{name}</p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Whole card is a button — Tab to it, press Enter.
             </p>
           </CardContent>

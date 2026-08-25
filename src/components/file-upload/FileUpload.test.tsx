@@ -11,9 +11,7 @@ function createFile(name: string, size: number, type: string): File {
 describe('FileUpload', () => {
   it('renders dropzone area', () => {
     render(<FileUpload />)
-    expect(
-      screen.getByText('Drop files here or click to upload')
-    ).toBeInTheDocument()
+    expect(screen.getByText('Drop files here or click to upload')).toBeInTheDocument()
     expect(screen.getByRole('button')).toBeInTheDocument()
   })
 
@@ -34,18 +32,14 @@ describe('FileUpload', () => {
     const onError = vi.fn()
     const maxSize = 1024 // 1 KB
 
-    render(
-      <FileUpload onChange={onChange} onError={onError} maxSize={maxSize} />
-    )
+    render(<FileUpload onChange={onChange} onError={onError} maxSize={maxSize} />)
 
     const largeFile = createFile('big.pdf', 2048, 'application/pdf')
     const input = document.querySelector('input[type="file"]') as HTMLInputElement
 
     await userEvent.upload(input, largeFile)
 
-    expect(onError).toHaveBeenCalledWith(
-      expect.stringContaining('exceeds maximum size')
-    )
+    expect(onError).toHaveBeenCalledWith(expect.stringContaining('exceeds maximum size'))
     expect(onChange).not.toHaveBeenCalled()
   })
 
@@ -103,10 +97,7 @@ describe('FileUpload', () => {
 
   it('removes a file when remove button is clicked', async () => {
     const onChange = vi.fn()
-    const files = [
-      createFile('a.txt', 100, 'text/plain'),
-      createFile('b.txt', 200, 'text/plain'),
-    ]
+    const files = [createFile('a.txt', 100, 'text/plain'), createFile('b.txt', 200, 'text/plain')]
 
     render(<FileUpload value={files} onChange={onChange} showFileList />)
 
@@ -125,13 +116,7 @@ describe('FileUpload', () => {
     const onChange = vi.fn()
     const onError = vi.fn()
 
-    render(
-      <FileUpload
-        accept=".pdf"
-        onChange={onChange}
-        onError={onError}
-      />
-    )
+    render(<FileUpload accept=".pdf" onChange={onChange} onError={onError} />)
 
     const textFile = createFile('notes.txt', 100, 'text/plain')
     const input = document.querySelector('input[type="file"]') as HTMLInputElement
@@ -141,9 +126,7 @@ describe('FileUpload', () => {
     Object.defineProperty(input, 'files', { value: [textFile], configurable: true })
     input.dispatchEvent(new Event('change', { bubbles: true }))
 
-    expect(onError).toHaveBeenCalledWith(
-      expect.stringContaining('not an accepted file type')
-    )
+    expect(onError).toHaveBeenCalledWith(expect.stringContaining('not an accepted file type'))
     expect(onChange).not.toHaveBeenCalled()
   })
 
@@ -151,13 +134,7 @@ describe('FileUpload', () => {
     const onChange = vi.fn()
     const onError = vi.fn()
 
-    render(
-      <FileUpload
-        accept="image/*"
-        onChange={onChange}
-        onError={onError}
-      />
-    )
+    render(<FileUpload accept="image/*" onChange={onChange} onError={onError} />)
 
     const imageFile = createFile('photo.png', 100, 'image/png')
     const input = document.querySelector('input[type="file"]') as HTMLInputElement

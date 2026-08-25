@@ -2,24 +2,55 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { __resetWarnings } from '../../utils/deprecate'
 import {
-  Table, TableHeader, TableBody, TableFooter,
-  TableRow, TableHead, TableCell, TableCaption,
-  TableEmpty, TableLoading,
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+  TableEmpty,
+  TableLoading,
 } from './Table'
 
 describe('Table', () => {
   it('renders a table element', () => {
-    render(<Table><tbody><tr><td>Cell</td></tr></tbody></Table>)
+    render(
+      <Table>
+        <tbody>
+          <tr>
+            <td>Cell</td>
+          </tr>
+        </tbody>
+      </Table>
+    )
     expect(screen.getByRole('table')).toBeInTheDocument()
   })
 
   it('sets data-sticky-header attribute', () => {
-    render(<Table stickyHeader><tbody><tr><td>Cell</td></tr></tbody></Table>)
+    render(
+      <Table stickyHeader>
+        <tbody>
+          <tr>
+            <td>Cell</td>
+          </tr>
+        </tbody>
+      </Table>
+    )
     expect(screen.getByRole('table')).toHaveAttribute('data-sticky-header', 'true')
   })
 
   it('applies bordered class', () => {
-    render(<Table bordered><tbody><tr><td>Cell</td></tr></tbody></Table>)
+    render(
+      <Table bordered>
+        <tbody>
+          <tr>
+            <td>Cell</td>
+          </tr>
+        </tbody>
+      </Table>
+    )
     expect(screen.getByRole('table')).toHaveClass('border')
   })
 
@@ -28,8 +59,16 @@ describe('Table', () => {
   it('compact tightens cell padding via table[data-compact] selectors', () => {
     render(
       <Table compact>
-        <TableHeader><TableRow><TableHead>H</TableHead></TableRow></TableHeader>
-        <TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody>
+        <TableHeader>
+          <TableRow>
+            <TableHead>H</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>C</TableCell>
+          </TableRow>
+        </TableBody>
       </Table>
     )
     expect(screen.getByRole('table')).toHaveAttribute('data-compact', 'true')
@@ -41,26 +80,56 @@ describe('Table', () => {
   // Table silently lost row hover): hoverable defaults to TRUE, and a false
   // value must not render the attribute (CSS matches on presence)
   it('hoverable defaults to true; false removes the attribute entirely', () => {
-    const { rerender } = render(<Table><tbody><tr><td>Cell</td></tr></tbody></Table>)
+    const { rerender } = render(
+      <Table>
+        <tbody>
+          <tr>
+            <td>Cell</td>
+          </tr>
+        </tbody>
+      </Table>
+    )
     expect(screen.getByRole('table')).toHaveAttribute('data-hoverable', 'true')
-    rerender(<Table hoverable={false}><tbody><tr><td>Cell</td></tr></tbody></Table>)
+    rerender(
+      <Table hoverable={false}>
+        <tbody>
+          <tr>
+            <td>Cell</td>
+          </tr>
+        </tbody>
+      </Table>
+    )
     expect(screen.getByRole('table')).not.toHaveAttribute('data-hoverable')
   })
 
   it('compact={false} does not render the data attribute', () => {
-    render(<Table compact={false}><tbody><tr><td>Cell</td></tr></tbody></Table>)
+    render(
+      <Table compact={false}>
+        <tbody>
+          <tr>
+            <td>Cell</td>
+          </tr>
+        </tbody>
+      </Table>
+    )
     expect(screen.getByRole('table')).not.toHaveAttribute('data-compact')
   })
 
   it('hoverable and striped are consumed by TableRow selectors', () => {
     render(
       <Table hoverable variant="striped">
-        <TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody>
+        <TableBody>
+          <TableRow>
+            <TableCell>C</TableCell>
+          </TableRow>
+        </TableBody>
       </Table>
     )
     const row = screen.getByRole('row')
     expect(row.className).toContain('[table[data-hoverable]_&:hover]:bg-muted/50')
-    expect(row.className).toContain("[table[data-variant=striped]_tbody_&:nth-child(even)]:bg-muted/30")
+    expect(row.className).toContain(
+      '[table[data-variant=striped]_tbody_&:nth-child(even)]:bg-muted/30'
+    )
   })
 
   // Regression (ark-finance feedback 3.2): the table is border-separate, so
@@ -68,12 +137,22 @@ describe('Table', () => {
   it('row separators are drawn by cells, with the last body row exempt', () => {
     render(
       <Table>
-        <TableHeader><TableRow><TableHead>H</TableHead></TableRow></TableHeader>
-        <TableBody><TableRow><TableCell>C</TableCell></TableRow></TableBody>
+        <TableHeader>
+          <TableRow>
+            <TableHead>H</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>C</TableCell>
+          </TableRow>
+        </TableBody>
       </Table>
     )
     expect(screen.getByRole('cell')).toHaveClass('border-b')
-    expect(screen.getByRole('columnheader').closest('thead')?.className).toContain('[&_th]:border-b')
+    expect(screen.getByRole('columnheader').closest('thead')?.className).toContain(
+      '[&_th]:border-b'
+    )
     expect(screen.getByRole('cell').closest('tbody')?.className).toContain(
       '[&_tr:last-child_td]:border-b-0'
     )
@@ -84,7 +163,13 @@ describe('Table', () => {
 describe('TableRow', () => {
   it('applies selected state', () => {
     render(
-      <table><tbody><TableRow selected><td>Cell</td></TableRow></tbody></table>
+      <table>
+        <tbody>
+          <TableRow selected>
+            <td>Cell</td>
+          </TableRow>
+        </tbody>
+      </table>
     )
     expect(screen.getByRole('row')).toHaveAttribute('data-state', 'selected')
   })
@@ -93,35 +178,69 @@ describe('TableRow', () => {
 describe('TableHead', () => {
   it('renders sortable indicator', () => {
     render(
-      <table><thead><tr><TableHead sortable sortDirection="asc">Name</TableHead></tr></thead></table>
+      <table>
+        <thead>
+          <tr>
+            <TableHead sortable sortDirection="asc">
+              Name
+            </TableHead>
+          </tr>
+        </thead>
+      </table>
     )
     expect(screen.getByText('↑')).toBeInTheDocument()
   })
 
   it('renders desc indicator', () => {
     render(
-      <table><thead><tr><TableHead sortable sortDirection="desc">Name</TableHead></tr></thead></table>
+      <table>
+        <thead>
+          <tr>
+            <TableHead sortable sortDirection="desc">
+              Name
+            </TableHead>
+          </tr>
+        </thead>
+      </table>
     )
     expect(screen.getByText('↓')).toBeInTheDocument()
   })
 
   it('renders unsorted indicator', () => {
     render(
-      <table><thead><tr><TableHead sortable>Name</TableHead></tr></thead></table>
+      <table>
+        <thead>
+          <tr>
+            <TableHead sortable>Name</TableHead>
+          </tr>
+        </thead>
+      </table>
     )
     expect(screen.getByText('↕')).toBeInTheDocument()
   })
 
   it('applies stickyAction class', () => {
     render(
-      <table><thead><tr><TableHead stickyAction>Actions</TableHead></tr></thead></table>
+      <table>
+        <thead>
+          <tr>
+            <TableHead stickyAction>Actions</TableHead>
+          </tr>
+        </thead>
+      </table>
     )
     expect(screen.getByRole('columnheader')).toHaveClass('sticky', 'right-0')
   })
 
   it('applies stickyLead class', () => {
     render(
-      <table><thead><tr><TableHead stickyLead>Ticker</TableHead></tr></thead></table>
+      <table>
+        <thead>
+          <tr>
+            <TableHead stickyLead>Ticker</TableHead>
+          </tr>
+        </thead>
+      </table>
     )
     expect(screen.getByRole('columnheader')).toHaveClass('sticky', 'left-0')
   })
@@ -130,14 +249,26 @@ describe('TableHead', () => {
 describe('TableCell', () => {
   it('applies stickyAction class', () => {
     render(
-      <table><tbody><tr><TableCell stickyAction>Edit</TableCell></tr></tbody></table>
+      <table>
+        <tbody>
+          <tr>
+            <TableCell stickyAction>Edit</TableCell>
+          </tr>
+        </tbody>
+      </table>
     )
     expect(screen.getByRole('cell')).toHaveClass('sticky', 'right-0')
   })
 
   it('applies stickyLead class', () => {
     render(
-      <table><tbody><tr><TableCell stickyLead>AAPL</TableCell></tr></tbody></table>
+      <table>
+        <tbody>
+          <tr>
+            <TableCell stickyLead>AAPL</TableCell>
+          </tr>
+        </tbody>
+      </table>
     )
     expect(screen.getByRole('cell')).toHaveClass('sticky', 'left-0')
   })
@@ -146,10 +277,14 @@ describe('TableCell', () => {
 describe('align / numeric', () => {
   it('align maps to text classes and is not passed as the deprecated HTML attribute', () => {
     render(
-      <table><tbody><tr>
-        <TableCell align="right">1,234</TableCell>
-        <TableCell align="center">mid</TableCell>
-      </tr></tbody></table>
+      <table>
+        <tbody>
+          <tr>
+            <TableCell align="right">1,234</TableCell>
+            <TableCell align="center">mid</TableCell>
+          </tr>
+        </tbody>
+      </table>
     )
     const [right, center] = screen.getAllByRole('cell')
     expect(right).toHaveClass('text-right')
@@ -159,14 +294,26 @@ describe('align / numeric', () => {
 
   it('TableHead align works too', () => {
     render(
-      <table><thead><tr><TableHead align="right">Market Cap</TableHead></tr></thead></table>
+      <table>
+        <thead>
+          <tr>
+            <TableHead align="right">Market Cap</TableHead>
+          </tr>
+        </thead>
+      </table>
     )
     expect(screen.getByRole('columnheader')).toHaveClass('text-right')
   })
 
   it("HTML's deprecated align values are tolerated and apply nothing", () => {
     render(
-      <table><tbody><tr><TableCell align="justify">md</TableCell></tr></tbody></table>
+      <table>
+        <tbody>
+          <tr>
+            <TableCell align="justify">md</TableCell>
+          </tr>
+        </tbody>
+      </table>
     )
     const cell = screen.getByRole('cell')
     expect(cell).not.toHaveClass('text-center', 'text-right')
@@ -175,7 +322,13 @@ describe('align / numeric', () => {
 
   it('numeric right-aligns with tabular figures', () => {
     render(
-      <table><tbody><tr><TableCell numeric>3.4T</TableCell></tr></tbody></table>
+      <table>
+        <tbody>
+          <tr>
+            <TableCell numeric>3.4T</TableCell>
+          </tr>
+        </tbody>
+      </table>
     )
     expect(screen.getByRole('cell')).toHaveClass('text-right', 'tabular-nums')
   })
@@ -187,10 +340,14 @@ describe('TableEmpty / TableLoading', () => {
       <Table>
         <TableHeader>
           <TableRow>
-            {['a', 'b', 'c', 'd', 'e'].map((k) => <TableHead key={k}>{k}</TableHead>)}
+            {['a', 'b', 'c', 'd', 'e'].map((k) => (
+              <TableHead key={k}>{k}</TableHead>
+            ))}
           </TableRow>
         </TableHeader>
-        <TableBody><TableEmpty /></TableBody>
+        <TableBody>
+          <TableEmpty />
+        </TableBody>
       </Table>
     )
     const cell = screen.getByRole('cell')
@@ -200,7 +357,11 @@ describe('TableEmpty / TableLoading', () => {
 
   it('explicit colSpan wins and custom content renders', () => {
     render(
-      <Table><TableBody><TableEmpty colSpan={3}>Nothing here</TableEmpty></TableBody></Table>
+      <Table>
+        <TableBody>
+          <TableEmpty colSpan={3}>Nothing here</TableEmpty>
+        </TableBody>
+      </Table>
     )
     const cell = screen.getByRole('cell')
     expect(cell).toHaveAttribute('colspan', '3')
@@ -210,8 +371,15 @@ describe('TableEmpty / TableLoading', () => {
   it('TableLoading renders spinner row with measured colSpan', () => {
     render(
       <Table>
-        <TableHeader><TableRow><TableHead>a</TableHead><TableHead>b</TableHead></TableRow></TableHeader>
-        <TableBody><TableLoading /></TableBody>
+        <TableHeader>
+          <TableRow>
+            <TableHead>a</TableHead>
+            <TableHead>b</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableLoading />
+        </TableBody>
       </Table>
     )
     const cell = screen.getByRole('cell')
@@ -223,7 +391,14 @@ describe('TableEmpty / TableLoading', () => {
 describe('TableCaption', () => {
   it('renders caption text', () => {
     render(
-      <table><TableCaption>A list of users</TableCaption><tbody><tr><td>Cell</td></tr></tbody></table>
+      <table>
+        <TableCaption>A list of users</TableCaption>
+        <tbody>
+          <tr>
+            <td>Cell</td>
+          </tr>
+        </tbody>
+      </table>
     )
     expect(screen.getByText('A list of users')).toBeInTheDocument()
   })
@@ -232,7 +407,18 @@ describe('TableCaption', () => {
 describe('TableHeader', () => {
   it('renders thead', () => {
     render(
-      <table><TableHeader><tr><th>Name</th></tr></TableHeader><tbody><tr><td>Cell</td></tr></tbody></table>
+      <table>
+        <TableHeader>
+          <tr>
+            <th>Name</th>
+          </tr>
+        </TableHeader>
+        <tbody>
+          <tr>
+            <td>Cell</td>
+          </tr>
+        </tbody>
+      </table>
     )
     expect(screen.getByText('Name')).toBeInTheDocument()
   })
@@ -241,7 +427,13 @@ describe('TableHeader', () => {
 describe('TableBody', () => {
   it('renders tbody', () => {
     render(
-      <table><TableBody><tr><td>Data</td></tr></TableBody></table>
+      <table>
+        <TableBody>
+          <tr>
+            <td>Data</td>
+          </tr>
+        </TableBody>
+      </table>
     )
     expect(screen.getByText('Data')).toBeInTheDocument()
   })
@@ -250,14 +442,26 @@ describe('TableBody', () => {
 describe('TableFooter', () => {
   it('renders tfoot', () => {
     render(
-      <table><TableFooter><tr><td>Total</td></tr></TableFooter></table>
+      <table>
+        <TableFooter>
+          <tr>
+            <td>Total</td>
+          </tr>
+        </TableFooter>
+      </table>
     )
     expect(screen.getByText('Total')).toBeInTheDocument()
   })
 })
 
 describe('Table scroll container', () => {
-  const body = <tbody><tr><td>Cell</td></tr></tbody>
+  const body = (
+    <tbody>
+      <tr>
+        <td>Cell</td>
+      </tr>
+    </tbody>
+  )
 
   it('renders exactly one scroll container', () => {
     const { container } = render(<Table>{body}</Table>)
@@ -267,8 +471,9 @@ describe('Table scroll container', () => {
   it('applies minWidth to the table itself, not the wrapper', () => {
     const { container } = render(<Table minWidth={960}>{body}</Table>)
     expect(container.querySelector('table')!.style.minWidth).toBe('960px')
-    expect(container.querySelector('[data-scroll-container]')!.getAttribute('style') ?? '')
-      .not.toContain('min-width')
+    expect(
+      container.querySelector('[data-scroll-container]')!.getAttribute('style') ?? ''
+    ).not.toContain('min-width')
   })
 
   it('accepts a CSS length for minWidth', () => {
@@ -280,7 +485,11 @@ describe('Table scroll container', () => {
   // Split across two nested boxes, the thead sticks to a scrollport that never
   // scrolls vertically and simply scrolls out of view (verified in Chromium).
   it('puts maxHeight and overflow on the same element as the sticky scrollport', () => {
-    const { container } = render(<Table stickyHeader maxHeight="400px">{body}</Table>)
+    const { container } = render(
+      <Table stickyHeader maxHeight="400px">
+        {body}
+      </Table>
+    )
     const scrollers = container.querySelectorAll('[data-scroll-container]')
     expect(scrollers).toHaveLength(1)
     const scroller = scrollers[0] as HTMLElement
@@ -301,21 +510,32 @@ describe('Table scroll container', () => {
 
   it('opts into scroll fades with minWidth, and honours an explicit opt-out', () => {
     const { container: withMin } = render(<Table minWidth={960}>{body}</Table>)
-    expect(withMin.querySelector('[data-scroll-container]')!.parentElement!.className)
-      .toContain('relative')
+    expect(withMin.querySelector('[data-scroll-container]')!.parentElement!.className).toContain(
+      'relative'
+    )
 
     const { container: plain } = render(<Table>{body}</Table>)
     // No fade wrapper: the scroll container is the outermost node.
     expect(plain.firstElementChild).toHaveAttribute('data-scroll-container')
 
-    const { container: optOut } = render(<Table minWidth={960} scrollFade={false}>{body}</Table>)
+    const { container: optOut } = render(
+      <Table minWidth={960} scrollFade={false}>
+        {body}
+      </Table>
+    )
     expect(optOut.firstElementChild).toHaveAttribute('data-scroll-container')
   })
 })
 
 describe('Table composition guards', () => {
   beforeEach(() => __resetWarnings())
-  const body = <tbody><tr><td>Cell</td></tr></tbody>
+  const body = (
+    <tbody>
+      <tr>
+        <td>Cell</td>
+      </tr>
+    </tbody>
+  )
 
   it('warns when stickyHeader has no height limit to stick within', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
@@ -326,8 +546,16 @@ describe('Table composition guards', () => {
 
   it('stays quiet with maxHeight or fillHeight', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    render(<Table stickyHeader maxHeight="400px">{body}</Table>)
-    render(<Table stickyHeader fillHeight>{body}</Table>)
+    render(
+      <Table stickyHeader maxHeight="400px">
+        {body}
+      </Table>
+    )
+    render(
+      <Table stickyHeader fillHeight>
+        {body}
+      </Table>
+    )
     expect(warn).not.toHaveBeenCalled()
     warn.mockRestore()
   })

@@ -9,8 +9,10 @@ export interface SegmentedControlOption<T extends string = string> {
   disabled?: boolean
 }
 
-export interface SegmentedControlProps<T extends string = string>
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface SegmentedControlProps<T extends string = string> extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   /** Options to display */
   options: SegmentedControlOption<T>[]
   /** Currently selected value (controlled) */
@@ -63,7 +65,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
         ref={ref}
         role="radiogroup"
         className={cn(
-          'inline-flex items-center gap-0.5 rounded-md border border-input bg-muted',
+          'border-input bg-muted inline-flex items-center gap-0.5 rounded-md border',
           styles.wrapper,
           fullWidth && 'w-full',
           disabled && 'pointer-events-none opacity-50',
@@ -86,7 +88,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
               }}
               className={cn(
                 'inline-flex items-center justify-center rounded-sm font-medium transition-colors',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
+                'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none',
                 'disabled:pointer-events-none disabled:opacity-50',
                 styles.button,
                 fullWidth && 'flex-1',
@@ -105,5 +107,4 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
 ) as <T extends string = string>(
   props: SegmentedControlProps<T> & { ref?: React.Ref<HTMLDivElement> }
 ) => React.ReactElement
-
 ;(SegmentedControl as { displayName?: string }).displayName = 'SegmentedControl'

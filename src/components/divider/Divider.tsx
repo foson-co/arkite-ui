@@ -14,23 +14,14 @@ export interface DividerProps extends HTMLAttributes<HTMLDivElement> {
 
 /** Visual separator supporting horizontal and vertical orientations with an optional label. */
 export const Divider = forwardRef<HTMLDivElement, DividerProps>(
-  (
-    {
-      className,
-      orientation = 'horizontal',
-      label,
-      labelPosition = 'center',
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, orientation = 'horizontal', label, labelPosition = 'center', ...props }, ref) => {
     if (orientation === 'vertical') {
       return (
         <div
           ref={ref}
           role="separator"
           aria-orientation="vertical"
-          className={cn('h-full w-px bg-border', className)}
+          className={cn('bg-border h-full w-px', className)}
           {...props}
         />
       )
@@ -52,11 +43,11 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(
           {...props}
         >
           {labelPosition !== 'left' && (
-            <div className={cn('h-px flex-1 bg-border', labelPosition === 'center' && 'mr-4')} />
+            <div className={cn('bg-border h-px flex-1', labelPosition === 'center' && 'mr-4')} />
           )}
-          <span className="text-xs text-muted-foreground">{label}</span>
+          <span className="text-muted-foreground text-xs">{label}</span>
           {labelPosition !== 'right' && (
-            <div className={cn('h-px flex-1 bg-border', labelPosition === 'center' && 'ml-4')} />
+            <div className={cn('bg-border h-px flex-1', labelPosition === 'center' && 'ml-4')} />
           )}
         </div>
       )
@@ -67,7 +58,7 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(
         ref={ref}
         role="separator"
         aria-orientation="horizontal"
-        className={cn('h-px w-full bg-border', className)}
+        className={cn('bg-border h-px w-full', className)}
         {...props}
       />
     )

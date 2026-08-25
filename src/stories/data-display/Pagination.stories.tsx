@@ -26,14 +26,7 @@ export const Full: StoryFn = () => <FullDemo />
 
 const CompactDemo = () => {
   const [page, setPage] = useState(1)
-  return (
-    <Pagination
-      currentPage={page}
-      totalPages={20}
-      onPageChange={setPage}
-      variant="compact"
-    />
-  )
+  return <Pagination currentPage={page} totalPages={20} onPageChange={setPage} variant="compact" />
 }
 
 export const Compact: StoryFn = () => <CompactDemo />
@@ -64,13 +57,7 @@ export const WithPageSize: StoryFn = () => <WithPageSizeDemo />
 
 const FewPagesDemo = () => {
   const [page, setPage] = useState(1)
-  return (
-    <Pagination
-      currentPage={page}
-      totalPages={5}
-      onPageChange={setPage}
-    />
-  )
+  return <Pagination currentPage={page} totalPages={5} onPageChange={setPage} />
 }
 
 export const FewPages: StoryFn = () => <FewPagesDemo />

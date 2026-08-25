@@ -41,12 +41,12 @@ Arkite UI is not another generic component library. It focuses on the components
 
 Most component libraries make coding agents guess. Arkite ships its documentation in machine-readable form, following the [llms.txt](https://llmstxt.org/) convention:
 
-| File | Contents | Where |
-|------|----------|-------|
-| [`llms.txt`](https://ui.foson.co/llms.txt) | Setup, design rules, core patterns, full export inventory | Site root + inside the npm package |
-| [`llms-full.txt`](https://ui.foson.co/llms-full.txt) | The above + complete design spec + the typed public API of every export | Site root + inside the npm package |
-| `DESIGN.md` | Machine-readable design system spec (tokens, hard rules, component selection) | Inside the npm package |
-| `registry.json` | Index of whole-page recipes: what each is, when to reach for it, when not | Inside the npm package |
+| File                                                 | Contents                                                                      | Where                              |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------- | ---------------------------------- |
+| [`llms.txt`](https://ui.foson.co/llms.txt)           | Setup, design rules, core patterns, full export inventory                     | Site root + inside the npm package |
+| [`llms-full.txt`](https://ui.foson.co/llms-full.txt) | The above + complete design spec + the typed public API of every export       | Site root + inside the npm package |
+| `DESIGN.md`                                          | Machine-readable design system spec (tokens, hard rules, component selection) | Inside the npm package             |
+| `registry.json`                                      | Index of whole-page recipes: what each is, when to reach for it, when not     | Inside the npm package             |
 
 Point your agent at `node_modules/@arkite-ui/core/llms-full.txt` (or the hosted URL) and it imports the right component with the right props on the first try. Both files are regenerated from the type-checked API snapshot on every build, so they can't drift from the code.
 
@@ -98,16 +98,16 @@ pnpm add framer-motion    # For AnimatedModal, AnimatedDrawer, AnimatedToast
 
 The peer range permits `^18 || ^19`, and both are exercised in CI — not just permitted:
 
-| | React 18 | React 19 |
-|---|---|---|
-| Unit suite (jsdom, ~1400 cases) | ✅ every MR | ✅ every MR |
-| `tsc --noEmit` | ✅ every MR | ✅ every MR |
-| Keyboard/APG specs (real Chromium) | ✅ every MR | ✅ on `main` |
-| Next 15 App Router — RSC boundary + hydration | — | ✅ every MR |
+|                                               | React 18    | React 19     |
+| --------------------------------------------- | ----------- | ------------ |
+| Unit suite (jsdom, ~1400 cases)               | ✅ every MR | ✅ every MR  |
+| `tsc --noEmit`                                | ✅ every MR | ✅ every MR  |
+| Keyboard/APG specs (real Chromium)            | ✅ every MR | ✅ on `main` |
+| Next 15 App Router — RSC boundary + hydration | —           | ✅ every MR  |
 
 ### How React's types are resolved
 
-Our `.d.ts` import React's types rather than inlining them (`import { ReactNode } from 'react'`), so **React types resolve against your install tree, not ours**. `@types/react` is declared as an *optional* peer dependency — optional so JS-only consumers aren't forced to install it — which lets pnpm link the version each consumer actually uses into core's own variant directory.
+Our `.d.ts` import React's types rather than inlining them (`import { ReactNode } from 'react'`), so **React types resolve against your install tree, not ours**. `@types/react` is declared as an _optional_ peer dependency — optional so JS-only consumers aren't forced to install it — which lets pnpm link the version each consumer actually uses into core's own variant directory.
 
 The practical effect: in a monorepo, different workspaces may sit on different React majors and each still type-checks against core correctly. This is verified in CI, not assumed.
 
@@ -136,12 +136,12 @@ With Tailwind CSS v4, import the preset in your CSS:
 
 ```css
 /* app.css */
-@import "tailwindcss";
-@import "@arkite-ui/core/styles.css";
+@import 'tailwindcss';
+@import '@arkite-ui/core/styles.css';
 
 /* Only needed on @arkite-ui/core <= 0.14.2 — newer versions ship this
    themselves. Tailwind v4 skips node_modules, so point it at the library: */
-@source "../node_modules/@arkite-ui/core/dist";
+@source '../node_modules/@arkite-ui/core/dist';
 ```
 
 Or use the JS preset for Tailwind v4 config:
@@ -160,107 +160,107 @@ import { AdminLayout, DataTable, Button, Badge } from '@arkite-ui/core'
 
 ### UI Primitives
 
-| Component | Description |
-|-----------|-------------|
-| `Button` | 7 variants (primary, secondary, outline, ghost, destructive, gradient, link), sm/md/lg |
-| `Input` | Text input with addons, error state, sm/md/lg |
-| `Textarea` | Multi-line input with autoResize, sm/md/lg |
-| `Badge` | Status badges with sm/md sizes (default, success, warning, destructive, info) |
-| `Select` | Native select dropdown with icon and error state |
-| `Checkbox` / `Radio` / `Toggle` / `Switch` | Selection controls |
-| `Label` | Form labels with required/optional indicators |
-| `Avatar` | Profile images with StatusDot integration and AvatarGroup |
-| `StatusDot` | Presence indicator (online/offline/busy/away) with pulse animation |
-| `Spinner` | Loading indicator (sm/md/lg) |
-| `Kbd` | Keyboard shortcut display (sm/md) |
-| `ViewToggle` | Table/card view mode switcher (sm/md) |
+| Component                                  | Description                                                                            |
+| ------------------------------------------ | -------------------------------------------------------------------------------------- |
+| `Button`                                   | 7 variants (primary, secondary, outline, ghost, destructive, gradient, link), sm/md/lg |
+| `Input`                                    | Text input with addons, error state, sm/md/lg                                          |
+| `Textarea`                                 | Multi-line input with autoResize, sm/md/lg                                             |
+| `Badge`                                    | Status badges with sm/md sizes (default, success, warning, destructive, info)          |
+| `Select`                                   | Native select dropdown with icon and error state                                       |
+| `Checkbox` / `Radio` / `Toggle` / `Switch` | Selection controls                                                                     |
+| `Label`                                    | Form labels with required/optional indicators                                          |
+| `Avatar`                                   | Profile images with StatusDot integration and AvatarGroup                              |
+| `StatusDot`                                | Presence indicator (online/offline/busy/away) with pulse animation                     |
+| `Spinner`                                  | Loading indicator (sm/md/lg)                                                           |
+| `Kbd`                                      | Keyboard shortcut display (sm/md)                                                      |
+| `ViewToggle`                               | Table/card view mode switcher (sm/md)                                                  |
 
 ### Layout
 
-| Component | Description |
-|-----------|-------------|
-| `AdminLayout` | Full admin layout with sidebar, navbar, and content area |
-| `Card` | Card with header, content, footer sub-components |
-| `Container` | Max-width content wrapper (sm/md/lg/xl/2xl/full) |
-| `Stack` / `HStack` / `VStack` | Flexbox layout utilities |
-| `Divider` | Visual separator with optional label |
+| Component                     | Description                                              |
+| ----------------------------- | -------------------------------------------------------- |
+| `AdminLayout`                 | Full admin layout with sidebar, navbar, and content area |
+| `Card`                        | Card with header, content, footer sub-components         |
+| `Container`                   | Max-width content wrapper (sm/md/lg/xl/2xl/full)         |
+| `Stack` / `HStack` / `VStack` | Flexbox layout utilities                                 |
+| `Divider`                     | Visual separator with optional label                     |
 
 ### Navigation
 
-| Component | Description |
-|-----------|-------------|
-| `Sidebar` | Collapsible sidebar with grouped navigation items |
+| Component        | Description                                        |
+| ---------------- | -------------------------------------------------- |
+| `Sidebar`        | Collapsible sidebar with grouped navigation items  |
 | `TenantSwitcher` | Dropdown for switching between tenants with search |
-| `Navbar` | Top navigation bar with brand and content areas |
-| `Breadcrumb` | Path breadcrumbs with truncation |
-| `Tabs` | Tab navigation |
+| `Navbar`         | Top navigation bar with brand and content areas    |
+| `Breadcrumb`     | Path breadcrumbs with truncation                   |
+| `Tabs`           | Tab navigation                                     |
 
 ### Data Display
 
-| Component | Description |
-|-----------|-------------|
-| `DataTable` | Table with sorting, pagination, loading states, custom cells |
-| `Table` | Composable table with `stickyHeader` and `stickyAction` columns |
-| `FilterBar` | Responsive slot-based toolbar (search + filters + actions) |
-| `BulkActionBar` | Floating overlay bar for bulk selection actions |
-| `VirtualList` | Virtualized scrolling for 10,000+ items (@tanstack/react-virtual) |
-| `InfiniteScroll` | Cursor-based pagination with scroll detection |
-| `StatCard` / `StatGroup` | Metrics display with trend indicators |
-| `EmptyState` | Pre-configured empty states (no data, no results, error, 404/403/500) |
-| `Calendar` | Month view with date selection and constraints |
-| `Timeline` | Vertical timeline for audit logs and activity feeds |
-| `Steps` | Step indicator for wizard flows |
+| Component                | Description                                                           |
+| ------------------------ | --------------------------------------------------------------------- |
+| `DataTable`              | Table with sorting, pagination, loading states, custom cells          |
+| `Table`                  | Composable table with `stickyHeader` and `stickyAction` columns       |
+| `FilterBar`              | Responsive slot-based toolbar (search + filters + actions)            |
+| `BulkActionBar`          | Floating overlay bar for bulk selection actions                       |
+| `VirtualList`            | Virtualized scrolling for 10,000+ items (@tanstack/react-virtual)     |
+| `InfiniteScroll`         | Cursor-based pagination with scroll detection                         |
+| `StatCard` / `StatGroup` | Metrics display with trend indicators                                 |
+| `EmptyState`             | Pre-configured empty states (no data, no results, error, 404/403/500) |
+| `Calendar`               | Month view with date selection and constraints                        |
+| `Timeline`               | Vertical timeline for audit logs and activity feeds                   |
+| `Steps`                  | Step indicator for wizard flows                                       |
 
 ### Form
 
-| Component | Description |
-|-----------|-------------|
-| `Form` | Context-based form with FormField, FormLabel, FormControl, FormMessage |
-| `SearchInput` | Search field with debounce and clear button |
-| `FileUpload` | Drag-and-drop file upload with validation |
-| `DatePicker` | Date selection with calendar popover (sm/md/lg) |
-| `Combobox` | Searchable select with single/multi-select, tags, async (sm/md/lg) |
+| Component     | Description                                                            |
+| ------------- | ---------------------------------------------------------------------- |
+| `Form`        | Context-based form with FormField, FormLabel, FormControl, FormMessage |
+| `SearchInput` | Search field with debounce and clear button                            |
+| `FileUpload`  | Drag-and-drop file upload with validation                              |
+| `DatePicker`  | Date selection with calendar popover (sm/md/lg)                        |
+| `Combobox`    | Searchable select with single/multi-select, tags, async (sm/md/lg)     |
 
 ### Feedback
 
-| Component | Description |
-|-----------|-------------|
-| `Modal` | Dialog with focus trap, portal rendering, escape to close |
-| `Drawer` | Slide-out panel (left, right, top, bottom) |
-| `Toast` | Notification system with Zustand store (`useToast`) |
-| `ConfirmDialog` | Confirmation modal (destructive/warning variants) |
-| `DeleteConfirmDialog` | Pre-configured destructive confirm with `itemName` |
-| `Alert` | Inline alert messages (info, success, warning, destructive) |
-| `Progress` / `CircularProgress` | Progress bars (determinate, indeterminate, striped) |
-| `Skeleton` | Loading placeholders (text, avatar, card, table patterns) |
+| Component                       | Description                                                 |
+| ------------------------------- | ----------------------------------------------------------- |
+| `Modal`                         | Dialog with focus trap, portal rendering, escape to close   |
+| `Drawer`                        | Slide-out panel (left, right, top, bottom)                  |
+| `Toast`                         | Notification system with Zustand store (`useToast`)         |
+| `ConfirmDialog`                 | Confirmation modal (destructive/warning variants)           |
+| `DeleteConfirmDialog`           | Pre-configured destructive confirm with `itemName`          |
+| `Alert`                         | Inline alert messages (info, success, warning, destructive) |
+| `Progress` / `CircularProgress` | Progress bars (determinate, indeterminate, striped)         |
+| `Skeleton`                      | Loading placeholders (text, avatar, card, table patterns)   |
 
 ### Overlay
 
-| Component | Description |
-|-----------|-------------|
-| `Popover` | Radix-based popover with arrow support |
-| `Tooltip` / `SimpleTooltip` | Radix-based tooltip with convenience wrapper |
-| `DropdownMenu` | Full Radix dropdown with checkbox, radio, sub-menu |
-| `CommandPalette` | Cmd+K command palette (cmdk-based) |
+| Component                   | Description                                        |
+| --------------------------- | -------------------------------------------------- |
+| `Popover`                   | Radix-based popover with arrow support             |
+| `Tooltip` / `SimpleTooltip` | Radix-based tooltip with convenience wrapper       |
+| `DropdownMenu`              | Full Radix dropdown with checkbox, radio, sub-menu |
+| `CommandPalette`            | Cmd+K command palette (cmdk-based)                 |
 
 ### Actions
 
-| Component | Description |
-|-----------|-------------|
-| `ActionButtons` | Grouped action buttons for page headers |
-| `Pagination` | Page navigation with size selector |
-| `PageHeader` | Page header with title, breadcrumb, and actions |
-| `ErrorBoundary` | React error boundary with fallback UI |
+| Component       | Description                                     |
+| --------------- | ----------------------------------------------- |
+| `ActionButtons` | Grouped action buttons for page headers         |
+| `Pagination`    | Page navigation with size selector              |
+| `PageHeader`    | Page header with title, breadcrumb, and actions |
+| `ErrorBoundary` | React error boundary with fallback UI           |
 
 ### Motion (Optional)
 
 Requires `framer-motion` peer dependency.
 
-| Component | Description |
-|-----------|-------------|
-| `AnimatedModal` | Modal with scale and fade animations |
-| `AnimatedDrawer` | Slide-in drawer with spring transitions |
-| `AnimatedToastContainer` | Animated toast notifications |
+| Component                | Description                             |
+| ------------------------ | --------------------------------------- |
+| `AnimatedModal`          | Modal with scale and fade animations    |
+| `AnimatedDrawer`         | Slide-in drawer with spring transitions |
+| `AnimatedToastContainer` | Animated toast notifications            |
 
 ## Usage Examples
 
@@ -373,8 +373,7 @@ try {
 ```tsx
 import { StatGroup, StatCard } from '@arkite-ui/core'
 import { Database, Activity } from 'lucide-react'
-
-<StatGroup columns={4}>
+;<StatGroup columns={4}>
   <StatCard label="Total Sources" value="128" change="+12%" trend="up" icon={<Database />} />
   <StatCard label="Active Runs" value="24" trend="neutral" icon={<Activity />} />
 </StatGroup>
@@ -417,8 +416,7 @@ All built-in strings — placeholders, empty states, pagination, calendar month/
 
 ```tsx
 import { LocaleProvider, zhTW } from '@arkite-ui/core'
-
-<LocaleProvider locale={zhTW}>
+;<LocaleProvider locale={zhTW}>
   <App />
 </LocaleProvider>
 ```

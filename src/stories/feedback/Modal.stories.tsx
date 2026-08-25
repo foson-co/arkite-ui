@@ -27,14 +27,19 @@ const DefaultDemo = () => {
         title="Confirm Action"
         description="Are you sure you want to proceed?"
         footer={
-          <div className="flex gap-2 justify-end">
-            <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button variant="primary" onClick={() => setOpen(false)}>Confirm</Button>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={() => setOpen(false)}>
+              Confirm
+            </Button>
           </div>
         }
       >
-        <p className="text-sm text-muted-foreground">
-          This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+        <p className="text-muted-foreground text-sm">
+          This action cannot be undone. This will permanently delete your account and remove your
+          data from our servers.
         </p>
       </Modal>
     </>
@@ -48,13 +53,8 @@ const LargeDemo = () => {
   return (
     <>
       <Button onClick={() => setOpen(true)}>Open Large Modal</Button>
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        title="Large Modal"
-        size="lg"
-      >
-        <p className="text-sm text-muted-foreground">
+      <Modal open={open} onClose={() => setOpen(false)} title="Large Modal" size="lg">
+        <p className="text-muted-foreground text-sm">
           This is a larger modal with more content space.
         </p>
       </Modal>
@@ -70,7 +70,7 @@ const FormDialogDemo = () => {
   return (
     <>
       <Button onClick={() => setOpen(true)}>New list…</Button>
-      {saved && <p className="mt-2 text-sm text-muted-foreground">Saved: {saved}</p>}
+      {saved && <p className="text-muted-foreground mt-2 text-sm">Saved: {saved}</p>}
       <Modal
         open={open}
         onClose={() => setOpen(false)}
@@ -95,7 +95,7 @@ const FormDialogDemo = () => {
           <input
             name="name"
             required
-            className="h-9 rounded-md border border-input bg-background px-3"
+            className="border-input bg-background h-9 rounded-md border px-3"
           />
         </label>
       </Modal>
@@ -118,9 +118,9 @@ const LongContentDemo = () => {
         footer={<Button onClick={() => setOpen(false)}>Done</Button>}
       >
         {Array.from({ length: 40 }, (_, i) => (
-          <p key={i} className="mb-3 text-sm text-muted-foreground">
-            Paragraph {i + 1} — long enough content to prove the body scrolls
-            inside the dialog instead of growing past the viewport.
+          <p key={i} className="text-muted-foreground mb-3 text-sm">
+            Paragraph {i + 1} — long enough content to prove the body scrolls inside the dialog
+            instead of growing past the viewport.
           </p>
         ))}
       </Modal>

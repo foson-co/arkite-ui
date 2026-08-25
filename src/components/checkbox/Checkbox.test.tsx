@@ -92,9 +92,7 @@ describe('Checkbox', () => {
 
   it('keeps the label text as the accessible name', () => {
     render(<Checkbox label="Accept terms" />)
-    expect(
-      screen.getByRole('checkbox', { name: 'Accept terms' })
-    ).toBeInTheDocument()
+    expect(screen.getByRole('checkbox', { name: 'Accept terms' })).toBeInTheDocument()
   })
 
   it('renders a description', () => {

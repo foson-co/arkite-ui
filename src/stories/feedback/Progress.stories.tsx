@@ -45,7 +45,7 @@ export const Striped: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div className="space-y-3 w-72">
+    <div className="w-72 space-y-3">
       <Progress value={80} variant="default" showLabel aria-label="Default progress" />
       <Progress value={60} variant="success" showLabel aria-label="Success progress" />
       <Progress value={40} variant="warning" showLabel aria-label="Warning progress" />

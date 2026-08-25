@@ -37,7 +37,17 @@ export interface ConfirmDialogProps {
 
 function WarningIcon({ className }: { className?: string }) {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
       <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
       <line x1="12" y1="9" x2="12" y2="13" />
       <line x1="12" y1="17" x2="12.01" y2="17" />
@@ -85,11 +95,11 @@ export const ConfirmDialog = forwardRef<HTMLDivElement, ConfirmDialogProps>(
         closeOnBackdropClick={closeOnBackdropClick && !loading}
         closeOnEscape={closeOnEscape && !loading}
       >
-        <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left gap-4">
+        <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:text-left">
           {(icon || hasIcon) && (
             <div
               className={cn(
-                'flex shrink-0 items-center justify-center h-10 w-10 rounded-full',
+                'flex h-10 w-10 shrink-0 items-center justify-center rounded-full',
                 isDestructive && 'bg-destructive/10 text-destructive',
                 isWarning && 'bg-warning/10 text-warning',
                 !isDestructive && !isWarning && 'bg-primary/10 text-primary'
@@ -99,18 +109,12 @@ export const ConfirmDialog = forwardRef<HTMLDivElement, ConfirmDialogProps>(
             </div>
           )}
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold leading-none">{title}</h3>
-            {description && (
-              <p className="text-sm text-muted-foreground">{description}</p>
-            )}
+            <h3 className="text-lg leading-none font-semibold">{title}</h3>
+            {description && <p className="text-muted-foreground text-sm">{description}</p>}
           </div>
         </div>
-        <div className="flex justify-end gap-2 mt-6">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            disabled={loading}
-          >
+        <div className="mt-6 flex justify-end gap-2">
+          <Button variant="outline" onClick={onClose} disabled={loading}>
             {cancelLabel ?? locale.confirmDialog.cancelLabel}
           </Button>
           <Button
@@ -130,7 +134,10 @@ ConfirmDialog.displayName = 'ConfirmDialog'
 
 /* ─── Presets ─── */
 
-export interface DeleteConfirmDialogProps extends Omit<ConfirmDialogProps, 'variant' | 'title' | 'description' | 'confirmLabel'> {
+export interface DeleteConfirmDialogProps extends Omit<
+  ConfirmDialogProps,
+  'variant' | 'title' | 'description' | 'confirmLabel'
+> {
   /** Item name to display in the dialog (e.g. "this user") */
   itemName?: string
   /** Custom title (overrides preset) */
@@ -149,7 +156,10 @@ export const DeleteConfirmDialog = forwardRef<HTMLDivElement, DeleteConfirmDialo
       <ConfirmDialog
         ref={ref}
         variant="destructive"
-        title={title ?? locale.confirmDialog.deleteTitle(itemName ?? locale.confirmDialog.deleteFallbackItem)}
+        title={
+          title ??
+          locale.confirmDialog.deleteTitle(itemName ?? locale.confirmDialog.deleteFallbackItem)
+        }
         description={description ?? locale.confirmDialog.deleteDescription}
         confirmLabel={confirmLabel ?? locale.confirmDialog.deleteLabel}
         {...props}

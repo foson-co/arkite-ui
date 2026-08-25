@@ -86,10 +86,7 @@ describe('Tabs', () => {
 
     expect(screen.queryByText('Content 1')).not.toBeInTheDocument()
     expect(screen.getByText('Content 2')).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Tab 2' })).toHaveAttribute(
-      'aria-selected',
-      'true'
-    )
+    expect(screen.getByRole('tab', { name: 'Tab 2' })).toHaveAttribute('aria-selected', 'true')
   })
 
   it('calls onChange when a tab is clicked', async () => {
@@ -124,7 +121,9 @@ describe('Tabs orientation', () => {
         <TabsList>
           <TabsTrigger value="a">Alpha</TabsTrigger>
           <TabsTrigger value="b">Beta</TabsTrigger>
-          <TabsTrigger value="c" disabled>Gamma</TabsTrigger>
+          <TabsTrigger value="c" disabled>
+            Gamma
+          </TabsTrigger>
           <TabsTrigger value="d">Delta</TabsTrigger>
         </TabsList>
         <TabsContent value="a">Panel A</TabsContent>
@@ -166,7 +165,9 @@ describe('Tabs keyboard navigation', () => {
         <TabsList>
           <TabsTrigger value="a">Alpha</TabsTrigger>
           <TabsTrigger value="b">Beta</TabsTrigger>
-          <TabsTrigger value="c" disabled>Gamma</TabsTrigger>
+          <TabsTrigger value="c" disabled>
+            Gamma
+          </TabsTrigger>
           <TabsTrigger value="d">Delta</TabsTrigger>
         </TabsList>
         <TabsContent value="a">Panel A</TabsContent>

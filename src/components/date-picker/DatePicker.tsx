@@ -25,10 +25,7 @@ function formatDate(date: Date, format: string): string {
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
 
-  return format
-    .replace('yyyy', String(year))
-    .replace('MM', month)
-    .replace('dd', day)
+  return format.replace('yyyy', String(year)).replace('MM', month).replace('dd', day)
 }
 
 function parseDate(dateStr: string, format: string): Date | null {
@@ -49,11 +46,10 @@ function parseDate(dateStr: string, format: string): Date | null {
 
 export type DatePickerSize = 'sm' | 'md' | 'lg'
 
-export interface DatePickerProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'defaultValue' | 'onChange' | 'size'
-  > {
+export interface DatePickerProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size'
+> {
   /** Selected date */
   value?: Date | null
   /** Initial date for uncontrolled usage */
@@ -213,9 +209,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     const isDateDisabled = (date: Date): boolean => {
       if (minDate && date < minDate) return true
       if (maxDate && date > maxDate) return true
-      return disabledDates.some(
-        (d) => d.toDateString() === date.toDateString()
-      )
+      return disabledDates.some((d) => d.toDateString() === date.toDateString())
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -277,36 +271,39 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       }
 
       return (
-        <div className="p-3 w-64">
+        <div className="w-64 p-3">
           {/* Header */}
-          <div className="flex items-center justify-between mb-3">
+          <div className="mb-3 flex items-center justify-between">
             <button
               type="button"
               onClick={handlePrevMonth}
               aria-label={locale.calendar.previousMonth}
-              className="p-1 rounded hover:bg-muted"
+              className="hover:bg-muted rounded p-1"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <span id={monthLabelId} className="text-sm font-medium">
-              {new Date(year, month).toLocaleDateString(locale.dateLocale, { month: 'long', year: 'numeric' })}
+              {new Date(year, month).toLocaleDateString(locale.dateLocale, {
+                month: 'long',
+                year: 'numeric',
+              })}
             </span>
             <button
               type="button"
               onClick={handleNextMonth}
               aria-label={locale.calendar.nextMonth}
-              className="p-1 rounded hover:bg-muted"
+              className="hover:bg-muted rounded p-1"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
 
           {/* Day names */}
-          <div className="grid grid-cols-7 gap-1 mb-2">
+          <div className="mb-2 grid grid-cols-7 gap-1">
             {locale.calendar.weekdaysShort.map((day) => (
               <div
                 key={day}
-                className="h-8 flex items-center justify-center text-xs text-muted-foreground"
+                className="text-muted-foreground flex h-8 items-center justify-center text-xs"
               >
                 {day}
               </div>
@@ -335,10 +332,10 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
                   onKeyDown={(event) => handleDayKeyDown(event, date)}
                   className={cn(
                     'h-8 w-8 rounded-md text-sm transition-colors',
-                    'hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring',
+                    'hover:bg-muted focus:ring-ring focus:ring-2 focus:outline-none',
                     isSelected && 'bg-primary text-primary-foreground hover:bg-primary',
                     isToday && !isSelected && 'bg-muted',
-                    isDisabled && 'opacity-50 cursor-not-allowed hover:bg-transparent'
+                    isDisabled && 'cursor-not-allowed opacity-50 hover:bg-transparent'
                   )}
                 >
                   {day}
@@ -348,7 +345,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
           </div>
 
           {/* Today button */}
-          <div className="mt-3 pt-3 border-t">
+          <div className="mt-3 border-t pt-3">
             <button
               type="button"
               onClick={() => {
@@ -358,7 +355,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
                   closeAndFocusInput()
                 }
               }}
-              className="w-full text-sm text-primary hover:underline"
+              className="text-primary w-full text-sm hover:underline"
             >
               {locale.datePicker.today}
             </button>
@@ -389,11 +386,11 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
             placeholder={placeholder ?? locale.datePicker.placeholder}
             disabled={disabled}
             className={cn(
-              'flex w-full rounded-md border border-input bg-background',
+              'border-input bg-background flex w-full rounded-md border',
               inputSizeStyles[size],
               clearable && currentValue && !disabled && clearablePaddingStyles[size],
               'ring-offset-background placeholder:text-muted-foreground',
-              'focus-visible:outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-ring/30 focus-visible:ring-offset-0',
+              'focus-visible:border-primary focus-visible:ring-ring/30 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
               'disabled:cursor-not-allowed disabled:opacity-50',
               error && 'border-destructive focus-visible:ring-destructive'
             )}
@@ -414,7 +411,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
               }
             }}
             className={cn(
-              'absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground',
+              'text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2',
               disabled && 'cursor-not-allowed'
             )}
           >
@@ -427,7 +424,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
           <div
             role="dialog"
             aria-labelledby={monthLabelId}
-            className="absolute z-50 mt-1 rounded-md border bg-card shadow-lg"
+            className="bg-card absolute z-50 mt-1 rounded-md border shadow-lg"
           >
             {renderCalendar()}
           </div>
@@ -441,7 +438,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
             onClick={handleClear}
             aria-label={locale.datePicker.clearDate}
             className={cn(
-              '-translate-y-1/2 absolute text-muted-foreground hover:text-foreground focus:outline-none',
+              'text-muted-foreground hover:text-foreground absolute -translate-y-1/2 focus:outline-none',
               clearPositionStyles[size]
             )}
           >
@@ -449,9 +446,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
           </button>
         )}
 
-        {errorMessage && (
-          <p className="mt-1.5 text-xs text-destructive">{errorMessage}</p>
-        )}
+        {errorMessage && <p className="text-destructive mt-1.5 text-xs">{errorMessage}</p>}
       </div>
     )
   }

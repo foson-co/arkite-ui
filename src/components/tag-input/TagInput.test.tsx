@@ -11,16 +11,12 @@ describe('TagInput', () => {
   })
 
   it('renders placeholder when no tags', () => {
-    render(
-      <TagInput value={[]} onChange={vi.fn()} placeholder="Add tags..." />
-    )
+    render(<TagInput value={[]} onChange={vi.fn()} placeholder="Add tags..." />)
     expect(screen.getByPlaceholderText('Add tags...')).toBeInTheDocument()
   })
 
   it('hides placeholder when tags exist', () => {
-    render(
-      <TagInput value={['React']} onChange={vi.fn()} placeholder="Add tags..." />
-    )
+    render(<TagInput value={['React']} onChange={vi.fn()} placeholder="Add tags..." />)
     expect(screen.queryByPlaceholderText('Add tags...')).not.toBeInTheDocument()
   })
 
@@ -59,9 +55,7 @@ describe('TagInput', () => {
 
   it('allows duplicates when allowDuplicates is true', async () => {
     const onChange = vi.fn()
-    render(
-      <TagInput value={['React']} onChange={onChange} allowDuplicates />
-    )
+    render(<TagInput value={['React']} onChange={onChange} allowDuplicates />)
     const input = screen.getByRole('textbox')
     await userEvent.type(input, 'React{Enter}')
     expect(onChange).toHaveBeenCalledWith(['React', 'React'])
@@ -94,16 +88,12 @@ describe('TagInput', () => {
   })
 
   it('applies disabled styling', () => {
-    const { container } = render(
-      <TagInput value={[]} onChange={vi.fn()} disabled />
-    )
+    const { container } = render(<TagInput value={[]} onChange={vi.fn()} disabled />)
     expect(container.firstElementChild?.className).toContain('cursor-not-allowed')
   })
 
   it('applies error border class', () => {
-    const { container } = render(
-      <TagInput value={[]} onChange={vi.fn()} error />
-    )
+    const { container } = render(<TagInput value={[]} onChange={vi.fn()} error />)
     expect(container.firstElementChild?.className).toContain('border-destructive')
   })
 
@@ -116,9 +106,7 @@ describe('TagInput', () => {
   })
 
   it('renders errorMessage text', () => {
-    render(
-      <TagInput value={[]} onChange={vi.fn()} error errorMessage="Too many tags" />
-    )
+    render(<TagInput value={[]} onChange={vi.fn()} error errorMessage="Too many tags" />)
     const message = screen.getByText('Too many tags')
     expect(message).toBeInTheDocument()
     expect(message.className).toContain('text-destructive')

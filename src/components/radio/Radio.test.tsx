@@ -37,9 +37,7 @@ describe('Radio', () => {
 
   it('can be selected by clicking the visual circle', async () => {
     const user = userEvent.setup()
-    const { container } = render(
-      <Radio id="r1" label="Option A" name="test" value="a" />
-    )
+    const { container } = render(<Radio id="r1" label="Option A" name="test" value="a" />)
     await user.click(container.querySelector('input + label')!)
     expect(screen.getByRole('radio')).toBeChecked()
   })
@@ -54,9 +52,7 @@ describe('Radio', () => {
   it('does not select when clicking the visual circle while disabled', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
-    const { container } = render(
-      <Radio id="r1" label="Option A" disabled onChange={onChange} />
-    )
+    const { container } = render(<Radio id="r1" label="Option A" disabled onChange={onChange} />)
     await user.click(container.querySelector('input + label')!)
     expect(onChange).not.toHaveBeenCalled()
     expect(screen.getByRole('radio')).not.toBeChecked()
@@ -204,9 +200,7 @@ describe('RadioGroup', () => {
   })
 
   it('renders errorMessage text once below the group', () => {
-    render(
-      <RadioGroup name="group" options={options} error errorMessage="Pick an option" />
-    )
+    render(<RadioGroup name="group" options={options} error errorMessage="Pick an option" />)
     const messages = screen.getAllByText('Pick an option')
     expect(messages).toHaveLength(1)
     expect(messages[0].className).toContain('text-destructive')

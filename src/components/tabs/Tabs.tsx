@@ -211,21 +211,21 @@ const triggerVariantStyles: Record<
 }
 
 /** Arrow keys move along the strip's own axis; Home/End jump to the ends. */
-function moveFocus(
-  event: ReactKeyboardEvent<HTMLButtonElement>,
-  orientation: TabsOrientation
-) {
+function moveFocus(event: ReactKeyboardEvent<HTMLButtonElement>, orientation: TabsOrientation) {
   const nextKey = orientation === 'vertical' ? 'ArrowDown' : 'ArrowRight'
   const prevKey = orientation === 'vertical' ? 'ArrowUp' : 'ArrowLeft'
-  if (event.key !== nextKey && event.key !== prevKey && event.key !== 'Home' && event.key !== 'End') {
+  if (
+    event.key !== nextKey &&
+    event.key !== prevKey &&
+    event.key !== 'Home' &&
+    event.key !== 'End'
+  ) {
     return
   }
 
   const list = event.currentTarget.closest('[role="tablist"]')
   if (!list) return
-  const tabs = Array.from(
-    list.querySelectorAll<HTMLButtonElement>('[role="tab"]:not([disabled])')
-  )
+  const tabs = Array.from(list.querySelectorAll<HTMLButtonElement>('[role="tab"]:not([disabled])'))
   if (tabs.length === 0) return
 
   const current = tabs.indexOf(event.currentTarget)
@@ -274,7 +274,7 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
         className={cn(
           'inline-flex items-center gap-2 font-medium transition-all',
           orientation === 'vertical' ? 'justify-start text-start' : 'justify-center',
-          'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40 focus-visible:ring-offset-0',
+          'focus-visible:ring-ring/40 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
           'disabled:pointer-events-none disabled:opacity-50',
           triggerSizeStyles[size],
           styles.base,
@@ -324,7 +324,7 @@ export const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(
           // beside it and the Tabs root's flex gap already separates them, so
           // a top margin would only knock it out of line with the first tab.
           orientation === 'vertical' ? 'min-w-0 flex-1' : 'mt-2',
-          'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/40 focus-visible:ring-offset-0',
+          'focus-visible:ring-ring/40 focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none',
           className
         )}
         {...props}

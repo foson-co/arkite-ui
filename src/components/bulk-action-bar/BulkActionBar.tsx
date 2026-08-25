@@ -47,7 +47,7 @@ export const BulkActionBar = forwardRef<HTMLDivElement, BulkActionBarProps>(
         aria-label={locale.bulkActionBar.selected(selectedCount)}
         className={cn(
           'fixed bottom-6 left-1/2 z-50 -translate-x-1/2',
-          'flex items-center gap-4 rounded-lg border bg-card px-4 py-3 shadow-lg',
+          'bg-card flex items-center gap-4 rounded-lg border px-4 py-3 shadow-lg',
           'animate-in fade-in slide-in-from-bottom-4 duration-200',
           className
         )}
@@ -55,26 +55,20 @@ export const BulkActionBar = forwardRef<HTMLDivElement, BulkActionBarProps>(
       >
         {/* Left: selection count */}
         <div className="flex items-center gap-2 text-sm font-medium whitespace-nowrap">
-          {left ?? (
-            <span>{locale.bulkActionBar.selected(selectedCount)}</span>
-          )}
+          {left ?? <span>{locale.bulkActionBar.selected(selectedCount)}</span>}
         </div>
 
         {/* Center: action buttons */}
-        {children && (
-          <div className="flex items-center gap-2 border-l pl-4">
-            {children}
-          </div>
-        )}
+        {children && <div className="flex items-center gap-2 border-l pl-4">{children}</div>}
 
         {/* Right: close / deselect */}
         <div className="flex items-center border-l pl-4">
-          {right ?? (
-            onClose && (
+          {right ??
+            (onClose && (
               <button
                 type="button"
                 onClick={onClose}
-                className="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground inline-flex h-6 w-6 items-center justify-center rounded-md transition-colors"
                 aria-label={locale.bulkActionBar.deselectAll}
               >
                 <svg
@@ -92,8 +86,7 @@ export const BulkActionBar = forwardRef<HTMLDivElement, BulkActionBarProps>(
                   <path d="m6 6 12 12" />
                 </svg>
               </button>
-            )
-          )}
+            ))}
         </div>
       </div>
     )

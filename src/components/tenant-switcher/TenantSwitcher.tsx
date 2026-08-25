@@ -38,8 +38,10 @@ export interface TenantItem {
   planLabel?: string
 }
 
-export interface TenantSwitcherProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect' | 'onChange'> {
+export interface TenantSwitcherProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onSelect' | 'onChange'
+> {
   /** List of available tenants */
   tenants: TenantItem[]
   /** Currently selected tenant (null = all tenants / platform view) */
@@ -236,10 +238,7 @@ export const TenantSwitcher = forwardRef<HTMLDivElement, TenantSwitcherProps>(
       ? tenants
       : tenants.filter((t) => {
           const q = search.toLowerCase()
-          return (
-            t.name.toLowerCase().includes(q) ||
-            (t.slug?.toLowerCase().includes(q) ?? false)
-          )
+          return t.name.toLowerCase().includes(q) || (t.slug?.toLowerCase().includes(q) ?? false)
         })
 
     const handleSearchChange = (q: string) => {
@@ -262,30 +261,30 @@ export const TenantSwitcher = forwardRef<HTMLDivElement, TenantSwitcherProps>(
           aria-haspopup="listbox"
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            'flex items-center gap-2 px-3 py-2 rounded-md',
+            'flex items-center gap-2 rounded-md px-3 py-2',
             'bg-card hover:bg-secondary',
-            'border border-border shadow-sm',
+            'border-border border shadow-sm',
             'text-sm font-medium',
             'transition-colors duration-200',
-            'min-w-[180px] max-w-[240px]'
+            'max-w-[240px] min-w-[180px]'
           )}
         >
-          <div className="flex items-center gap-2 flex-1 min-w-0">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
             {selectedTenant ? (
               <>
-                <BuildingIcon className="h-4 w-4 text-muted-foreground shrink-0" />
+                <BuildingIcon className="text-muted-foreground h-4 w-4 shrink-0" />
                 <span className="truncate">{selectedTenant.name}</span>
               </>
             ) : (
               <>
-                <GlobeIcon className="h-4 w-4 text-primary shrink-0" />
+                <GlobeIcon className="text-primary h-4 w-4 shrink-0" />
                 <span className="text-primary">{resolvedAllLabel}</span>
               </>
             )}
           </div>
           <ChevronDownIcon
             className={cn(
-              'h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-200',
+              'text-muted-foreground h-4 w-4 shrink-0 transition-transform duration-200',
               isOpen && 'rotate-180'
             )}
           />
@@ -295,16 +294,16 @@ export const TenantSwitcher = forwardRef<HTMLDivElement, TenantSwitcherProps>(
         {isOpen && (
           <div
             className={cn(
-              'absolute top-full left-0 mt-1 z-50',
-              'w-[280px] max-h-[400px]',
-              'bg-card border border-border rounded-lg shadow-lg',
+              'absolute top-full left-0 z-50 mt-1',
+              'max-h-[400px] w-[280px]',
+              'bg-card border-border rounded-lg border shadow-lg',
               'overflow-hidden'
             )}
           >
             {/* Search */}
-            <div className="p-2 border-b border-border">
+            <div className="border-border border-b p-2">
               <div className="relative">
-                <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <SearchIcon className="text-muted-foreground absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2" />
                 <input
                   ref={searchInputRef}
                   type="text"
@@ -312,16 +311,16 @@ export const TenantSwitcher = forwardRef<HTMLDivElement, TenantSwitcherProps>(
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
                   className={cn(
-                    'w-full h-9 pl-8 pr-3 text-sm',
-                    'bg-background border border-input rounded-md',
-                    'focus:outline-none focus:ring-2 focus:ring-ring'
+                    'h-9 w-full pr-3 pl-8 text-sm',
+                    'bg-background border-input rounded-md border',
+                    'focus:ring-ring focus:ring-2 focus:outline-none'
                   )}
                 />
               </div>
             </div>
 
             {/* Options */}
-            <div className="overflow-y-auto max-h-[320px]">
+            <div className="max-h-[320px] overflow-y-auto">
               {loading ? (
                 <div className="flex items-center justify-center py-8">
                   <Spinner size="md" />
@@ -335,30 +334,30 @@ export const TenantSwitcher = forwardRef<HTMLDivElement, TenantSwitcherProps>(
                         type="button"
                         onClick={() => handleSelect(null)}
                         className={cn(
-                          'w-full flex items-center gap-3 px-3 py-2.5',
+                          'flex w-full items-center gap-3 px-3 py-2.5',
                           'hover:bg-muted transition-colors',
                           'text-left',
                           !selectedTenant && 'bg-secondary'
                         )}
                       >
-                        <div className="flex items-center justify-center h-8 w-8 rounded-md bg-primary/10">
-                          <GlobeIcon className="h-4 w-4 text-primary" />
+                        <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-md">
+                          <GlobeIcon className="text-primary h-4 w-4" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-primary">{resolvedAllLabel}</p>
-                          <p className="text-xs text-muted-foreground">{allDescription ?? locale.tenantSwitcher.allDescription}</p>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-primary text-sm font-medium">{resolvedAllLabel}</p>
+                          <p className="text-muted-foreground text-xs">
+                            {allDescription ?? locale.tenantSwitcher.allDescription}
+                          </p>
                         </div>
-                        {!selectedTenant && (
-                          <CheckIcon className="h-4 w-4 text-primary shrink-0" />
-                        )}
+                        {!selectedTenant && <CheckIcon className="text-primary h-4 w-4 shrink-0" />}
                       </button>
-                      <div className="h-px bg-border mx-2 my-1" />
+                      <div className="bg-border mx-2 my-1 h-px" />
                     </>
                   )}
 
                   {/* Tenant list */}
                   {filteredTenants.length === 0 ? (
-                    <div className="px-3 py-6 text-center text-sm text-muted-foreground">
+                    <div className="text-muted-foreground px-3 py-6 text-center text-sm">
                       {emptyMessage ?? locale.tenantSwitcher.emptyMessage}
                     </div>
                   ) : (
@@ -370,7 +369,7 @@ export const TenantSwitcher = forwardRef<HTMLDivElement, TenantSwitcherProps>(
                             key={tenant.id}
                             type="button"
                             onClick={() => handleSelect(tenant)}
-                            className="w-full text-left hover:bg-muted transition-colors"
+                            className="hover:bg-muted w-full text-left transition-colors"
                           >
                             {renderTenant(tenant, selected)}
                           </button>
@@ -382,13 +381,13 @@ export const TenantSwitcher = forwardRef<HTMLDivElement, TenantSwitcherProps>(
                           type="button"
                           onClick={() => handleSelect(tenant)}
                           className={cn(
-                            'w-full flex items-center gap-3 px-3 py-2.5',
+                            'flex w-full items-center gap-3 px-3 py-2.5',
                             'hover:bg-muted transition-colors',
                             'text-left',
                             selected && 'bg-secondary'
                           )}
                         >
-                          <div className="flex items-center justify-center h-8 w-8 rounded-md bg-secondary text-secondary-foreground font-medium text-sm">
+                          <div className="bg-secondary text-secondary-foreground flex h-8 w-8 items-center justify-center rounded-md text-sm font-medium">
                             {tenant.logoUrl ? (
                               <img
                                 src={tenant.logoUrl}
@@ -399,11 +398,11 @@ export const TenantSwitcher = forwardRef<HTMLDivElement, TenantSwitcherProps>(
                               tenant.name.charAt(0).toUpperCase()
                             )}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{tenant.name}</p>
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-medium">{tenant.name}</p>
                             <div className="flex items-center gap-2">
                               {tenant.planLabel && (
-                                <span className="text-xs text-muted-foreground">
+                                <span className="text-muted-foreground text-xs">
                                   {tenant.planLabel}
                                 </span>
                               )}
@@ -417,9 +416,7 @@ export const TenantSwitcher = forwardRef<HTMLDivElement, TenantSwitcherProps>(
                               )}
                             </div>
                           </div>
-                          {selected && (
-                            <CheckIcon className="h-4 w-4 text-primary shrink-0" />
-                          )}
+                          {selected && <CheckIcon className="text-primary h-4 w-4 shrink-0" />}
                         </button>
                       )
                     })

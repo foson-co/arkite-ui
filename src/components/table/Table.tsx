@@ -128,7 +128,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
         className={cn(
           // border-separate + border-spacing-0 是 cross-browser sticky thead 必須
           // 預設 border-collapse:collapse 在 Chrome 會讓 sticky 失效
-          'w-full caption-bottom text-sm border-separate border-spacing-0',
+          'w-full caption-bottom border-separate border-spacing-0 text-sm',
           bordered && 'border',
           className
         )}
@@ -148,8 +148,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
     const scrollClass = cn('relative w-full', fillHeight && 'h-full', wrapperClassName)
     const { style: wrapperStyle, ...restWrapperProps } = wrapperProps ?? {}
     // Merged rather than spread-over, so wrapperProps.style can't drop maxHeight.
-    const scrollStyle =
-      maxHeight != null ? { maxHeight, ...wrapperStyle } : wrapperStyle
+    const scrollStyle = maxHeight != null ? { maxHeight, ...wrapperStyle } : wrapperStyle
 
     // Fades default on for wide tables (`minWidth`), which are exactly the ones
     // whose hidden columns need advertising.
@@ -195,7 +194,7 @@ export const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>
         // paint in that model
         '[&_th]:border-b',
         /* Sticky header: activated by parent table[data-sticky-header] */
-        '[table[data-sticky-header]_&]:sticky [table[data-sticky-header]_&]:top-0 [table[data-sticky-header]_&]:z-10 [table[data-sticky-header]_&]:bg-background [table[data-sticky-header]_&]:shadow-sticky-header',
+        '[table[data-sticky-header]_&]:bg-background [table[data-sticky-header]_&]:shadow-sticky-header [table[data-sticky-header]_&]:sticky [table[data-sticky-header]_&]:top-0 [table[data-sticky-header]_&]:z-10',
         className
       )}
       {...props}
@@ -210,11 +209,7 @@ export type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>
 /** Table body section containing data rows. */
 export const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({ className, ...props }, ref) => (
-    <tbody
-      ref={ref}
-      className={cn('[&_tr:last-child_td]:border-b-0', className)}
-      {...props}
-    />
+    <tbody ref={ref} className={cn('[&_tr:last-child_td]:border-b-0', className)} {...props} />
   )
 )
 
@@ -278,17 +273,29 @@ export interface TableHeadProps extends Omit<ThHTMLAttributes<HTMLTableCellEleme
 
 /** Table header cell with optional sort indicators and sticky positioning. */
 export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
-  ({ className, sortable, sortDirection, align = 'left', stickyAction, stickyLead, children, ...props }, ref) => (
+  (
+    {
+      className,
+      sortable,
+      sortDirection,
+      align = 'left',
+      stickyAction,
+      stickyLead,
+      children,
+      ...props
+    },
+    ref
+  ) => (
     <th
       ref={ref}
       className={cn(
-        'h-10 px-4 text-left align-middle font-medium text-muted-foreground',
+        'text-muted-foreground h-10 px-4 text-left align-middle font-medium',
         '[table[data-compact]_&]:h-8 [table[data-compact]_&]:px-3',
         '[&:has([role=checkbox])]:pr-0',
         alignStyles[align],
-        sortable && 'cursor-pointer select-none hover:text-foreground',
-        stickyAction && 'sticky right-0 bg-background shadow-sticky-left',
-        stickyLead && 'sticky left-0 bg-background shadow-sticky-right',
+        sortable && 'hover:text-foreground cursor-pointer select-none',
+        stickyAction && 'bg-background shadow-sticky-left sticky right-0',
+        stickyLead && 'bg-background shadow-sticky-right sticky left-0',
         className
       )}
       data-sticky-action={stickyAction || undefined}
@@ -335,8 +342,8 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
         '[table[data-compact]_&]:px-3 [table[data-compact]_&]:py-2',
         alignStyles[align],
         numeric && 'text-right tabular-nums',
-        stickyAction && 'sticky right-0 bg-background shadow-sticky-left',
-        stickyLead && 'sticky left-0 bg-background shadow-sticky-right',
+        stickyAction && 'bg-background shadow-sticky-left sticky right-0',
+        stickyLead && 'bg-background shadow-sticky-right sticky left-0',
         className
       )}
       data-sticky-action={stickyAction || undefined}
@@ -353,11 +360,7 @@ export type TableCaptionProps = HTMLAttributes<HTMLTableCaptionElement>
 /** Table caption displayed below the table. */
 export const TableCaption = forwardRef<HTMLTableCaptionElement, TableCaptionProps>(
   ({ className, ...props }, ref) => (
-    <caption
-      ref={ref}
-      className={cn('mt-4 text-sm text-muted-foreground', className)}
-      {...props}
-    />
+    <caption ref={ref} className={cn('text-muted-foreground mt-4 text-sm', className)} {...props} />
   )
 )
 
@@ -397,7 +400,7 @@ export function TableEmpty({ colSpan, children, className }: TableEmptyProps) {
       <TableCell
         ref={auto.ref}
         colSpan={auto.colSpan}
-        className={cn('h-24 text-center text-muted-foreground', className)}
+        className={cn('text-muted-foreground h-24 text-center', className)}
       >
         {children ?? locale.dataTable.emptyMessage}
       </TableCell>
@@ -425,7 +428,7 @@ export function TableLoading({ colSpan, children, className }: TableLoadingProps
         className={cn('h-24 text-center', className)}
       >
         <div className="flex items-center justify-center gap-2">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          <div className="border-primary h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
           <span className="text-muted-foreground">{children ?? locale.dataTable.loading}</span>
         </div>
       </TableCell>

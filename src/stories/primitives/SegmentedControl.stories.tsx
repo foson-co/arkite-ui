@@ -92,7 +92,7 @@ function AllSizesDemo() {
   const [lg, setLg] = useState('a')
 
   return (
-    <div className="flex flex-col gap-4 items-start">
+    <div className="flex flex-col items-start gap-4">
       <SegmentedControl size="sm" options={options} value={sm} onChange={setSm} />
       <SegmentedControl size="md" options={options} value={md} onChange={setMd} />
       <SegmentedControl size="lg" options={options} value={lg} onChange={setLg} />

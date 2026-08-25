@@ -32,7 +32,9 @@ const DestructiveDemo = () => {
   const [open, setOpen] = useState(false)
   return (
     <>
-      <Button variant="destructive" onClick={() => setOpen(true)}>Delete Item</Button>
+      <Button variant="destructive" onClick={() => setOpen(true)}>
+        Delete Item
+      </Button>
       <ConfirmDialog
         open={open}
         onClose={() => setOpen(false)}
@@ -101,7 +103,9 @@ const DeletePresetDemo = () => {
   const [open, setOpen] = useState(false)
   return (
     <>
-      <Button variant="destructive" onClick={() => setOpen(true)}>Delete User</Button>
+      <Button variant="destructive" onClick={() => setOpen(true)}>
+        Delete User
+      </Button>
       <DeleteConfirmDialog
         open={open}
         onClose={() => setOpen(false)}
@@ -128,7 +132,9 @@ const DeleteAsyncDemo = () => {
 
   return (
     <>
-      <Button variant="destructive" onClick={() => setOpen(true)}>Delete Order</Button>
+      <Button variant="destructive" onClick={() => setOpen(true)}>
+        Delete Order
+      </Button>
       <DeleteConfirmDialog
         open={open}
         onClose={() => setOpen(false)}

@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  isValidElement,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react'
+import { forwardRef, isValidElement, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { cn } from '../../utils/cn'
 import { warnDeprecated } from '../../utils/deprecate'
 import { X, CheckCircle2, AlertCircle, AlertTriangle, Info, Loader2 } from 'lucide-react'
@@ -100,8 +93,7 @@ export function Toast({
   if (variant === 'error') {
     warnDeprecated('Toast', 'variant="error"', 'variant="destructive"')
   }
-  const resolvedVariant: ResolvedToastVariant =
-    variant === 'error' ? 'destructive' : variant
+  const resolvedVariant: ResolvedToastVariant = variant === 'error' ? 'destructive' : variant
   const IconComponent = isLoading ? null : iconMap[resolvedVariant]
 
   useEffect(() => {
@@ -126,7 +118,7 @@ export function Toast({
         'pointer-events-auto flex w-full max-w-sm gap-3 rounded-lg border p-4 shadow-lg transition-all duration-200',
         variantStyles[resolvedVariant],
         variantTextStyles[resolvedVariant],
-        isExiting ? 'opacity-0 translate-x-2' : 'opacity-100 translate-x-0',
+        isExiting ? 'translate-x-2 opacity-0' : 'translate-x-0 opacity-100',
         className
       )}
     >
@@ -141,10 +133,8 @@ export function Toast({
         </div>
       )}
       <div className="flex-1 space-y-1">
-        {title && <p className="font-medium leading-none">{title}</p>}
-        {description && (
-          <p className="text-sm opacity-90">{description}</p>
-        )}
+        {title && <p className="leading-none font-medium">{title}</p>}
+        {description && <p className="text-sm opacity-90">{description}</p>}
         {action && (
           <button
             onClick={action.onClick}
@@ -179,17 +169,13 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
       <div
         ref={ref}
         className={cn(
-          'fixed z-50 flex flex-col gap-2 pointer-events-none',
+          'pointer-events-none fixed z-50 flex flex-col gap-2',
           positionStyles[position],
           className
         )}
       >
         {toasts.map((toast) => (
-          <Toast
-            key={toast.id}
-            {...toast}
-            onClose={() => dismissToast(toast.id)}
-          />
+          <Toast key={toast.id} {...toast} onClose={() => dismissToast(toast.id)} />
         ))}
       </div>
     )
@@ -207,18 +193,10 @@ function resolveShorthandOptions(
   options?: ShorthandOptions
 ): ToastOptions | undefined {
   if (options == null) return undefined
-  if (
-    typeof options === 'object' &&
-    !isValidElement(options) &&
-    !Array.isArray(options)
-  ) {
+  if (typeof options === 'object' && !isValidElement(options) && !Array.isArray(options)) {
     return options as ToastOptions
   }
-  warnDeprecated(
-    'useToast',
-    `${method}(title, description)`,
-    `${method}(title, options)`
-  )
+  warnDeprecated('useToast', `${method}(title, description)`, `${method}(title, options)`)
   return { description: options as ReactNode }
 }
 
@@ -226,8 +204,7 @@ function resolveShorthandOptions(
 export function useToast() {
   const toast = useMemo(() => {
     const t = Object.assign(
-      (options: Omit<ToastData, 'id'>) =>
-        useToastStore.getState().addToast(options),
+      (options: Omit<ToastData, 'id'>) => useToastStore.getState().addToast(options),
       {
         show: (title: ReactNode, options?: ShorthandOptions) =>
           toastApi.show(title, resolveShorthandOptions('show', options)),
@@ -239,8 +216,7 @@ export function useToast() {
           toastApi.warning(title, resolveShorthandOptions('warning', options)),
         info: (title: ReactNode, options?: ShorthandOptions) =>
           toastApi.info(title, resolveShorthandOptions('info', options)),
-        loading: (title: ReactNode, options?: ToastOptions) =>
-          toastApi.loading(title, options),
+        loading: (title: ReactNode, options?: ToastOptions) => toastApi.loading(title, options),
         fromError: (err: unknown, options?: ToastFromErrorOptions) =>
           toastApi.fromError(err, options),
         dismiss: (id: string) => toastApi.dismiss(id),

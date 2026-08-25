@@ -15,9 +15,7 @@ const DefaultDemo = () => {
     <div className="space-y-2">
       <Calendar value={date} onSelect={setDate} />
       {date && (
-        <p className="text-sm text-muted-foreground">
-          Selected: {date.toLocaleDateString()}
-        </p>
+        <p className="text-muted-foreground text-sm">Selected: {date.toLocaleDateString()}</p>
       )}
     </div>
   )
@@ -33,9 +31,7 @@ const WithConstraintsDemo = () => {
 
   return (
     <div className="space-y-2">
-      <p className="text-sm text-muted-foreground">
-        Selectable: this month and next month only
-      </p>
+      <p className="text-muted-foreground text-sm">Selectable: this month and next month only</p>
       <Calendar value={date} onSelect={setDate} minDate={minDate} maxDate={maxDate} />
     </div>
   )
@@ -55,7 +51,7 @@ const HighlightedDemo = () => {
 
   return (
     <div className="space-y-2">
-      <p className="text-sm text-muted-foreground">Days with events are highlighted</p>
+      <p className="text-muted-foreground text-sm">Days with events are highlighted</p>
       <Calendar value={date} onSelect={setDate} highlightedDates={highlighted} />
     </div>
   )

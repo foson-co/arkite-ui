@@ -20,7 +20,7 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
         <label
           ref={ref}
           className={cn(
-            'text-sm font-medium leading-none',
+            'text-sm leading-none font-medium',
             'peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
             className
           )}
@@ -28,19 +28,15 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(
         >
           {children}
           {required && (
-            <span className="ml-1 text-destructive" aria-hidden="true">
+            <span className="text-destructive ml-1" aria-hidden="true">
               *
             </span>
           )}
           {optional && (
-            <span className="ml-1 text-muted-foreground font-normal">
-              {locale.label.optional}
-            </span>
+            <span className="text-muted-foreground ml-1 font-normal">{locale.label.optional}</span>
           )}
         </label>
-        {description && (
-          <p className="text-xs text-muted-foreground">{description}</p>
-        )}
+        {description && <p className="text-muted-foreground text-xs">{description}</p>}
       </div>
     )
   }
