@@ -210,4 +210,54 @@ describe('Card interactive', () => {
     render(<Card interactive>Static</Card>)
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
+
+  // ── `onClick` without `interactive` ────────────────────────────────────
+  // These lock in TODAY's behaviour, which is a known accessibility gap
+  // (issue #24; fleet impact measured in #26). They are not an endorsement:
+  // the point is that the combination had NO test at all, so changing it —
+  // e.g. adopting direction A, "onClick alone grants button semantics" —
+  // would have been silent. If A lands, these three must fail and be
+  // rewritten to assert the new contract. That is the intended alarm.
+  it('onClick without interactive: click fires but no button semantics', async () => {
+    const user = userEvent.setup()
+    const onClick = vi.fn()
+    render(<Card onClick={onClick}>Clickable but not reachable</Card>)
+
+    const card = screen.getByText('Clickable but not reachable')
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    expect(card).not.toHaveAttribute('role')
+    expect(card).not.toHaveAttribute('tabindex')
+
+    await user.click(card)
+    expect(onClick).toHaveBeenCalledTimes(1)
+  })
+
+  it('onClick without interactive: not reachable by keyboard (WCAG 2.1.1 gap)', async () => {
+    const user = userEvent.setup()
+    const onClick = vi.fn()
+    render(
+      <>
+        <button type="button">before</button>
+        <Card onClick={onClick}>Card body</Card>
+        <button type="button">after</button>
+      </>
+    )
+
+    screen.getByRole('button', { name: 'before' }).focus()
+    await user.tab()
+    // Tab skips straight past the card — there is no stop on it
+    expect(screen.getByRole('button', { name: 'after' })).toHaveFocus()
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('onClick without interactive: Enter/Space on the card does nothing', async () => {
+    const user = userEvent.setup()
+    const onClick = vi.fn()
+    render(<Card onClick={onClick}>Card body</Card>)
+
+    const card = screen.getByText('Card body')
+    card.focus() // no tabIndex, so this is a no-op on a plain div
+    await user.keyboard('{Enter} ')
+    expect(onClick).not.toHaveBeenCalled()
+  })
 })

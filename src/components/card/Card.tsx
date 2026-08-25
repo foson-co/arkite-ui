@@ -20,11 +20,19 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   /** Card border */
   bordered?: boolean
   /**
-   * Whole-card clickable: with `onClick` present, adds button semantics
-   * (`role="button"`, `tabIndex`, Enter/Space activation) plus hover/focus
-   * styling. Stays a `<div>` so the card can contain its own interactive
-   * children — Enter/Space only activates when the card itself is focused.
-   * This is the supported alternative to wrapping a card in a raw `<button>`.
+   * Whole-card clickable. **Required alongside `onClick`** to get button
+   * semantics (`role="button"`, `tabIndex`, Enter/Space activation) plus
+   * hover/focus styling — the condition is `interactive && onClick != null`.
+   *
+   * ⚠️ **`onClick` on its own is not enough.** Without `interactive` the card
+   * stays a plain `<div>`: it still fires on click, but has no `role`, no
+   * `tabIndex`, and no keyboard activation — mouse users can reach it and
+   * keyboard users cannot (WCAG 2.1.1). See issue #24 / #26; a fleet scan
+   * found 11 such sites. Always pass both.
+   *
+   * Stays a `<div>` so the card can contain its own interactive children —
+   * Enter/Space only activates when the card itself is focused. This is the
+   * supported alternative to wrapping a card in a raw `<button>`.
    */
   interactive?: boolean
   /** Content density — `compact` tightens header/content/footer padding and typography for dashboard widgets. Inherited by CardHeader/CardContent/CardFooter. */
