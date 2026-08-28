@@ -6,7 +6,7 @@
 # `merge_request_event` — and runs every job twice on the same SHA. That
 # costs real wall-clock here: shared runners are disabled, so every job
 # queues on a self-hosted runner shared with the rest of the ecosystem's
-# CI (check/test/build on eu-deploy, release on Ark-Stage).
+# CI (all stages, release included, on eu-deploy).
 #
 # ⚠️ The $CI_COMMIT_TAG rule MUST stay first and unconditional. The tag
 # pipeline is the ONLY channel that publishes to npm (see publish:npm),
@@ -36,7 +36,7 @@ default:
     # 2026-08-27：openhands-box 退場,CI 統一走 eu-deploy。該機的 runner
     # concurrent = 1（一次只跑一個 job）,eu-deploy 的機器 concurrent = 4。
     # eu-deploy 的 run_untagged 已同步改為 true,未標 tag 的 job 照樣被接住。
-    - eu-deploy # check/test/build；publish:gitlab / publish:npm 覆寫為 Ark-Stage
+    - eu-deploy # 全部 stage；publish:* 另有顯式 tags:（同值,理由見 publish 區塊）
 
 # -------------------------------------------------------------------
 # Shared Templates
@@ -412,13 +412,20 @@ build:
 # edit to `default: tags:` silently moved npm publishing to another runner,
 # and the failure would surface at `git tag`, not in review. Pinned here so
 # the release runner only ever changes on purpose.
+#
+# 2026-08-28 — this is one of those on-purpose changes: the pinned value moved
+# from `Ark-Stage` to `eu-deploy`. The Ark-Stage runner (id 52183283) is now
+# `paused=True` and picks up nothing, so the pin was aimed at a dead runner:
+# the next `git tag` would have queued forever with no job ever starting.
+# Exactly the failure mode the warning above describes — invisible until
+# release — which is why it was found by an infra audit, not by CI.
 # -------------------------------------------------------------------
 
 publish:gitlab:
   stage: publish
   image: node:22-alpine
   tags:
-    - Ark-Stage
+    - eu-deploy
   dependencies:
     - build
   variables:
@@ -453,7 +460,7 @@ publish:npm:
   stage: publish
   image: node:22-alpine
   tags:
-    - Ark-Stage
+    - eu-deploy
   dependencies:
     - build
   variables:
