@@ -100,6 +100,7 @@
     "version-packages": "changeset version",
     "verify-changesets": "./scripts/verify-changesets.sh",
     "release:cut": "./scripts/release.sh",
+    "release:finish": "./scripts/release-finish.sh",
     "prepare": "husky || true",
     "smoke:next": "pnpm build && pnpm --dir smoke/next install && pnpm --dir smoke/next run build && node scripts/smoke-next-e2e.mjs"
   },
