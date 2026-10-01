@@ -1,4 +1,4 @@
-# @arkite-ui/core v0.23.0
+# @arkite-ui/core v0.23.1
 
 > React components for multi-tenant SaaS admin panels. Tailwind CSS v4 +
 > Radix UI + TypeScript. Pure UI only: no business logic, auth, stores, or
@@ -193,6 +193,7 @@ Colors are HSL triplets in CSS variables (`:root` light, `.dark` dark), exposed 
 | `card` / `card-foreground`           | `bg-card`                            | Elevated surfaces              |
 | `muted` / `muted-foreground`         | `text-muted-foreground`              | Secondary text, subtle fills   |
 | `primary` / `primary-foreground`     | `bg-primary text-primary-foreground` | Brand actions (violet)         |
+| `primary-hover`, `destructive-hover` | `hover:bg-primary-hover`             | Solid-fill hover (darkened)    |
 | `secondary` / `secondary-foreground` | `bg-secondary`                       | Low-emphasis actions           |
 | `accent` / `accent-foreground`       | `bg-accent`                          | Highlights (teal)              |
 | `border`, `input`, `ring`            | `border-border`, `ring-ring`         | Hairlines, form borders, focus |
@@ -212,6 +213,7 @@ Naming rule: the "dangerous/negative" semantic is always **`destructive`** (neve
 - Foreground follows **background luminance, not semantics**: light backgrounds get dark text, dark backgrounds get light text (e.g. dark-mode `info` is black-on-blue, not white). Never re-pair a `-foreground` onto a different background.
 - `createTheme()` picks black/white foregrounds by real contrast ratio — any brand color yields AA-passing pairs automatically.
 - Custom palettes (raw CSS variable overrides): validate with the Storybook **Foundation / Design Tokens → Contrast Audit** page.
+- **Solid-fill hover darkens, never fades.** Use `hover:bg-primary-hover` / `hover:bg-destructive-hover`, not `hover:bg-primary/90`: on a white page the opacity form lightens the fill and drops white text below AA (default primary 5.11 → 4.31:1, #27). The `-hover` tokens are `color-mix(in oklab, <color> 88%, black)`, so they follow any `--primary` / `--destructive` override automatically and only raise text contrast; the hover pair is part of the `presets.test.ts` guard. Tune the shade by overriding `--color-primary-hover` / `--color-destructive-hover`.
 
 ### Charts & presence
 
