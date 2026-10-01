@@ -45,11 +45,16 @@ name="$(node -p "require('${ROOT}/package.json').name")"
 version="$(node -p "require('${ROOT}/package.json').version")"
 tgz="$(ls "${OUT}"/*.tgz)"
 
-if tar -xzOf "${tgz}" package/package.json | grep -qE '"(workspace|catalog):'; then
+# 先讀進變數再 grep，不用 `tar | grep -q`：grep -q 一找到就結束，tar 收到 SIGPIPE 以非 0
+# 結束，在 pipefail 下整條 pipeline 被判失敗——「有」會被誤判成「沒有」（busybox tar
+# 會中；macOS 的 tar 不會，所以本機測不出來。2026-10-01 MR !17 的 dryrun 實際踩到）。
+pkg_json="$(tar -xzOf "${tgz}" package/package.json)"
+listing="$(tar -tzf "${tgz}")"
+if grep -qE '"(workspace|catalog):' <<<"${pkg_json}"; then
   echo "❌ ${name}@${version} 的 package.json 仍含 workspace:／catalog: 協定" >&2
   exit 1
 fi
-if ! tar -tzf "${tgz}" | grep -q '^package/dist/'; then
+if ! grep -q '^package/dist/' <<<"${listing}"; then
   echo "❌ ${name}@${version} 的 tarball 沒有 dist/" >&2
   exit 1
 fi
