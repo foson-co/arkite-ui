@@ -153,17 +153,21 @@ The bar: when someone asks "does Storybook/starter need updating for this releas
 
 New props/components come from observed consumer pain (grep audits, lint-exemption clusters, feedback docs from consuming projects) — not speculation. Fix the library upstream instead of documenting workarounds downstream. Each release's CHANGELOG notes **which consumer workarounds it retires**, so consumers know what to delete.
 
-### 3. Cutting a release
+### 3. Cutting a release — two commands
 
 ```bash
-pnpm release:cut
+pnpm release:cut      # changeset version → regenerate llms docs → commit → tag → push to GitLab
+# …wait for the tag pipeline's publish:npmjs to stage the version on npm…
+pnpm release:finish   # approve (2FA) → confirm installable → GitHub mirror → starter canary → verify sites
 ```
 
-This runs: `changeset version` → regenerate llms docs → commit → tag → push. The GitLab **tag pipeline** publishes to npm + GitLab registry; the script then syncs the GitHub mirror (`foson-co/arkite-ui`), which redeploys ui.foson.co (landing + Storybook). Never publish to npm manually.
+npm publishing is **staged** (Trusted Publishing / OIDC): the tag pipeline can only put the version in npm's staging area, and it goes live when an `arkite-ui` org owner approves it with 2FA. Everything public therefore waits for that approval: `release:cut` pushes to GitLab only, and `release:finish` pushes the GitHub mirror (`foson-co/arkite-ui`, which redeploys ui.foson.co) **only after** `npm view` confirms the new version is installable. If the staged build is wrong, run `pnpm release:finish --reject` instead — GitHub, the starter and the sites stay untouched; fix on `main` and cut the next patch (never reuse a version number).
 
-### 4. Starter canary (mandatory post-release step)
+`release:finish` logs in to npm only if needed and logs out at the end (no token left in `~/.npmrc`), pushes to GitHub with the `daith` gh account for that command only, and is safe to re-run: steps already done are skipped. Never publish to npm manually.
 
-After **every** release, `arkite-admin-starter` immediately bumps to the new version, builds, and redeploys starter.foson.co. The starter is our first consumer — it surfaces upgrade regressions before real consumers hit them (this is how the 0.14.1 bare-`Table` hover regression was caught). A release is not complete until the canary is green.
+### 4. Starter canary (built into `release:finish`)
+
+After **every** release, `arkite-admin-starter` bumps to the new version, passes lint / format / typecheck / test / audit / build, and only then pushes to `main`, which redeploys starter.foson.co. The starter is our first consumer — it surfaces upgrade regressions before real consumers hit them (this is how the 0.14.1 bare-`Table` hover regression was caught). A release is not complete until the canary is green. This used to be a manual step and was skipped at least once (the starter went 0.21.1 → 0.23.0 without a 0.22.0 canary); `release:finish` makes it part of the release. If the canary fails, the script stops and leaves the starter worktree for inspection — the npm version is already live, so the fix ships as the next patch.
 
 ### 5. Public-facing links
 

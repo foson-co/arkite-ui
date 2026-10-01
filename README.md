@@ -489,22 +489,13 @@ Every merge request runs `publish:npmjs:dryrun`, which packs the tarball, checks
 pnpm changeset
 
 # 2. When ready to release, on an up-to-date main:
-pnpm release:cut   # verify changesets → test → build → version → commit → tag → push
+pnpm release:cut      # verify changesets → test → build → version → commit → tag → push to GitLab
+
+# 3. After the tag pipeline stages the version on npm:
+pnpm release:finish   # approve (2FA) → confirm installable → GitHub mirror → starter canary → verify sites
 ```
 
-The tag pipeline then stages `@arkite-ui/core` on npm. An `arkite-ui` org owner approves it:
-
-```bash
-# npm >= 11.15 is required for `npm stage`; pin an exact version with npx
-# (`npx npm@11` silently reuses an older local npm 11.x that lacks `stage`).
-npx -y npm@11.21.0 login --auth-type=web
-npx -y npm@11.21.0 stage list @arkite-ui/core
-npx -y npm@11.21.0 stage view <stage-id>
-npx -y npm@11.21.0 stage approve <stage-id>   # prompts for 2FA
-npm logout                                     # login leaves a token in ~/.npmrc
-```
-
-…or approve it on npmjs.com (package page → Staged).
+The tag pipeline only **stages** `@arkite-ui/core` on npm; nothing is public until an `arkite-ui` org owner approves it with 2FA inside `release:finish`. The GitHub mirror (ui.foson.co) and the starter canary (starter.foson.co) are updated by `release:finish` only after npm confirms the version is installable. To discard a bad staged build: `pnpm release:finish --reject`. See CONTRIBUTING.md §Release & Sync Process.
 
 There is deliberately **no local publish path** and no token to set up: do not create a personal access token for publishing and never `export` one from a shell profile. The previous `pnpm publish-package` script (which asked for an `api`-scope PAT exported from `~/.zshrc`) has been removed.
 
