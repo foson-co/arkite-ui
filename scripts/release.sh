@@ -1,6 +1,7 @@
 #!/bin/bash
 # release.sh - Cut a release: changeset version → commit → tag → push
-# 之後由 GitLab tag pipeline 自動發布到 GitLab Package Registry + npm。
+# 之後由 GitLab tag pipeline 發布：GitLab Package Registry 直接發布；npmjs 送進暫存區，
+# 需 arkite-ui org owner 以 2FA 核准（npm stage approve 或 npmjs.com）才上線。
 # Usage: pnpm release:cut
 
 RED='\033[0;31m'

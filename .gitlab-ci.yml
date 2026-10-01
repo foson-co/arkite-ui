@@ -9,7 +9,7 @@
 # CI (all stages, release included, on eu-deploy).
 #
 # ⚠️ The $CI_COMMIT_TAG rule MUST stay first and unconditional. The tag
-# pipeline is the ONLY channel that publishes to npm (see publish:npm),
+# pipeline is the ONLY channel that publishes to npm (see publish:npmjs),
 # and this block decides whether that pipeline exists at all — a mistake
 # here does not fail loudly, it silently publishes nothing. This path
 # cannot be exercised by an MR pipeline; it is first proven at release.
@@ -456,7 +456,53 @@ publish:gitlab:
     # 對照 publish:npm 本來就有兩層（$CI_COMMIT_TAG && $NPM_TOKEN），這裡補齊。
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+/
 
-publish:npm:
+# -------------------------------------------------------------------
+# publish:npmjs — npm Trusted Publishing（OIDC）＋暫存發布，2026-10-01 取代 publish:npm
+#
+# 以前的 publish:npm 用 CI variable `NPM_TOKEN`（npmjs legacy token，無 package／IP 限制，
+# 能動帳號下所有套件）直接發布。現在：
+#   - 認證：id_tokens 產生 audience 為 npm:registry.npmjs.org 的 NPM_ID_TOKEN，npm CLI
+#     換成一次性授權。沒有任何 npm token。
+#   - tags：npm 只接受 GitLab.com shared runner 的 OIDC token，自架的 eu-deploy 不行，
+#     所以這裡**刻意**釘 saas runner（上方「publish:* 顯式 tags」的同一原則：換 runner
+#     必須是有意識的改動）。
+#   - 暫存：npm 端 Trusted Publisher 權限只給 `npm stage publish`。tag pipeline 只把版本送進
+#     暫存區，要 arkite-ui org owner 以 2FA 核准才上線——就算有人自組帶 id_tokens 的 job，
+#     最多留下一個待核准的 tarball（GitLab Free 沒有 protected environments，npm 的
+#     Trusted Publisher 也不核對 ref）。
+#   - environment npmjs：npm 端 Trusted Publisher 綁這個名稱。
+#   - NPMJS_PUBLISH_ENABLED：project variable 開關（非憑證），Trusted Publisher 設好前不跑。
+# 同一套做法見 arkite-frontend 的 publish:npmjs 與 §5.24。
+# -------------------------------------------------------------------
+publish:npmjs:
+  stage: publish
+  image: node:22-alpine # Trusted Publishing 需要 node >= 22.14
+  tags:
+    - saas-linux-small-amd64
+  environment:
+    name: npmjs
+    url: https://www.npmjs.com/package/@arkite-ui/core
+  id_tokens:
+    NPM_ID_TOKEN:
+      aud: 'npm:registry.npmjs.org'
+  dependencies:
+    - build
+  variables:
+    HUSKY: '0'
+  before_script:
+    - apk add --no-cache bash
+    - corepack enable && corepack prepare --activate
+    # node:22 內建 npm 10；Trusted Publishing 需要 >= 11.5.1，npm stage 需要 >= 11.15.0
+    - npm install -g npm@^11.15.0
+  script:
+    - bash scripts/publish-npmjs.sh
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+/ && $NPMJS_PUBLISH_ENABLED == "true"
+
+# MR 就把 npmjs 的組版路徑跑一次（pnpm pack、檢查 tarball、npm stage publish --dry-run），
+# 對應本檔開頭的警告：publish 路徑原本只在 release 當下才第一次被證明。
+# dry-run 不需要認證，所以跑在一般 runner 上。
+publish:npmjs:dryrun:
   stage: publish
   image: node:22-alpine
   tags:
@@ -466,9 +512,10 @@ publish:npm:
   variables:
     HUSKY: '0'
   before_script:
+    - apk add --no-cache bash
     - corepack enable && corepack prepare --activate
+    - npm install -g npm@^11.15.0
   script:
-    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-    - pnpm publish --no-git-checks --access public
+    - bash scripts/publish-npmjs.sh --dry-run
   rules:
-    - if: $CI_COMMIT_TAG && $NPM_TOKEN
+    - if: $CI_MERGE_REQUEST_IID

@@ -98,9 +98,7 @@
     "size:check": "size-limit --limit",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "changeset publish",
     "verify-changesets": "./scripts/verify-changesets.sh",
-    "publish-package": "./scripts/publish.sh",
     "release:cut": "./scripts/release.sh",
     "prepare": "husky || true",
     "smoke:next": "pnpm build && pnpm --dir smoke/next install && pnpm --dir smoke/next run build && node scripts/smoke-next-e2e.mjs"
