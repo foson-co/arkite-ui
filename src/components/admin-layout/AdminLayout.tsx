@@ -171,7 +171,7 @@ function SidebarBrand({ brand }: { brand: AdminBrandConfig }) {
         <button
           type="button"
           onClick={() => setCollapsed(false)}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 flex h-8 w-8 items-center justify-center rounded-md text-sm font-bold transition-colors"
+          className="bg-primary text-primary-foreground hover:bg-primary-hover flex h-8 w-8 items-center justify-center rounded-md text-sm font-bold transition-colors"
           title={locale.adminLayout.expandMenu}
         >
           {brand.collapsedLogo || brand.shortName || brand.name.charAt(0)}
