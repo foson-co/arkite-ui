@@ -473,50 +473,40 @@ pnpm clean               # Clean dist/
 
 Every push triggers **lint**, **typecheck**, **test**, **keyboard:browser**, **smoke:next**, and **size** checks, plus the React 19 matrix (**typecheck:react19**, **test:react19**). On merge requests, **changeset:check** verifies a changeset is present. On `main`, **keyboard:browser:react19** re-runs the APG keyboard specs under React 19 in real Chromium, and **types:mixed-major** packs the tarball into a two-app fixture on different React majors to verify consumer-side type resolution.
 
-On git tags:
+On version tags (`vX.Y.Z`):
 
-1. **Builds Storybook** and deploys to GitLab Pages
-2. **Publishes** to GitLab Package Registry (automatic)
-3. **Publishes** to npm public registry (manual trigger)
+1. **Publishes** to the GitLab Package Registry (automatic, `CI_JOB_TOKEN`)
+2. **Stages** the release on the public npm registry (`publish:npmjs`, npm Trusted Publishing / OIDC — no npm token anywhere). Nothing is live until an `arkite-ui` org owner approves it with 2FA.
+
+(The Storybook and landing site are deployed from the public GitHub mirror by GitHub Actions.)
+
+Every merge request runs `publish:npmjs:dryrun`, which packs the tarball, checks it and runs `npm stage publish --dry-run`, so the release path is exercised before a tag exists.
 
 ### Release Process (Changesets)
 
 ```bash
-# 1. Add a changeset for your changes
+# 1. Add a changeset for your changes (in your MR)
 pnpm changeset
 
-# 2. When ready to release, version and update CHANGELOG
-pnpm version-packages
-
-# 3. Verify + build + publish (一鍵完成)
-pnpm publish-package
+# 2. When ready to release, on an up-to-date main:
+pnpm release:cut   # verify changesets → test → build → version → commit → tag → push
 ```
 
-### 本機發布前置需求
-
-發布到 GitLab Package Registry 需要設定環境變數 `NPM_TOKEN`。
+The tag pipeline then stages `@arkite-ui/core` on npm. An `arkite-ui` org owner approves it:
 
 ```bash
-export NPM_TOKEN=your_gitlab_personal_access_token
+# npm >= 11.15 is required for `npm stage`; pin an exact version with npx
+# (`npx npm@11` silently reuses an older local npm 11.x that lacks `stage`).
+npx -y npm@11.21.0 login --auth-type=web
+npx -y npm@11.21.0 stage list @arkite-ui/core
+npx -y npm@11.21.0 stage view <stage-id>
+npx -y npm@11.21.0 stage approve <stage-id>   # prompts for 2FA
+npm logout                                     # login leaves a token in ~/.npmrc
 ```
 
-**Token 來源：**
+…or approve it on npmjs.com (package page → Staged).
 
-1. 前往 GitLab → 右上角頭像 → Edit profile → Access Tokens
-   或直接開啟：`https://foson.co/-/user_settings/personal_access_tokens`
-2. 建立新 token，設定：
-   - Name：`arkite-ui-publish`（任意命名）
-   - Scopes：勾選 **`api`**
-3. 複製產生的 token，設定為環境變數
-
-建議將 `export NPM_TOKEN=...` 加到你的 shell 設定檔（`~/.zshrc` 或 `~/.bashrc`）以永久生效：
-
-```bash
-echo 'export NPM_TOKEN=your_token_here' >> ~/.zshrc
-source ~/.zshrc
-```
-
-> CI/CD 環境不需要此步驟，pipeline 會自動使用 `$CI_JOB_TOKEN`。
+There is deliberately **no local publish path** and no token to set up: do not create a personal access token for publishing and never `export` one from a shell profile. The previous `pnpm publish-package` script (which asked for an `api`-scope PAT exported from `~/.zshrc`) has been removed.
 
 ## Contributing
 
