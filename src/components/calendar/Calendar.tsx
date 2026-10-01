@@ -235,7 +235,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
                       className={cn(
                         'mx-auto flex h-8 w-8 items-center justify-center rounded-md text-sm transition-colors',
                         'hover:bg-muted focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
-                        isSelected && 'bg-primary text-primary-foreground hover:bg-primary/90',
+                        isSelected && 'bg-primary text-primary-foreground hover:bg-primary-hover',
                         !isSelected && isToday && 'border-primary text-primary border font-medium',
                         !isSelected && highlighted && 'bg-primary/10 text-foreground font-medium',
                         disabled && 'pointer-events-none opacity-30'

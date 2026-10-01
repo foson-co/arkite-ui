@@ -17,11 +17,11 @@ import { useLocale } from '../../locale'
 /* -------------------------------------------------------------------------- */
 
 const buttonVariantStyles: Record<ButtonVariant, string> = {
-  primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
+  primary: 'bg-primary text-primary-foreground hover:bg-primary-hover shadow-sm',
   secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
   outline: 'border border-input bg-background hover:bg-secondary hover:text-secondary-foreground',
   ghost: 'hover:bg-secondary hover:text-secondary-foreground',
-  destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm',
+  destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive-hover shadow-sm',
   gradient: 'gradient-primary text-white hover:opacity-90 shadow-sm',
   link: 'text-primary underline-offset-4 hover:underline h-auto p-0 rounded-none',
 }
