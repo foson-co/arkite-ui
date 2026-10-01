@@ -83,7 +83,11 @@ VERSION=$(node -p "require('./package.json').version")
 TAG="v${VERSION}"
 git rev-parse -q --verify "refs/tags/${TAG}" > /dev/null || fail "本地沒有 ${TAG}——是否還沒跑 pnpm release:cut？"
 git ls-remote --exit-code --tags origin "refs/tags/${TAG}" > /dev/null || fail "GitLab 上沒有 ${TAG}"
-[ "$(git rev-list -n 1 "$TAG")" = "$(git rev-parse HEAD)" ] || fail "${TAG} 不是指向目前的 main HEAD"
+# tag 必須在 main 的歷史上（不要求等於 HEAD：release:cut 之後 main 可能已有新 commit，
+# 例如合併了不影響套件內容的 MR）。發布的是 tag 那一版，npm 上的內容以 tag pipeline 為準。
+git merge-base --is-ancestor "$TAG" HEAD || fail "${TAG} 不在目前 main 的歷史上"
+TAG_VERSION=$(git show "${TAG}:package.json" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>process.stdout.write(JSON.parse(s).version))')
+[ "$TAG_VERSION" = "$VERSION" ] || fail "main 的 package.json 是 ${VERSION}，但 ${TAG} 是 ${TAG_VERSION}——main 上可能已經有下一版，請指定正確的版本"
 ok "${PKG}@${VERSION}（${TAG} 已在 GitLab）"
 
 if [ "$MODE" != "--reject" ]; then
